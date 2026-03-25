@@ -11,6 +11,95 @@
 
 ---
 
+## 核心架构
+
+```mermaid
+graph TB
+    subgraph "Skill 层（复用）"
+        A[progressive-learning-coach]
+        A --> M1[方法1: 心智模型建构]
+        A --> M2[方法2: 结构化流程]
+        A --> M3[方法3: 对抗测试]
+    end
+
+    subgraph "项目层（用户内容）"
+        P1[项目A: Agent学习]
+        P2[项目B: Claude学习]
+        P3[项目N: 任意主题...]
+    end
+
+    A -.->|加载| P1
+    A -.->|加载| P2
+    A -.->|加载| P3
+
+    style A fill:#4a90d9,color:#fff
+    style M1 fill:#50c878,color:#fff
+    style M2 fill:#50c878,color:#fff
+    style M3 fill:#50c878,color:#fff
+```
+
+---
+
+## 学习流程
+
+```mermaid
+flowchart LR
+    START([开始学习]) --> INIT[初始化状态]
+    INIT --> LOAD[加载 syllabus.yaml]
+    LOAD --> CHECK{有进度?}
+
+    CHECK -->|否| TODO1[展示第一个 TODO]
+    CHECK -->|是| RESUME[恢复进度]
+
+    RESUME --> TODO1
+    TODO1 --> METHOD1[方法1: 心智模型]
+    METHOD1 --> METHOD2[方法2: 结构化学习]
+    METHOD2 --> METHOD3[方法3: 对抗测试]
+
+    METHOD3 --> DONE{TODO 完成?}
+    DONE -->|否| METHOD1
+    DONE -->|是| NEXT{还有 TODO?}
+
+    NEXT -->|是| TODO1
+    NEXT -->|否| LESSON{课程完成?}
+
+    LESSON -->|否| NEXT_L[下一课程]
+    NEXT_L --> TODO1
+    LESSON -->|是| END([学习完成])
+```
+
+---
+
+## 状态机
+
+```mermaid
+stateDiagram-v2
+    [*] --> INIT: 开始学习
+    INIT --> IN_PROGRESS: 加载课程
+
+    IN_PROGRESS --> TODO_ACTIVE: 展示 TODO
+    TODO_ACTIVE --> METHOD1: 心智模型建构
+    METHOD1 --> METHOD2: 结构化学习
+    METHOD2 --> METHOD3: 对抗测试
+
+    METHOD3 --> TODO_COMPLETE: 完成检查通过
+    METHOD3 --> TODO_ACTIVE: 需要重学
+
+    TODO_COMPLETE --> IN_PROGRESS: 还有 TODO
+    TODO_COMPLETE --> LESSON_DONE: 课程完成
+
+    LESSON_DONE --> IN_PROGRESS: 还有课程
+    LESSON_DONE --> COMPLETE: 全部完成
+
+    IN_PROGRESS --> PAUSED: 暂停
+    PAUSED --> IN_PROGRESS: 继续
+
+    COMPLETE --> REVIEW: 复习周期
+    REVIEW --> COMPLETE: 下次复习
+```
+
+---
+
 ## 项目结构
 
 ```
@@ -180,11 +269,44 @@ Skill 会：
 
 ### 核心能力
 
+```mermaid
+pie title 学习方法时间分配
+    "方法1: 心智模型建构" : 20
+    "方法2: 结构化学习" : 50
+    "方法3: 对抗测试" : 30
+```
+
 | 方法 | 功能 | 占比 |
 |-----|------|------|
 | **方法1** | 心智模型建构（专家共识+分歧+深度测试） | ~20% |
 | **方法2** | 结构化学习（SQ3R + 项目式 + KISS） | ~50% |
 | **方法3** | 对抗测试（苏格拉底+反事实+漏洞注入） | ~30% |
+
+### 三种方法详解
+
+```mermaid
+graph LR
+    subgraph 方法1: 心智模型建构
+        M1A[专家共识图谱]
+        M1B[分歧点探索]
+        M1C[深度测试]
+        M1A --> M1B --> M1C
+    end
+
+    subgraph 方法2: 结构化学习
+        M2A[SQ3R 阅读]
+        M2B[项目式实践]
+        M2C[KISS 复盘]
+        M2A --> M2B --> M2C
+    end
+
+    subgraph 方法3: 对抗测试
+        M3A[苏格拉底诘问]
+        M3B[反事实情境]
+        M3C[漏洞注入]
+        M3A --> M3B --> M3C
+    end
+```
 
 ### 触发条件
 
@@ -201,6 +323,39 @@ Skill 会自动创建/管理：
 ### 用户资源集成（特色功能）
 
 Skill 可以读取你的学习资源并在教学中引用：
+
+```mermaid
+flowchart TB
+    subgraph 用户资源
+        R1[代码文件]
+        R2[文档]
+        R3[图片]
+        R4[视频]
+        R5[外部链接]
+    end
+
+    subgraph metadata.yaml
+        META[资源元数据]
+        META --> TAGS[tags: L0, TODO-2]
+        META --> TYPE[type: code/doc/image]
+        META --> DESC[description]
+    end
+
+    subgraph 智能匹配
+        MATCH[LLM 分析匹配度]
+        R1 & R2 & R3 & R4 & R5 --> META
+        META --> MATCH
+    end
+
+    subgraph 教学
+        TODO[当前 TODO]
+        MATCH -->|按匹配度排序| RESULT[推荐资源]
+        TODO --> RESULT
+    end
+
+    style MATCH fill:#4a90d9,color:#fff
+    style RESULT fill:#50c878,color:#fff
+```
 
 **资源类型**：代码 / 文档 / 图片 / 视频 / 链接
 

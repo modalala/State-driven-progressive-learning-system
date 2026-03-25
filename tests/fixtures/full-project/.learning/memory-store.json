@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "core_models": [
+    {
+      "lesson_id": "L0",
+      "model_name": "Agent 三要素",
+      "description": "状态机 + 工具调用 + 环境反馈",
+      "created_at": "2026-03-21T10:30:00"
+    }
+  ],
+  "controversies": [],
+  "vulnerability_log": [
+    {
+      "id": "vuln-001",
+      "lesson_id": "L0",
+      "todo_id": "todo-1",
+      "type": "概念混淆",
+      "detail": "初始时混淆了自动化脚本和 Agent 的区别",
+      "context": "对抗测试题1",
+      "created_at": "2026-03-21T10:45:00",
+      "status": "resolved",
+      "resolution": "通过环境反馈的讨论，理解了区别"
+    }
+  ],
+  "code_snippets": {},
+  "session_history": [
+    {
+      "lesson_id": "L0",
+      "todo_id": "todo-1",
+      "action": "completed",
+      "timestamp": "2026-03-21T10:45:00",
+      "study_time_minutes": 45
+    }
+  ]
+}

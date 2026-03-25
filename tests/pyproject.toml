@@ -1,0 +1,11 @@
+[project]
+name = "progressive-learning-coach-tests"
+version = "1.0.0"
+description = "Progressive Learning Coach 测试框架"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+dev-dependencies = []

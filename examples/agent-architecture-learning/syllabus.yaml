@@ -1,0 +1,211 @@
+meta:
+  domain: "llm_agent_architecture"
+  domain_cn: "LLM Agent 架构"
+  total_lessons: 12
+  estimated_total_hours: 35
+  description: "从 Agent 基础概念到实战部署的系统性学习项目"
+
+# 课程大纲
+syllabus:
+  - id: "L0"
+    title: "Agent 本质论"
+    subtitle: "理解 Agent = 状态机 + 工具调用 + 环境反馈"
+    estimated_hours: 2
+    todos_count: 5
+    file: "lessons/l0-agent-essence.md"
+    prerequisites: []
+    core_points:
+      - "Agent 三要素定义"
+      - "感知-思考-行动循环"
+      - "工具调用必要性"
+      - "环境反馈作用"
+    
+  - id: "L1"
+    title: "认知架构"
+    subtitle: "ReAct vs Reflexion"
+    estimated_hours: 3
+    todos_count: 7
+    file: "lessons/l1-cognitive-architecture.md"
+    prerequisites: ["L0"]
+    core_points:
+      - "ReAct 循环机制"
+      - "显式思考价值"
+      - "Reflexion 三层结构"
+      - "ReAct 局限性"
+      - "架构选择决策"
+      
+  - id: "L2"
+    title: "记忆系统"
+    subtitle: "从短期到长期"
+    estimated_hours: 3
+    todos_count: 6
+    file: "lessons/l2-memory-system.md"
+    prerequisites: ["L1"]
+    core_points:
+      - "三层记忆模型"
+      - "Vector Store 原理"
+      - "记忆策略设计"
+      - "性能瓶颈分析"
+
+  - id: "L3"
+    title: "工具调用"
+    subtitle: "Function Calling 的边界"
+    estimated_hours: 3.5
+    todos_count: 8
+    file: "lessons/l3-tool-calling.md"
+    prerequisites: ["L2"]
+    core_points:
+      - "Schema 设计原则"
+      - "错误处理机制"
+      - "幂等性设计"
+      - "工具选择策略"
+
+  - id: "L4"
+    title: "规划能力"
+    subtitle: "从单步到多步推理"
+    estimated_hours: 3
+    todos_count: 7
+    file: "lessons/l4-planning.md"
+    prerequisites: ["L3"]
+    core_points:
+      - "Chain-of-Thought"
+      - "Tree-of-Thoughts"
+      - "规划复杂度分析"
+      - "长期规划策略"
+
+  - id: "L5"
+    title: "多 Agent 协作"
+    subtitle: "竞争与共识"
+    estimated_hours: 2.5
+    todos_count: 6
+    file: "lessons/l5-multi-agent.md"
+    prerequisites: ["L4"]
+    core_points:
+      - "通信协议设计"
+      - "冲突解决机制"
+      - "共识算法"
+      - "协作架构模式"
+
+  - id: "L6"
+    title: "安全与对齐"
+    subtitle: "护栏设计"
+    estimated_hours: 3.5
+    todos_count: 8
+    file: "lessons/l6-safety.md"
+    prerequisites: ["L5"]
+    core_points:
+      - "输入/输出过滤"
+      - "护栏架构"
+      - "红队测试"
+      - "对抗攻击防护"
+
+  - id: "L7"
+    title: "评估体系"
+    subtitle: "如何证明 Agent 有效"
+    estimated_hours: 2.5
+    todos_count: 6
+    file: "lessons/l7-evaluation.md"
+    prerequisites: ["L6"]
+    core_points:
+      - "Unit Test for Agent"
+      - "Simulation-based Eval"
+      - "Human-in-the-loop"
+      - "Metrics 设计"
+
+  - id: "L8"
+    title: "工程化"
+    subtitle: "从 Prompt 到 Production"
+    estimated_hours: 3
+    todos_count: 7
+    file: "lessons/l8-engineering.md"
+    prerequisites: ["L7"]
+    core_points:
+      - "Prompt 版本管理"
+      - "A/B Testing"
+      - "可观测性"
+      - "部署策略"
+
+  - id: "L9"
+    title: "前沿范式"
+    subtitle: "Agent-as-a-Judge / Voyager"
+    estimated_hours: 2
+    todos_count: 5
+    file: "lessons/l9-frontier.md"
+    prerequisites: ["L8"]
+    core_points:
+      - "Agent-as-a-Judge"
+      - "Voyager 架构"
+      - "终身学习"
+      - "自我进化"
+
+  - id: "L10"
+    title: "综合实战"
+    subtitle: "构建你的垂直领域 Agent"
+    estimated_hours: 5
+    todos_count: 10
+    file: "lessons/l10-capstone.md"
+    prerequisites: ["L9"]
+    core_points:
+      - "端到端项目设计"
+      - "垂直领域应用"
+      - "部署与运维"
+      - "用户反馈迭代"
+
+  - id: "L11"
+    title: "复盘与范式迁移"
+    subtitle: "提炼可复用的方法论"
+    estimated_hours: 2
+    todos_count: 4
+    file: "lessons/l11-reflection.md"
+    prerequisites: ["L10"]
+    core_points:
+      - "个人设计模式提炼"
+      - "可迁移框架建立"
+      - "教学相长"
+      - "持续学习策略"
+
+# 学习方法配置
+learning_config:
+  method1_mental_model:
+    enabled: true
+    duration_ratio: 0.2
+    description: "建立专家思维框架"
+  
+  method2_structured:
+    enabled: true
+    duration_ratio: 0.5
+    sq3r_enabled: true
+    project_based_enabled: true
+    kiss_review_enabled: true
+    description: "系统化学习 + 项目实战"
+  
+  method3_adversarial:
+    enabled: true
+    duration_ratio: 0.3
+    socratic_enabled: true
+    counterfactual_enabled: true
+    fault_injection_enabled: true
+    description: "压力测试暴露盲区"
+
+# 艾宾浩斯复习配置（分钟）
+review_schedule: [20, 60, 540, 1440, 2880, 8640, 44640]
+
+# 程度分级说明
+mastery_levels:
+  core:
+    symbol: "🔴"
+    name: "核心点"
+    description: "必须掌握，对抗测试必须通过"
+    criteria: "能解释原理、能迁移应用、能识别边界条件"
+  
+  important:
+    symbol: "🟠"
+    name: "重点"
+    description: "重要参考知识"
+    criteria: "能复述核心思想，知道查阅方式"
+  
+  awareness:
+    symbol: "🟡"
+    name: "了解"
+    description: "开阔视野"
+    criteria: "知道存在，知道关联内容"

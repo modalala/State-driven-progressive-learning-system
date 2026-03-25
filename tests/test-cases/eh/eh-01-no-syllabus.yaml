@@ -1,0 +1,35 @@
+id: EH-01
+name: 无 syllabus.yaml 时友好提示
+dimension: error_handling
+priority: P1
+description: 验证项目无课程大纲时提供友好的创建引导
+
+setup:
+  fixture: none
+  preconditions:
+    - has_syllabus: false
+    - has_learning_dir: false
+
+input:
+  user_message: "开始学习"
+  context:
+    working_dir: "empty-project"
+
+expected:
+  output_contains:
+    - "未找到"
+    - "syllabus.yaml"
+    - "创建"
+    - "模板"
+
+  behavior:
+    no_crash: true
+    offer_help: true
+    show_template: true
+
+grader:
+  type: code
+  checks:
+    - type: output_contains
+      values: ["未找到", "syllabus", "创建"]
+    - type: no_crash

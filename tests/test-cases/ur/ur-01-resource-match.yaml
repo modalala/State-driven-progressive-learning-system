@@ -1,0 +1,46 @@
+id: UR-01
+name: 有匹配用户资源时正确引用
+dimension: user_resources
+priority: P1
+description: 验证存在匹配资源时正确展示和引用
+
+setup:
+  fixture: full-project
+  resources:
+    - id: "res-001"
+      type: "code"
+      path: "resources/my-agent.py"
+      title: "我的 Agent 实现"
+      tags: ["L0", "TODO-2"]
+  preconditions:
+    - current_lesson: "L0"
+    - current_todo: "todo-2"
+
+input:
+  user_message: "继续"
+  context:
+    working_dir: "full-project"
+    has_resources: true
+
+expected:
+  output_contains:
+    - "你的资源"
+    - "res-001"
+    - "我的 Agent 实现"
+    - "匹配度"
+
+  output_not_contains:
+    - "未找到相关资源"
+
+  resource_display:
+    show_source: true
+    show_match_score: true
+    show_analysis: true
+
+grader:
+  type: code
+  checks:
+    - type: output_contains
+      values: ["你的资源", "匹配度"]
+    - type: resource_referenced
+      resource_id: "res-001"

@@ -1,0 +1,52 @@
+id: UR-03
+name: 多资源按匹配度排序
+dimension: user_resources
+priority: P1
+description: 验证多个资源按匹配度从高到低排序展示
+
+setup:
+  fixture: full-project
+  resources:
+    - id: "res-001"
+      type: "code"
+      title: "高匹配代码"
+      match_score: 95
+      tags: ["L0", "TODO-2"]
+    - id: "res-002"
+      type: "document"
+      title: "中匹配文档"
+      match_score: 70
+      tags: ["L0"]
+    - id: "res-003"
+      type: "image"
+      title: "低匹配图片"
+      match_score: 45
+      tags: []
+  preconditions:
+    - current_lesson: "L0"
+    - current_todo: "todo-2"
+
+input:
+  user_message: "继续"
+  context:
+    working_dir: "full-project"
+    has_resources: true
+
+expected:
+  # 资源展示顺序应为 res-001 > res-002 > res-003
+  output_order:
+    - "res-001"
+    - "res-002"
+    - "res-003"
+
+  # 低匹配资源（<50%）不应展示
+  output_not_contains:
+    - "res-003"
+
+grader:
+  type: code
+  checks:
+    - type: resource_order
+      expected_order: ["res-001", "res-002"]
+    - type: low_match_filtered
+      threshold: 50

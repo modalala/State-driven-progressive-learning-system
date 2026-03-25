@@ -1,0 +1,33 @@
+id: UR-02
+name: 无匹配资源时正常教学
+dimension: user_resources
+priority: P1
+description: 验证无用户资源时不报错，正常进行教学
+
+setup:
+  fixture: minimal-project
+  preconditions:
+    - has_resources: false
+
+input:
+  user_message: "开始学习"
+  context:
+    working_dir: "minimal-project"
+
+expected:
+  output_not_contains:
+    - "你的资源"
+    - "匹配度"
+    - "错误"
+    - "异常"
+
+  behavior:
+    normal_teaching: true
+    no_resource_section: true
+
+grader:
+  type: code
+  checks:
+    - type: output_not_contains
+      values: ["错误", "异常", "未找到资源"]
+    - type: normal_teaching_flow

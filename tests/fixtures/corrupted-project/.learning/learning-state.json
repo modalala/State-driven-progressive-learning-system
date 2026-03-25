@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "learning_state": {
+    "domain": "corrupted-test",
+    "current_lesson": "L0"
+    "global_status": "active"
+  },
+  "syllabus_progress": {
+    "L0": {
+      "status": "in_progress"
+      "todos_completed": 1
+    }
+  }
+}

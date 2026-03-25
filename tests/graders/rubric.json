@@ -1,0 +1,110 @@
+{
+  "rubric": {
+    "name": "learning-coach-behavior",
+    "version": "1.0.0",
+    "description": "Progressive Learning Coach 行为评估标准",
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "todo_disclosure",
+        "display_name": "TODO 渐进披露",
+        "type": "binary",
+        "weight": 0.30,
+        "description": "只展示当前 TODO，不泄露后续内容。已完成 TODO 仅显示标题，未来 TODO 完全隐藏。",
+        "scoring": {
+          "pass": "正确展示当前 TODO 完整内容，未泄露后续 TODO 内容",
+          "fail": "泄露了后续 TODO 内容或当前 TODO 未完整展示"
+        },
+        "test_cases": ["TD-01", "TD-02", "TD-03", "TD-04", "TD-05"]
+      },
+      {
+        "id": "C2",
+        "name": "state_consistency",
+        "display_name": "状态一致性",
+        "type": "binary",
+        "weight": 0.25,
+        "description": "状态转换符合状态机规则。JSON 文件格式正确，字段值符合预期。",
+        "scoring": {
+          "pass": "所有状态转换正确，JSON 文件有效",
+          "fail": "状态转换错误或 JSON 格式问题"
+        },
+        "test_cases": ["SM-01", "SM-02", "SM-03", "SM-04", "SM-05", "SM-06", "SM-07"]
+      },
+      {
+        "id": "C3",
+        "name": "error_handling",
+        "display_name": "错误处理",
+        "type": "scored",
+        "scale": 5,
+        "weight": 0.20,
+        "description": "错误情况处理得当，提供友好提示，不崩溃。",
+        "scoring": {
+          "5": "完美处理，提供清晰的恢复建议",
+          "4": "正确处理，提示友好但可改进",
+          "3": "基本处理，没有崩溃",
+          "2": "处理不当但未崩溃",
+          "1": "崩溃或严重错误"
+        },
+        "test_cases": ["EH-01", "EH-02", "EH-03", "EH-04"]
+      },
+      {
+        "id": "C4",
+        "name": "user_resource_handling",
+        "display_name": "用户资源处理",
+        "type": "scored",
+        "scale": 5,
+        "weight": 0.15,
+        "description": "正确匹配和引用用户资源，按匹配度排序展示。",
+        "scoring": {
+          "5": "完美匹配，分析深入，排序正确",
+          "4": "正确匹配，展示良好",
+          "3": "基本匹配，有引用",
+          "2": "匹配不佳或遗漏",
+          "1": "未处理或错误"
+        },
+        "test_cases": ["UR-01", "UR-02", "UR-03", "UR-04"]
+      },
+      {
+        "id": "C5",
+        "name": "teaching_method_execution",
+        "display_name": "教学方法执行",
+        "type": "scored",
+        "scale": 5,
+        "weight": 0.10,
+        "description": "三种教学方法（心智模型、结构化学习、对抗测试）执行符合规范。",
+        "scoring": {
+          "5": "完美执行三种方法，引导有效",
+          "4": "正确执行，引导良好",
+          "3": "基本执行，有方法痕迹",
+          "2": "方法执行不完整",
+          "1": "未执行或错误执行"
+        },
+        "test_cases": []
+      }
+    ],
+    "grading_config": {
+      "pass_threshold": 0.70,
+      "excellence_threshold": 0.90,
+      "confidence_threshold": 0.80
+    },
+    "output_format": {
+      "summary": {
+        "total_score": "number (0-100)",
+        "passed": "boolean",
+        "grade": "string (A/B/C/D/F)"
+      },
+      "details": {
+        "criteria_scores": "array",
+        "failed_tests": "array",
+        "recommendations": "array"
+      }
+    }
+  },
+  "grade_scale": {
+    "A": { "min": 90, "description": "优秀" },
+    "B": { "min": 80, "description": "良好" },
+    "C": { "min": 70, "description": "合格" },
+    "D": { "min": 60, "description": "需改进" },
+    "F": { "min": 0, "description": "不合格" }
+  }
+}

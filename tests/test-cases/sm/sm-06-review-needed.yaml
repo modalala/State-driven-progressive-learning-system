@@ -1,0 +1,35 @@
+id: SM-06
+name: 艾宾浩斯复习触发
+dimension: state_machine
+priority: P1
+description: 验证到达复习时间点时状态变为 review_needed
+
+setup:
+  fixture: full-project
+  preconditions:
+    - L0_status: "completed"
+    - completed_at: "20_minutes_ago"  # 模拟第一个复习时间点
+
+input:
+  user_message: "查看进度"
+  context:
+    working_dir: "full-project"
+    simulate_time_passed: true
+
+expected:
+  state_content:
+    syllabus_progress:
+      L0:
+        status: "review_needed"
+  
+  output_contains:
+    - "复习"
+    - "L0"
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.status"
+      expected: "review_needed"

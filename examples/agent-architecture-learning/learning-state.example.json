@@ -1,0 +1,133 @@
+{
+  "version": "1.0.0",
+  "learning_state": {
+    "domain": "llm_agent_architecture",
+    "current_lesson": "L0",
+    "global_status": "active",
+    "started_at": "2026-03-19",
+    "last_session": null,
+    "total_study_time_minutes": 0
+  },
+  "syllabus_progress": {
+    "L0": {
+      "status": "unlocked",
+      "title": "Meta-Cognition: Agent 本质论",
+      "todos_total": 5,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": [],
+      "estimated_time_minutes": 120
+    },
+    "L1": {
+      "status": "locked",
+      "title": "认知架构：ReAct vs Reflexion",
+      "todos_total": 7,
+      "todos_completed": 0,
+      "core_points_total": 5,
+      "core_points_mastered": 0,
+      "prerequisites": ["L0"],
+      "estimated_time_minutes": 180
+    },
+    "L2": {
+      "status": "locked",
+      "title": "记忆系统：从短期到长期",
+      "todos_total": 6,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": ["L1"],
+      "estimated_time_minutes": 180
+    },
+    "L3": {
+      "status": "locked",
+      "title": "工具调用：Function Calling 的边界",
+      "todos_total": 8,
+      "todos_completed": 0,
+      "core_points_total": 5,
+      "core_points_mastered": 0,
+      "prerequisites": ["L2"],
+      "estimated_time_minutes": 200
+    },
+    "L4": {
+      "status": "locked",
+      "title": "规划能力：从单步到多步推理",
+      "todos_total": 7,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": ["L3"],
+      "estimated_time_minutes": 180
+    },
+    "L5": {
+      "status": "locked",
+      "title": "多 Agent 协作：竞争与共识",
+      "todos_total": 6,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": ["L4"],
+      "estimated_time_minutes": 160
+    },
+    "L6": {
+      "status": "locked",
+      "title": "安全与对齐：护栏设计",
+      "todos_total": 8,
+      "todos_completed": 0,
+      "core_points_total": 5,
+      "core_points_mastered": 0,
+      "prerequisites": ["L5"],
+      "estimated_time_minutes": 200
+    },
+    "L7": {
+      "status": "locked",
+      "title": "评估体系：如何证明 Agent 有效",
+      "todos_total": 6,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": ["L6"],
+      "estimated_time_minutes": 160
+    },
+    "L8": {
+      "status": "locked",
+      "title": "工程化：从 Prompt 到 Production",
+      "todos_total": 7,
+      "todos_completed": 0,
+      "core_points_total": 4,
+      "core_points_mastered": 0,
+      "prerequisites": ["L7"],
+      "estimated_time_minutes": 180
+    },
+    "L9": {
+      "status": "locked",
+      "title": "前沿范式：Agent-as-a-Judge / Voyager",
+      "todos_total": 5,
+      "todos_completed": 0,
+      "core_points_total": 3,
+      "core_points_mastered": 0,
+      "prerequisites": ["L8"],
+      "estimated_time_minutes": 140
+    },
+    "L10": {
+      "status": "locked",
+      "title": "综合实战：构建你的垂直领域 Agent",
+      "todos_total": 10,
+      "todos_completed": 0,
+      "core_points_total": 6,
+      "core_points_mastered": 0,
+      "prerequisites": ["L9"],
+      "estimated_time_minutes": 300
+    },
+    "L11": {
+      "status": "locked",
+      "title": "复盘与范式迁移",
+      "todos_total": 4,
+      "todos_completed": 0,
+      "core_points_total": 3,
+      "core_points_mastered": 0,
+      "prerequisites": ["L10"],
+      "estimated_time_minutes": 120
+    }
+  }
+}

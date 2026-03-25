@@ -1,0 +1,43 @@
+id: SM-05
+name: 暂停与恢复学习
+dimension: state_machine
+priority: P0
+description: 验证暂停和恢复操作的状态转换
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - status: "in_progress"
+
+input:
+  sequence:
+    - user_message: "暂停"
+    - user_message: "继续"
+
+expected:
+  after_step_1:
+    state_content:
+      syllabus_progress:
+        L0:
+          status: "suspended"
+    output_contains:
+      - "暂停"
+      - "已保存"
+
+  after_step_2:
+    state_content:
+      syllabus_progress:
+        L0:
+          status: "in_progress"
+    output_contains:
+      - "继续"
+      - "恢复"
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.status"
+      expected: "in_progress"

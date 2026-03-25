@@ -1,0 +1,29 @@
+# 最小测试项目 - 仅用于初始化测试
+meta:
+  domain: "test-domain"
+  domain_cn: "测试领域"
+  description: "最小测试项目，用于验证初始化流程"
+  total_lessons: 2
+  estimated_total_hours: 2
+
+syllabus:
+  - id: "L0"
+    title: "基础概念"
+    subtitle: "入门第一课"
+    estimated_hours: 1
+    todos_count: 3
+    file: "lessons/l0-basics.md"
+    prerequisites: []
+    core_points:
+      - "核心概念1"
+      - "核心概念2"
+
+  - id: "L1"
+    title: "进阶内容"
+    subtitle: "第二课"
+    estimated_hours: 1
+    todos_count: 2
+    file: "lessons/l1-advanced.md"
+    prerequisites: ["L0"]
+    core_points:
+      - "进阶概念1"

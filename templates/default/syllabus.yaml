@@ -1,0 +1,91 @@
+# 课程大纲模板
+# 复制此文件并根据你的学习主题修改
+
+meta:
+  domain: "your-learning-topic"           # 学习领域（英文标识）
+  domain_cn: "你的学习主题"                # 学习领域（中文名称）
+  total_lessons: 3                        # 总课程数
+  estimated_total_hours: 10               # 预计总时长（小时）
+  description: "在此描述你的学习项目目标"
+
+# 课程大纲
+syllabus:
+  - id: "L0"
+    title: "基础概念"
+    subtitle: "建立核心认知"
+    estimated_hours: 3
+    todos_count: 4
+    file: "lessons/l0-basics.md"
+    prerequisites: []
+    core_points:
+      - "核心概念1"
+      - "核心概念2"
+      - "核心概念3"
+    
+  - id: "L1"
+    title: "进阶主题"
+    subtitle: "深入理解"
+    estimated_hours: 4
+    todos_count: 5
+    file: "lessons/l1-advanced.md"
+    prerequisites: ["L0"]
+    core_points:
+      - "进阶概念1"
+      - "进阶概念2"
+      
+  - id: "L2"
+    title: "实战应用"
+    subtitle: "项目实践"
+    estimated_hours: 3
+    todos_count: 3
+    file: "lessons/l2-practice.md"
+    prerequisites: ["L1"]
+    core_points:
+      - "实践能力1"
+      - "实践能力2"
+
+# 学习方法配置（可选，使用默认值即可）
+learning_config:
+  method1_mental_model:
+    enabled: true
+    duration_ratio: 0.2
+    description: "建立专家思维框架"
+  
+  method2_structured:
+    enabled: true
+    duration_ratio: 0.5
+    sq3r_enabled: true
+    project_based_enabled: true
+    kiss_review_enabled: true
+    description: "系统化学习 + 项目实战"
+  
+  method3_adversarial:
+    enabled: true
+    duration_ratio: 0.3
+    socratic_enabled: true
+    counterfactual_enabled: true
+    fault_injection_enabled: true
+    description: "压力测试暴露盲区"
+
+# 艾宾浩斯复习配置（分钟）
+review_schedule: [20, 60, 540, 1440, 2880, 8640, 44640]
+
+# 程度分级说明
+mastery_levels:
+  core:
+    symbol: "🔴"
+    name: "核心点"
+    description: "必须掌握，对抗测试必须通过"
+    criteria: "能解释原理、能迁移应用、能识别边界条件"
+  
+  important:
+    symbol: "🟠"
+    name: "重点"
+    description: "重要参考知识"
+    criteria: "能复述核心思想，知道查阅方式"
+  
+  awareness:
+    symbol: "🟡"
+    name: "了解"
+    description: "开阔视野"
+    criteria: "知道存在，知道关联内容"

@@ -1,0 +1,37 @@
+id: SM-02
+name: 已初始化项目恢复
+dimension: state_machine
+priority: P0
+description: 验证当 .learning/ 已存在时，Skill 能正确读取并恢复状态
+
+setup:
+  fixture: full-project
+  preconditions:
+    - has_learning_dir: true
+    - state_status: "in_progress"
+    - todos_completed: 1
+
+input:
+  user_message: "继续学习"
+  context:
+    working_dir: "full-project"
+
+expected:
+  # 不应重新初始化
+  file_not_modified:
+    - ".learning/learning-state.json"
+  
+  # 输出内容验证
+  output_contains:
+    - "继续学习"
+    - "L0"
+    - "TODO-2"
+    - "已完成"
+
+grader:
+  type: code
+  checks:
+    - type: output_contains
+      values: ["当前任务", "TODO-2"]
+    - type: output_not_contains
+      values: ["TODO-1", "TODO-3"]  # TODO-1 只显示标题，TODO-3 应隐藏

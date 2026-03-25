@@ -1,0 +1,36 @@
+# 完整测试项目 - 包含所有组件
+meta:
+  domain: "full-test-domain"
+  domain_cn: "完整测试领域"
+  description: "完整测试项目，用于验证各种学习流程"
+  total_lessons: 2
+  estimated_total_hours: 3
+
+learning_config:
+  method1_weight: 0.2
+  method2_weight: 0.5
+  method3_weight: 0.3
+
+syllabus:
+  - id: "L0"
+    title: "基础概念"
+    subtitle: "入门第一课"
+    estimated_hours: 1.5
+    todos_count: 3
+    file: "lessons/l0-basics.md"
+    prerequisites: []
+    core_points:
+      - "感知-思考-行动循环"
+      - "状态机概念"
+      - "工具调用基础"
+
+  - id: "L1"
+    title: "进阶内容"
+    subtitle: "第二课"
+    estimated_hours: 1.5
+    todos_count: 2
+    file: "lessons/l1-advanced.md"
+    prerequisites: ["L0"]
+    core_points:
+      - "记忆系统"
+      - "多步骤规划"

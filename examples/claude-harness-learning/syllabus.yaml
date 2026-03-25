@@ -1,0 +1,79 @@
+meta:
+  domain: "claude-harness-engineering"
+  domain_cn: "Claude 混合式 Harness 学习"
+  total_lessons: 3
+  estimated_total_hours: 18
+  description: "结合 Claude 官方文档与 learn-claude-code 代码仓库，按先大纲后分节懒加载的方式学习 Claude API、tool use、skills、context 与 subagent 协作。"
+
+syllabus:
+  - id: "L0"
+    title: "Claude 入门与 Agent 基本观"
+    subtitle: "从官方文档总览到 agent loop 基础"
+    estimated_hours: 5
+    todos_count: 3
+    file: "lessons/l0-claude-foundations.md"
+    prerequisites: []
+    core_points:
+      - "能区分模型、agent 与 harness 的边界"
+      - "能说明 Claude Docs 的主要知识分组"
+      - "能读懂一个最小 agent loop 的输入输出"
+
+  - id: "L1"
+    title: "Tool Use 与 Harness 设计"
+    subtitle: "把工具调用从概念落到接口与代码"
+    estimated_hours: 7
+    todos_count: 3
+    file: "lessons/l1-tool-use-and-harness.md"
+    prerequisites: ["L0"]
+    core_points:
+      - "能解释 Claude tool use 的基本工作流"
+      - "能比较不同工具类型的使用边界"
+      - "能把文档中的 tool 模式映射到本地代码实现"
+
+  - id: "L2"
+    title: "Skills、上下文与多代理协作"
+    subtitle: "从单代理走向技能装载、上下文控制与协作"
+    estimated_hours: 6
+    todos_count: 3
+    file: "lessons/l2-skills-context-and-subagents.md"
+    prerequisites: ["L1"]
+    core_points:
+      - "能解释 skill loading、context compact、subagent 的职责"
+      - "能判断什么时候该拆分子代理或压缩上下文"
+      - "能把课程资源按课和 TODO 进行懒加载组织"
+
+learning_config:
+  method1_mental_model:
+    enabled: true
+    duration_ratio: 0.2
+  method2_structured:
+    enabled: true
+    duration_ratio: 0.5
+    sq3r_enabled: true
+    project_based_enabled: true
+    kiss_review_enabled: true
+  method3_adversarial:
+    enabled: true
+    duration_ratio: 0.3
+    socratic_enabled: true
+    counterfactual_enabled: true
+    fault_injection_enabled: true
+
+review_schedule: [20, 60, 540, 1440, 2880, 8640, 44640]
+
+mastery_levels:
+  core:
+    symbol: "🔴"
+    name: "核心点"
+    description: "必须掌握"
+    criteria: "能解释原理、能关联代码与文档、能识别边界条件"
+  important:
+    symbol: "🟠"
+    name: "重点"
+    description: "重要参考"
+    criteria: "能复述工作流，知道对应文档组与代码入口"
+  awareness:
+    symbol: "🟡"
+    name: "了解"
+    description: "开阔视野"
+    criteria: "知道有哪些扩展主题与后续学习入口"

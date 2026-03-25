@@ -1,0 +1,3 @@
+[submodule "examples/claude-harness-learning/resources/code-snippets/learn-claude-code"]
+	path = examples/claude-harness-learning/resources/code-snippets/learn-claude-code
+	url = https://github.com/shareAI-lab/learn-claude-code.git

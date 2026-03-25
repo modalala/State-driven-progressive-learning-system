@@ -1,0 +1,34 @@
+id: EH-02
+name: 课程文件缺失时报告并暂停
+dimension: error_handling
+priority: P1
+description: 验证 lessons/*.md 文件缺失时正确报告
+
+setup:
+  fixture: minimal-project
+  preconditions:
+    - has_syllabus: true
+    - lesson_file_missing: true  # lessons/l0-basics.md 不存在
+
+input:
+  user_message: "开始学习"
+  context:
+    working_dir: "minimal-project"
+
+expected:
+  output_contains:
+    - "缺失"
+    - "l0-basics.md"
+    - "暂停"
+
+  behavior:
+    no_crash: true
+    report_missing: true
+    pause_lesson: true
+
+grader:
+  type: code
+  checks:
+    - type: output_contains
+      values: ["缺失", "暂停"]
+    - type: no_crash

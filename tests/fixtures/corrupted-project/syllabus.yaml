@@ -1,0 +1,11 @@
+# 损坏项目 - 用于测试错误恢复
+meta:
+  domain: "corrupted-test"
+  domain_cn: "损坏测试"
+  total_lessons: 1
+
+syllabus:
+  - id: "L0"
+    title: "测试课程"
+    todos_count: 2
+    file: "lessons/l0.md"

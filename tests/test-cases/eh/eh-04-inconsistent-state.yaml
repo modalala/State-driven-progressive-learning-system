@@ -1,0 +1,40 @@
+id: EH-04
+name: 状态不一致时自动修复
+dimension: error_handling
+priority: P2
+description: 验证 todos_completed > todos_total 时以实际进度为准
+
+setup:
+  fixture: full-project
+  preconditions:
+    - state_inconsistent: true
+    - todos_completed: 5  # 超过 todos_total=3
+    - todos_total: 3
+
+input:
+  user_message: "查看进度"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_contains:
+    - "修复"
+    - "状态"
+
+  auto_fix:
+    - field: "todos_completed"
+      expected: 3
+    - field: "status"
+      expected: "completed"
+
+  behavior:
+    no_crash: true
+    auto_repair: true
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.todos_completed"
+      expected: 3

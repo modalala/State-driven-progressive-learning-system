@@ -1,0 +1,38 @@
+# 学习资源索引
+# 将你的学习资源放在 resources/ 目录下，并在此文件中添加描述
+# Skill 会自动读取并在教学中引用这些资源
+
+resources:
+  # 示例：代码资源
+  - id: "example-code-001"
+    type: "code"                        # code | document | image | video | link
+    path: "resources/code-snippets/example.py"
+    title: "示例代码"
+    description: "这是一个示例代码文件"
+    tags: ["L0", "TODO-2"]             # 关联的课程和 TODO
+    source: "user"                      # user | external | auto
+    
+  # 示例：文档资源
+  - id: "example-doc-001"
+    type: "document"
+    path: "resources/documents/example.pdf"
+    title: "示例文档"
+    description: "这是一个示例文档"
+    tags: ["L0", "TODO-1"]
+    source: "user"
+    # pages: [1, 10]                   # 可选：指定页码范围
+    
+  # 示例：图片资源
+  - id: "example-img-001"
+    type: "image"
+    path: "resources/images/example.png"
+    title: "示例图片"
+    description: "这是一个示例图片"
+    tags: ["L0", "TODO-3"]
+    source: "user"
+
+# 添加你自己的资源：
+# 1. 将文件放入对应子目录（code-snippets/ / documents/ / images/）
+# 2. 在上面的 resources 列表中添加条目
+# 3. 设置正确的 tags 以关联到课程和 TODO
+# 4. Skill 会自动在教学中引用这些资源

@@ -1,0 +1,96 @@
+resources:
+  - id: "claude-docs-outline"
+    type: "document"
+    path: "resources/documents/claude-docs/outline.md"
+    title: "Claude Docs outline"
+    description: "Official Claude Developer Docs navigation outline captured from the Intro page. Use this as the top-level syllabus source before loading any section in full."
+    tags: ["CLAUDE-DOCS", "OUTLINE", "LAZY-LOAD", "L0", "L2"]
+    source: "external"
+
+  - id: "claude-docs-tools-group"
+    type: "document"
+    path: "resources/documents/claude-docs/tools.md"
+    title: "Claude Docs tools group manifest"
+    description: "Exact 9-page Tools subgroup manifest from the official Claude docs. Load this group when a lesson enters tool use or tool infrastructure topics."
+    tags: ["CLAUDE-DOCS", "GROUP-TOOLS", "LAZY-LOAD", "L1"]
+    source: "external"
+
+  - id: "claude-docs-lesson-map-template"
+    type: "document"
+    path: "resources/documents/claude-docs/lesson-group-map.template.yaml"
+    title: "Claude Docs lesson-to-group mapping template"
+    description: "Template for mapping future lessons to Claude Docs groups and local code resources."
+    tags: ["CLAUDE-DOCS", "LESSON-MAP", "TEMPLATE", "L2", "TODO-3"]
+    source: "auto"
+
+  - id: "learn-claude-code-index"
+    type: "document"
+    path: "resources/documents/code/learn-claude-code-index.md"
+    title: "learn-claude-code repo index"
+    description: "Local index for the imported learn-claude-code repository. Use this file as the entry point to browse the repo structure and key study paths."
+    tags: ["CLAUDE-CODE", "CODE", "LOCAL-REPO", "L0", "L1", "L2"]
+    source: "external"
+
+  - id: "learn-claude-code-readme"
+    type: "document"
+    path: "resources/code-snippets/learn-claude-code/README.md"
+    title: "learn-claude-code README"
+    description: "Repository entry point that frames agent development as harness engineering."
+    tags: ["CLAUDE-CODE", "L0", "TODO-1"]
+    source: "external"
+
+  - id: "learn-claude-code-s01-code"
+    type: "code"
+    path: "resources/code-snippets/learn-claude-code/agents/s01_agent_loop.py"
+    title: "s01 agent loop code"
+    description: "Minimal agent loop implementation used in L0."
+    tags: ["CLAUDE-CODE", "L0", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s01-doc"
+    type: "document"
+    path: "resources/code-snippets/learn-claude-code/docs/en/s01-the-agent-loop.md"
+    title: "s01 the agent loop doc"
+    description: "English walkthrough for the minimal agent loop example."
+    tags: ["CLAUDE-CODE", "L0", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s02-code"
+    type: "code"
+    path: "resources/code-snippets/learn-claude-code/agents/s02_tool_use.py"
+    title: "s02 tool use code"
+    description: "Tool dispatch implementation used in the tool use lesson."
+    tags: ["CLAUDE-CODE", "L1", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s02-doc"
+    type: "document"
+    path: "resources/code-snippets/learn-claude-code/docs/en/s02-tool-use.md"
+    title: "s02 tool use doc"
+    description: "Companion explanation for the tool use code example."
+    tags: ["CLAUDE-CODE", "L1", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s04-code"
+    type: "code"
+    path: "resources/code-snippets/learn-claude-code/agents/s04_subagent.py"
+    title: "s04 subagent code"
+    description: "Subagent example used in the collaboration lesson."
+    tags: ["CLAUDE-CODE", "L2", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s05-code"
+    type: "code"
+    path: "resources/code-snippets/learn-claude-code/agents/s05_skill_loading.py"
+    title: "s05 skill loading code"
+    description: "Skill loading example used in the collaboration lesson."
+    tags: ["CLAUDE-CODE", "L2", "TODO-2"]
+    source: "external"
+
+  - id: "learn-claude-code-s06-code"
+    type: "code"
+    path: "resources/code-snippets/learn-claude-code/agents/s06_context_compact.py"
+    title: "s06 context compact code"
+    description: "Context compaction example used in the collaboration lesson."
+    tags: ["CLAUDE-CODE", "L2", "TODO-2"]
+    source: "external"

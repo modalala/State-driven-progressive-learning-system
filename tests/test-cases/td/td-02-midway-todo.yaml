@@ -1,0 +1,48 @@
+id: TD-02
+name: 中途进入展示当前 TODO
+dimension: todo_disclosure
+priority: P0
+description: 验证 todos_completed=2 时展示 TODO-3，隐藏 TODO-1 内容和 TODO-4+
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - todos_completed: 2
+    - todos_total: 3
+
+input:
+  user_message: "继续学习"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_contains:
+    - "TODO-3"
+    - "实践验证"
+    - "已完成"
+
+  output_not_contains:
+    - "感知-思考-行动循环"  # TODO-2 的内容
+    - "循环的三个阶段"     # TODO-2 的内容
+    - "画图"               # TODO-2 的产出
+
+  # 已完成的 TODO 只显示标题
+  completed_display:
+    - id: "TODO-1"
+      show_title: true
+      show_content: false
+    - id: "TODO-2"
+      show_title: true
+      show_content: false
+
+grader:
+  type: disclosure_checker
+  checks:
+    - type: todo_visible
+      todo_id: "todo-3"
+      expected: "full"
+    - type: completed_todo_format
+      expected: "title_only"
+    - type: no_content_leak
+      hidden_todos: []

@@ -1,0 +1,55 @@
+lesson_resource_groups:
+  L0:
+    docs_groups: ["first_steps", "build_with_claude"]
+    docs_pages:
+      - "Intro to Claude"
+      - "Quickstart"
+      - "Features overview"
+      - "Using the Messages API"
+    local_resources:
+      - "learn-claude-code-index"
+      - "learn-claude-code-readme"
+      - "learn-claude-code-s01-code"
+      - "learn-claude-code-s01-doc"
+
+  L1:
+    docs_groups: ["tools"]
+    docs_pages:
+      - "Overview"
+      - "How to implement tool use"
+      - "Web search tool"
+      - "Web fetch tool"
+      - "Code execution tool"
+      - "Memory tool"
+      - "Bash tool"
+      - "Computer use tool"
+      - "Text editor tool"
+    local_resources:
+      - "learn-claude-code-index"
+      - "learn-claude-code-s02-code"
+      - "learn-claude-code-s02-doc"
+
+  L2:
+    docs_groups: ["agent_skills", "context_management", "agent_sdk"]
+    docs_pages:
+      - "Agent Skills overview"
+      - "Agent Skills quickstart"
+      - "Context windows"
+      - "Compaction"
+      - "Prompt caching"
+      - "Agent SDK overview"
+      - "How the agent loop works"
+    local_resources:
+      - "learn-claude-code-index"
+      - "learn-claude-code-s04-code"
+      - "learn-claude-code-s05-code"
+      - "learn-claude-code-s06-code"
+
+group_manifests:
+  outline: "resources/documents/claude-docs/outline.md"
+  tools: "resources/documents/claude-docs/tools.md"
+
+loading_policy:
+  mode: "outline-first-group-lazy-load"
+  fetch_group_manifest_before_page_body: true
+  fetch_only_active_lesson_resources: true

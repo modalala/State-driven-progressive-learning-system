@@ -1,0 +1,39 @@
+id: UR-04
+name: 低匹配资源不展示
+dimension: user_resources
+priority: P1
+description: 验证匹配度 <50% 的资源被过滤，不干扰学习
+
+setup:
+  fixture: full-project
+  resources:
+    - id: "res-low"
+      type: "document"
+      title: "无关文档"
+      match_score: 30
+      tags: []
+  preconditions:
+    - current_lesson: "L0"
+    - current_todo: "todo-2"
+
+input:
+  user_message: "继续"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_not_contains:
+    - "res-low"
+    - "无关文档"
+
+  behavior:
+    filter_low_match: true
+    threshold: 50
+
+grader:
+  type: code
+  checks:
+    - type: output_not_contains
+      values: ["res-low", "无关文档"]
+    - type: no_low_match_display
+      threshold: 50

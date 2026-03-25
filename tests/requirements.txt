@@ -1,0 +1,2 @@
+# Progressive Learning Coach 测试框架依赖
+pyyaml>=6.0

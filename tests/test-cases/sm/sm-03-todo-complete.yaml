@@ -1,0 +1,40 @@
+id: SM-03
+name: TODO 完成状态转换
+dimension: state_machine
+priority: P0
+description: 验证完成一个 TODO 后状态正确更新
+
+setup:
+  fixture: full-project
+  preconditions:
+    - has_learning_dir: true
+    - current_lesson: "L0"
+    - todos_completed: 1
+
+input:
+  user_message: "TODO 完成"
+  context:
+    working_dir: "full-project"
+    current_todo: "todo-2"
+
+expected:
+  state_content:
+    syllabus_progress:
+      L0:
+        todos_completed: 2
+        current_todo_id: "todo-3"
+        status: "in_progress"
+  
+  output_contains:
+    - "完成"
+    - "TODO-3"
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.todos_completed"
+      expected: 2
+    - type: output_contains
+      values: ["TODO-3"]

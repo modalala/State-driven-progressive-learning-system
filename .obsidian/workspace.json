@@ -1,0 +1,239 @@
+{
+  "main": {
+    "id": "4e4b88ab5b299b3f",
+    "type": "split",
+    "children": [
+      {
+        "id": "06663b3c878a7c1f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3274e021f6810fdf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "STRUCTURE.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "STRUCTURE"
+            }
+          },
+          {
+            "id": "812d25da09313ae1",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.12.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "版本说明 1.12.4"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e1f611230763e10e",
+    "type": "split",
+    "children": [
+      {
+        "id": "be748d4c53b244ba",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "992832d74791866b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "2e8a51ae7cdee083",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "b58b3b01d8b5a7f3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "a5815a46bc7f6251",
+    "type": "split",
+    "children": [
+      {
+        "id": "9b14964094f535d7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e56dae69e3201371",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "STRUCTURE.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for STRUCTURE"
+            }
+          },
+          {
+            "id": "6da9d33d88617869",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "STRUCTURE.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from STRUCTURE"
+            }
+          },
+          {
+            "id": "f5e4ab5152a06276",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "4e1c65c159ec936e",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "fcf14cd4ab693e94",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "STRUCTURE.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of STRUCTURE"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "812d25da09313ae1",
+  "lastOpenFiles": [
+    "skills/progressive-learning-coach/SKILL.md",
+    "skills/progressive-learning-coach/references/user-resources.md",
+    "templates/default/resources/code-snippets/example.py",
+    "templates/default/resources/metadata.yaml",
+    "templates/default/resources/images",
+    "templates/default/resources/documents",
+    "templates/default/resources/code-snippets",
+    "templates/default/resources",
+    "bin/init.js",
+    "bin",
+    "docs/resource-integration-design.md",
+    "docs/ROADMAP.md",
+    "docs/todo-disclosure-visual.md",
+    "skills/progressive-learning-coach/references/todo-disclosure.md",
+    "STRUCTURE.md",
+    "examples/agent-architecture-learning/memory-store.example.json",
+    "examples/agent-architecture-learning/learning-state.example.json",
+    "templates/default/README.md",
+    "templates/default/lessons/l2-practice.md",
+    "templates/default/lessons/l1-advanced.md",
+    "templates/default/lessons/l0-basics.md",
+    "skills/progressive-learning-coach/references/state-machine.md",
+    "skills/progressive-learning-coach/references/memory-schema.md",
+    "examples/agent-architecture-learning/README.md",
+    "examples/agent-architecture-learning/lessons/l2-memory-system.md",
+    "examples/agent-architecture-learning/lessons/l1-cognitive-architecture.md",
+    "examples/agent-architecture-learning/lessons/l0-agent-essence.md",
+    "skills/README.md",
+    "README.md",
+    "AGENTS.md",
+    "skills/progressive-learning-coach/references/coach-instructions.md",
+    "skills/progressive-learning-coach/references/method1-mental-model.md",
+    "lessons/l0-agent-essence.md",
+    "skills/progressive-learning-coach/references/method3-adversarial.md",
+    "docs/syllabus/lesson-l0-agent-essence.md",
+    "skills/progressive-learning-coach/references/method2-structured.md",
+    "docs/syllabus-canvas.canvas"
+  ]
+}

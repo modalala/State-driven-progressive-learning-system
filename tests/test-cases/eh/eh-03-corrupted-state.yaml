@@ -1,0 +1,37 @@
+id: EH-03
+name: 状态文件损坏时备份并重新初始化
+dimension: error_handling
+priority: P1
+description: 验证 JSON 格式错误时备份损坏文件并重新初始化
+
+setup:
+  fixture: corrupted-project
+  preconditions:
+    - state_file_corrupted: true
+
+input:
+  user_message: "继续学习"
+  context:
+    working_dir: "corrupted-project"
+
+expected:
+  output_contains:
+    - "损坏"
+    - "备份"
+    - "重新初始化"
+
+  file_actions:
+    - backup_corrupted: true
+    - create_new_state: true
+
+  behavior:
+    no_crash: true
+    data_recovery: true
+
+grader:
+  type: code
+  checks:
+    - type: file_exists
+      path: "learning-state.json.backup"
+    - type: json_valid
+      path: "learning-state.json"

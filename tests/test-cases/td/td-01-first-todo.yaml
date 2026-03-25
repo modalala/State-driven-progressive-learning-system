@@ -1,0 +1,50 @@
+id: TD-01
+name: 首次进入课程只展示 TODO-1
+dimension: todo_disclosure
+priority: P0
+description: 验证 todos_completed=0 时只展示 TODO-1 完整内容，隐藏后续 TODO
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - todos_completed: 0
+    - todos_total: 3
+
+input:
+  user_message: "开始学习"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_contains:
+    - "TODO-1"
+    - "概念理解"
+    - "目标"
+    - "完成检查"
+
+  output_not_contains:
+    - "TODO-2"
+    - "TODO-3"
+    - "循环理解"
+    - "实践验证"
+
+  display_format:
+    show_completed_todos: false
+    show_current_todo: true
+    show_locked_todos: true  # 显示 🔒 但不显示内容
+
+grader:
+  type: disclosure_checker
+  checks:
+    - type: todo_visible
+      todo_id: "todo-1"
+      expected: "full"
+    - type: todo_visible
+      todo_id: "todo-2"
+      expected: "hidden"
+    - type: todo_visible
+      todo_id: "todo-3"
+      expected: "hidden"
+    - type: no_content_leak
+      hidden_todos: ["todo-2", "todo-3"]

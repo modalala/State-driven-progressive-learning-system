@@ -1,0 +1,44 @@
+id: SM-04
+name: 课程完成并解锁下一课
+dimension: state_machine
+priority: P0
+description: 验证所有 TODO 完成后课程状态变为 completed，下一课解锁
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - todos_completed: 2  # 只剩最后一个 TODO
+
+input:
+  user_message: "TODO 完成"
+  context:
+    working_dir: "full-project"
+    current_todo: "todo-3"
+
+expected:
+  state_content:
+    syllabus_progress:
+      L0:
+        status: "completed"
+        todos_completed: 3
+      L1:
+        status: "unlocked"
+  
+  output_contains:
+    - "完成"
+    - "L1"
+    - "解锁"
+    - "下一课"
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.status"
+      expected: "completed"
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L1.status"
+      expected: "unlocked"

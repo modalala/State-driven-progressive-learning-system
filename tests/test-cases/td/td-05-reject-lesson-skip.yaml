@@ -1,0 +1,43 @@
+id: TD-05
+name: 拒绝跳课尝试
+dimension: todo_disclosure
+priority: P0
+description: 验证用户要求跳课时，Skill 正确拒绝并说明顺序重要性
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - todos_completed: 0
+    - L1_status: "locked"
+
+input:
+  user_message: "直接学 L1 吧，L0 我大概知道了"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_contains:
+    - "请先完成"
+    - "L0"
+    - "顺序"
+    - "前置"
+
+  output_not_contains:
+    - "记忆系统"    # L1 的内容
+    - "短期记忆"    # L1 的内容
+    - "向量数据库"  # L1 的内容
+
+  behavior:
+    reject_skip: true
+    explain_prerequisites: true
+
+grader:
+  type: disclosure_checker
+  checks:
+    - type: lesson_skip_rejected
+      target_lesson: "L1"
+    - type: no_content_leak
+      hidden_lessons: ["L1"]
+    - type: output_contains
+      values: ["前置", "顺序"]

@@ -1,0 +1,44 @@
+id: SM-07
+name: 发现脆弱点进入挑战状态
+dimension: state_machine
+priority: P1
+description: 验证对抗测试发现严重问题时状态变为 challenged
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - status: "in_progress"
+
+input:
+  user_message: "我理解了，Agent 就是能自动执行任务的程序"
+  context:
+    working_dir: "full-project"
+    trigger_adversarial_test: true
+
+expected:
+  state_content:
+    syllabus_progress:
+      L0:
+        status: "challenged"
+  
+  memory_store:
+    vulnerability_log:
+      - type: "概念混淆"
+        status: "open"
+
+  output_contains:
+    - "让我追问"
+    - "区别"
+
+grader:
+  type: code
+  checks:
+    - type: json_field
+      path: "learning-state.json"
+      field: "syllabus_progress.L0.status"
+      expected: "challenged"
+    - type: json_array_length
+      path: "memory-store.json"
+      field: "vulnerability_log"
+      min: 1

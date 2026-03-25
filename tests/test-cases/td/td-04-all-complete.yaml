@@ -1,0 +1,40 @@
+id: TD-04
+name: 所有 TODO 完成后显示下一课提示
+dimension: todo_disclosure
+priority: P0
+description: 验证所有 TODO 完成时正确提示进入下一课
+
+setup:
+  fixture: full-project
+  preconditions:
+    - current_lesson: "L0"
+    - todos_completed: 3
+    - todos_total: 3
+
+input:
+  user_message: "查看进度"
+  context:
+    working_dir: "full-project"
+
+expected:
+  output_contains:
+    - "完成"
+    - "L1"
+    - "解锁"
+    - "下一课"
+
+  output_not_contains:
+    - "TODO-4"  # 不存在
+
+  # 应该显示所有已完成的 TODO 标题
+  show_all_completed: true
+
+grader:
+  type: disclosure_checker
+  checks:
+    - type: lesson_complete
+      lesson_id: "L0"
+    - type: next_lesson_unlocked
+      lesson_id: "L1"
+    - type: output_contains
+      values: ["下一课", "解锁"]

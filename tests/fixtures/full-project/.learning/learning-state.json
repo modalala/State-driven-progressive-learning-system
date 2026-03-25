@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "learning_state": {
+    "domain": "full-test-domain",
+    "current_lesson": "L0",
+    "global_status": "active",
+    "started_at": "2026-03-21T10:00:00",
+    "last_session": "2026-03-21T11:30:00",
+    "total_study_time_minutes": 45
+  },
+  "syllabus_progress": {
+    "L0": {
+      "status": "in_progress",
+      "title": "基础概念",
+      "todos_total": 3,
+      "todos_completed": 1,
+      "current_todo_id": "todo-2",
+      "started_at": "2026-03-21T10:00:00",
+      "study_time_minutes": 45
+    },
+    "L1": {
+      "status": "locked",
+      "title": "进阶内容",
+      "todos_total": 2,
+      "todos_completed": 0,
+      "prerequisites": ["L0"]
+    }
+  }
+}

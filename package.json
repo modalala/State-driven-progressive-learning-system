@@ -1,0 +1,43 @@
+{
+  "name": "progressive-learning-coach",
+  "version": "1.0.0",
+  "description": "通用的渐进式学习教练 Skill，实现三种学习方法：心智模型构建、结构化流程管理、对抗性压力测试",
+  "main": "skills/progressive-learning-coach/SKILL.md",
+  "bin": {
+    "plc-init": "./bin/init.js",
+    "learning-coach-init": "./bin/init.js"
+  },
+  "files": [
+    "skills/progressive-learning-coach/**/*",
+    "templates/**/*",
+    "bin/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "init": "node bin/init.js",
+    "test": "echo 'Tests not implemented yet'"
+  },
+  "keywords": [
+    "skill",
+    "learning",
+    "coach",
+    "education",
+    "progressive-learning",
+    "ai-coach",
+    "syllabus",
+    "tutorial"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/progressive-learning-coach.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/progressive-learning-coach/issues"
+  },
+  "homepage": "https://github.com/your-org/progressive-learning-coach#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

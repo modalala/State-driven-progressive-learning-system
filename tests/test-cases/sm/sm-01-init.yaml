@@ -1,0 +1,54 @@
+id: SM-01
+name: 新项目初始化
+dimension: state_machine
+priority: P0
+description: 验证当 .learning/ 目录不存在时，Skill 能正确初始化状态
+
+setup:
+  fixture: minimal-project
+  preconditions:
+    - has_learning_dir: false
+    - has_state_file: false
+
+input:
+  user_message: "开始学习"
+  context:
+    working_dir: "minimal-project"
+
+expected:
+  # 目录和文件创建
+  file_created:
+    - ".learning/learning-state.json"
+    - ".learning/memory-store.json"
+  
+  # 状态文件内容
+  state_content:
+    learning_state:
+      domain: "test-domain"
+      current_lesson: "L0"
+      global_status: "active"
+    syllabus_progress:
+      L0:
+        status: "unlocked"
+      L1:
+        status: "locked"
+  
+  # 输出内容验证
+  output_contains:
+    - "检测到学习项目"
+    - "测试领域"
+    - "输入"
+
+grader:
+  type: code
+  checks:
+    - type: file_exists
+      path: "learning-state.json"
+    - type: json_valid
+      path: "learning-state.json"
+    - type: json_field
+      path: "learning-state.json"
+      field: "learning_state.domain"
+      expected: "test-domain"
+    - type: output_not_contains
+      values: ["TODO-2", "TODO-3"]

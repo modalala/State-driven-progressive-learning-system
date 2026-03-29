@@ -406,3 +406,136 @@ def backup_state():
     shutil.copy('learning-state.json', f'backups/learning-state.{timestamp}.json')
     shutil.copy('memory-store.json', f'backups/memory-store.{timestamp}.json')
 ```
+
+---
+
+## 多项目管理文件
+
+### 注册表文件 (.skill/registry.json)
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Project Registry",
+  "type": "object",
+  "required": ["version", "projects", "statistics"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "default": "1.0.0"
+    },
+    "projects": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "path"],
+        "properties": {
+          "name": { "type": "string" },
+          "display_name": { "type": "string" },
+          "domain": { "type": "string" },
+          "path": { "type": "string" },
+          "relative_path": { "type": "string" },
+          "status": {
+            "type": "object",
+            "properties": {
+              "global_status": { "type": "string" },
+              "current_lesson": { "type": "string" },
+              "progress_percentage": { "type": "number" },
+              "todos_completed": { "type": "integer" },
+              "todos_total": { "type": "integer" },
+              "total_study_time_minutes": { "type": "integer" },
+              "last_session": { "type": "string", "format": "date-time" }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "total_lessons": { "type": "integer" },
+              "estimated_total_hours": { "type": "number" }
+            }
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "is_active": { "type": "boolean" }
+        }
+      }
+    },
+    "active_project": { "type": ["string", "null"] },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "total_projects": { "type": "integer" },
+        "total_study_time_minutes": { "type": "integer" },
+        "total_todos_completed": { "type": "integer" }
+      }
+    }
+  }
+}
+```
+
+### 上下文文件 (.skill/context.json)
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Context State",
+  "type": "object",
+  "required": ["version", "active_project", "context"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "default": "1.0.0"
+    },
+    "active_project": { "type": ["string", "null"] },
+    "context": {
+      "type": "object",
+      "properties": {
+        "loaded_resources": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "loaded_syllabus": { "type": ["string", "null"] },
+        "loaded_state": { "type": ["string", "null"] },
+        "session_start": { "type": "string", "format": "date-time" },
+        "pending_todo": { "type": ["string", "null"] }
+      }
+    },
+    "last_switch": { "type": "string", "format": "date-time" },
+    "last_clear": { "type": "string", "format": "date-time" },
+    "previous_project": { "type": ["string", "null"] },
+    "switch_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": { "type": ["string", "null"] },
+          "to": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}
+```
+
+### 文件位置（多项目布局）
+
+```
+用户工作目录/
+├── .skill/                          # 多项目管理
+│   ├── registry.json                # 项目注册表
+│   └── context.json                 # 上下文状态
+├── project-a/                       # 学习项目A
+│   ├── syllabus.yaml
+│   ├── lessons/
+│   ├── resources/
+│   └── .learning/
+│       ├── learning-state.json      # 项目A的学习进度
+│       └── memory-store.json        # 项目A的记忆
+└── project-b/                       # 学习项目B
+    ├── syllabus.yaml
+    ├── lessons/
+    ├── resources/
+    └── .learning/
+        ├── learning-state.json      # 项目B的学习进度
+        └── memory-store.json        # 项目B的记忆
+```

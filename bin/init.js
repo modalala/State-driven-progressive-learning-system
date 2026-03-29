@@ -1,19 +1,23 @@
 #!/usr/bin/env node
 
 /**
- * Progressive Learning Coach - 项目初始化脚手架
- * 
+ * Progressive Learning Coach - 项目初始化脚手架（智能引导版）
+ *
  * 用法:
+ *   plc init [project-name]
  *   npx progressive-learning-coach init [project-name]
- *   
- * 示例:
- *   npx progressive-learning-coach init
- *   npx progressive-learning-coach init my-agent-learning
+ *
+ * 特性:
+ *   - 检测已有项目，提供选择菜单
+ *   - 在当前目录创建子目录
+ *   - 自动注册到 .skill/registry.json
  */
 
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const registry = require('./registry');
+const context = require('./context');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -260,25 +264,175 @@ review_schedule: [20, 60, 540, 1440, 2880, 8640, 44640]
   return syllabusPath;
 }
 
-// 主函数
+// 主函数（智能引导版）
 async function main() {
-  console.log('🎓 Progressive Learning Coach - 项目初始化\n');
+  const baseDir = process.cwd();
 
-  // 获取项目名
-  let projectName = process.argv[2];
-  
-  if (!projectName) {
-    projectName = await ask('项目名称', 'my-learning-project');
+  console.log('🎓 Progressive Learning Coach\n');
+
+  // 检查是否已有项目
+  if (registry.registryExists(baseDir)) {
+    await handleExistingProjects(baseDir);
+  } else {
+    await handleFirstTime(baseDir);
   }
 
-  const projectDir = path.resolve(projectName);
+  rl.close();
+}
+
+// 处理已有项目的情况
+async function handleExistingProjects(baseDir) {
+  const projects = registry.listProjects(baseDir);
+  const activeProject = registry.getActiveProject(baseDir);
+
+  if (projects.length === 0) {
+    console.log('已注册 0 个学习项目。\n');
+    await createNewProject(baseDir);
+    return;
+  }
+
+  console.log(`当前目录已有 ${projects.length} 个学习项目:\n`);
+
+  // 显示项目列表
+  for (let i = 0; i < projects.length; i++) {
+    const p = projects[i];
+    const isCurrent = p.name === activeProject?.name;
+    const marker = isCurrent ? '(当前)' : '';
+    const statusIcon = p.status?.global_status === 'active' ? '🟢' :
+                       p.status?.global_status === 'paused' ? '🟡' : '⚪';
+    console.log(`  ${i + 1}. ${statusIcon} ${p.display_name} - ${p.status?.progress_percentage || 0}% ${marker}`);
+  }
+
+  console.log('\n选择操作:');
+  console.log('  [1-' + projects.length + '] 切换到该项目');
+  console.log('  [n] 创建新项目');
+  console.log('  [c] 继续当前项目学习');
+  console.log('  [l] 查看详细列表');
+  console.log('  [q] 退出');
+  console.log('');
+
+  const choice = await ask('请选择: ');
+
+  if (choice === 'q') {
+    console.log('已退出。\n');
+    return;
+  }
+
+  if (choice === 'l') {
+    // 详细列表
+    console.log('\n项目详情:\n');
+    for (const p of projects) {
+      console.log(`📁 ${p.display_name}`);
+      console.log(`   名称: ${p.name}`);
+      console.log(`   路径: ${p.path}`);
+      console.log(`   领域: ${p.domain}`);
+      console.log(`   当前课程: ${p.status?.current_lesson || '-'}`);
+      console.log('');
+    }
+    return;
+  }
+
+  if (choice === 'c') {
+    if (!activeProject) {
+      console.log('没有设置活跃项目。请先切换到一个项目。\n');
+      return;
+    }
+    console.log(`\n当前项目: ${activeProject.display_name}`);
+    console.log(`当前课程: ${activeProject.status?.current_lesson || 'L0'}`);
+    console.log('\n下一步: 对 AI 说 "继续学习"\n');
+    return;
+  }
+
+  if (choice === 'n') {
+    await createNewProject(baseDir);
+    return;
+  }
+
+  // 切换到指定项目
+  const index = parseInt(choice, 10) - 1;
+  if (index >= 0 && index < projects.length) {
+    const targetProject = projects[index];
+
+    if (targetProject.name === activeProject?.name) {
+      console.log(`\n"${targetProject.display_name}" 已经是当前活跃项目。\n`);
+      console.log('下一步: 对 AI 说 "继续学习"\n');
+      return;
+    }
+
+    // 确认切换
+    console.log(`\n切换到 "${targetProject.display_name}"?`);
+    console.log('注意：将重新加载新项目的资源，当前项目的学习进度已保存。\n');
+
+    const confirm = await ask('确认? [y/N]: ');
+    if (confirm.toLowerCase() === 'y') {
+      context.switchContext(targetProject.name, baseDir);
+      registry.setActiveProject(targetProject.name, baseDir);
+
+      console.log(`\n✅ 已切换到: ${targetProject.display_name}`);
+      console.log(`📂 项目路径: ${targetProject.path}`);
+      console.log('\n下一步: 对 AI 说 "继续学习"\n');
+    } else {
+      console.log('已取消。\n');
+    }
+  } else {
+    console.log('无效选择。\n');
+  }
+}
+
+// 处理首次使用
+async function handleFirstTime(baseDir) {
+  // 尝试发现未注册的项目
+  const discovered = registry.discoverProjects(baseDir);
+
+  if (discovered.length > 0) {
+    console.log(`发现 ${discovered.length} 个未注册的学习项目:\n`);
+    for (const p of discovered) {
+      console.log(`  📁 ${p.name}`);
+    }
+    console.log('\n选择操作:');
+    console.log('  [r] 注册所有发现的项目');
+    console.log('  [n] 创建新项目');
+    console.log('');
+
+    const choice = await ask('请选择: ');
+    if (choice.toLowerCase() === 'r') {
+      for (const p of discovered) {
+        registry.registerProject(p.path, baseDir);
+        console.log(`✅ 已注册: ${p.name}`);
+      }
+      console.log('\n下一步: plc list 查看所有项目\n');
+      return;
+    }
+  }
+
+  // 没有发现项目或选择创建新项目
+  console.log('检测到这是第一次使用，或当前目录没有学习项目。\n');
+  await createNewProject(baseDir);
+}
+
+// 创建新项目
+async function createNewProject(baseDir) {
+  // 获取项目名
+  let projectName = process.argv[2];
+
+  if (!projectName) {
+    projectName = await ask('请输入新项目名称', 'my-learning-project');
+  }
+
+  // 验证项目名
+  if (!/^[\w-]+$/.test(projectName)) {
+    console.log('项目名称只能包含字母、数字、下划线和连字符。\n');
+    return;
+  }
+
+  const projectDir = path.join(baseDir, projectName);
 
   // 检查目录是否已存在
   if (fs.existsSync(projectDir)) {
     const overwrite = await ask(`目录 ${projectName} 已存在，是否覆盖? (y/N)`, 'N');
     if (overwrite.toLowerCase() !== 'y') {
-      console.log('已取消');
-      process.exit(0);
+      console.log('已取消。\n');
+      return;
     }
     // 清空目录
     fs.rmSync(projectDir, { recursive: true });
@@ -286,16 +440,16 @@ async function main() {
 
   // 收集配置
   console.log('\n📋 项目配置:\n');
-  
+
   const domain = await ask('学习领域标识（英文）', 'my_topic');
   const domainCn = await ask('学习领域名称（中文）', '我的学习主题');
   const totalLessons = parseInt(await ask('课程数量', '3'), 10);
 
   // 创建目录
   console.log(`\n📁 创建项目: ${projectName}\n`);
-  
+
   fs.mkdirSync(projectDir, { recursive: true });
-  
+
   const lessonsDir = path.join(projectDir, 'lessons');
   fs.mkdirSync(lessonsDir, { recursive: true });
 
@@ -320,7 +474,33 @@ async function main() {
 
   // 生成 resources/metadata.yaml
   console.log('📝 生成 resources/metadata.yaml...');
-  const metadataContent = `# 学习资源索引
+  fs.writeFileSync(path.join(resourcesDir, 'metadata.yaml'), getMetadataTemplate());
+
+  // 生成 README
+  console.log('📝 生成 README.md...');
+  fs.writeFileSync(path.join(projectDir, 'README.md'), getReadmeTemplate(domainCn, totalLessons));
+
+  // 注册到全局注册表
+  console.log('📝 注册项目...');
+  registry.registerProject(projectDir, baseDir);
+
+  // 设置为活跃项目
+  registry.setActiveProject(projectName, baseDir);
+
+  // 初始化上下文
+  context.loadProjectContext(projectDir, baseDir);
+
+  // 完成
+  console.log('\n✅ 项目创建成功!\n');
+  console.log(`📂 项目路径: ${projectDir}`);
+  console.log('\n下一步:');
+  console.log('  对 AI 说: "开始学习"');
+  console.log('');
+}
+
+// metadata.yaml 模板
+function getMetadataTemplate() {
+  return `# 学习资源索引
 # 将你的学习资源放在 resources/ 目录下，并在此文件中添加描述
 # Skill 会自动读取并在教学中引用这些资源
 
@@ -333,27 +513,17 @@ resources:
   #   description: "这是一个示例代码文件"
   #   tags: ["L0", "TODO-2"]             # 关联的课程和 TODO
   #   source: "user"                      # user | external | auto
-  #   
-  # 示例：文档资源
-  # - id: "my-doc-001"
-  #   type: "document"
-  #   path: "resources/documents/my-notes.pdf"
-  #   title: "我的学习笔记"
-  #   description: "整理的学习笔记"
-  #   tags: ["L0", "TODO-1"]
-  #   source: "user"
 
 # 添加你自己的资源：
 # 1. 将文件放入对应子目录（code-snippets/ / documents/ / images/）
 # 2. 在上面的 resources 列表中添加条目
 # 3. 设置正确的 tags 以关联到课程和 TODO
-# 4. Skill 会自动在教学中引用这些资源
 `;
-  fs.writeFileSync(path.join(resourcesDir, 'metadata.yaml'), metadataContent);
+}
 
-  // 生成 README
-  console.log('📝 生成 README.md...');
-  const readmeContent = `# ${domainCn} 学习项目
+// README 模板
+function getReadmeTemplate(domainCn, totalLessons) {
+  return `# ${domainCn} 学习项目
 
 使用 Progressive Learning Coach Skill 的个性化学习项目。
 
@@ -364,16 +534,6 @@ resources:
 - **预计总时长**: ${totalLessons * 2} 小时
 
 ## 开始学习
-
-确保已安装 Skill：
-
-\`\`\`bash
-# 安装 Skill
-npm install -g progressive-learning-coach
-
-# 或手动复制到 skills 目录
-cp -r path/to/progressive-learning-coach ~/.config/agents/skills/
-\`\`\`
 
 在项目目录下对 AI 说：
 
@@ -387,17 +547,18 @@ cp -r path/to/progressive-learning-coach ~/.config/agents/skills/
 .
 ├── syllabus.yaml          # 课程大纲配置
 ├── lessons/               # 课程内容
-│   ${Array.from({length: totalLessons}, (_, i) => `├── l${i}-topic.md`).join('\n│   ')}
+│   ├── l0-topic.md
+│   ├── l1-topic.md
+│   └── ...
+├── resources/             # 学习资源（可选）
+│   ├── metadata.yaml
+│   ├── code-snippets/
+│   ├── documents/
+│   └── images/
 └── .learning/             # 学习状态（自动生成）
     ├── learning-state.json
     └── memory-store.json
 \`\`\`
-
-## 自定义内容
-
-1. 编辑 \`syllabus.yaml\` 修改课程信息
-2. 编辑 \`lessons/*.md\` 完善课程内容
-3. 添加你的学习资源到 \`resources/\` 目录（可选）
 
 ## 程度分级
 
@@ -409,19 +570,6 @@ cp -r path/to/progressive-learning-coach ~/.config/agents/skills/
 
 由 Progressive Learning Coach 自动生成
 `;
-
-  fs.writeFileSync(path.join(projectDir, 'README.md'), readmeContent);
-
-  // 完成
-  console.log('\n✅ 项目创建成功!\n');
-  console.log(`📂 项目路径: ${projectDir}`);
-  console.log('\n下一步:');
-  console.log(`  cd ${projectName}`);
-  console.log('  # 编辑 syllabus.yaml 和 lessons/*.md');
-  console.log('  # 对 AI 说: "开始学习"');
-  console.log('');
-
-  rl.close();
 }
 
 // 运行

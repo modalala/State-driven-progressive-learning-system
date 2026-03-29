@@ -26,7 +26,8 @@ const commands = {
   'status': () => require('./commands/status'),
   'current': () => require('./commands/current'),
   'resume': () => require('./commands/resume'),
-  'register': () => require('./commands/register')
+  'register': () => require('./commands/register'),
+  'context': () => require('./commands/context')
 };
 
 // 显示帮助信息
@@ -45,6 +46,7 @@ function showHelp() {
   current            显示当前活跃项目名称
   resume             继续当前项目学习
   register <path>    注册外部项目
+  context [lesson]   为课程生成 Context（状态总结与图表）
 
 选项:
   -v, --verbose      详细模式
@@ -57,6 +59,9 @@ function showHelp() {
   plc switch python-basics     # 切换到 python-basics
   plc status                   # 显示当前项目状态
   plc status agent-learning    # 显示指定项目状态
+  plc context                  # 为当前课程生成 Context
+  plc context L0               # 为 L0 课程生成 Context
+  plc context --check          # 检查是否需要更新
 
 更多信息:
   https://github.com/your-org/progressive-learning-coach

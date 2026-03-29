@@ -1,6 +1,6 @@
 {
   "name": "progressive-learning-coach",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "通用的渐进式学习教练 Skill，实现三种学习方法：心智模型构建、结构化流程管理、对抗性压力测试",
   "main": "skills/progressive-learning-coach/SKILL.md",
   "bin": {
@@ -12,6 +12,7 @@
     "plc-current": "./bin/commands/current.js",
     "plc-resume": "./bin/commands/resume.js",
     "plc-register": "./bin/commands/register.js",
+    "plc-context": "./bin/commands/context.js",
     "learning-coach-init": "./bin/init.js"
   },
   "files": [

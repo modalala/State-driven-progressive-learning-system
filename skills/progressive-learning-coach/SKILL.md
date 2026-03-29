@@ -5,7 +5,7 @@ description: |
   Use when: (1) directory contains syllabus.yaml, (2) user says "开始学习"/"继续学习"/"查看进度".
   Keywords: 学习, coach, syllabus, TODO, 课程, progressive, mental-model, SQ3R
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 ---
 
 # Progressive Learning Coach
@@ -28,6 +28,7 @@ metadata:
 | `multi-project.md` | 多项目管理：项目注册、切换流程、跨项目统计 |
 | `workflow-details.md` | 工作流程详解：状态初始化、检查点、更新规则 |
 | `response-templates.md` | 响应模板：各类场景的标准回复格式 |
+| `context-generation.md` | Context 生成：知识总结、Mermaid 图表、增量更新 |
 
 执行教学时，如需详细指导，请读取相应参考文档。
 
@@ -241,6 +242,48 @@ syllabus:
 2. **解释关联**：生成图表后解释与当前学习的关联
 3. **引导回归**：可视化后回归文字学习
 4. **保存文件**：生成的图表保存到项目目录
+
+---
+
+## Context 生成
+
+Context 是每个课程的完整知识总结，帮助学生快速掌握核心内容并通过三种方法论的考验。
+
+### 触发条件
+
+- 用户说 "生成 context"、"生成课程总结"、"create context"
+- 课程状态变为 `completed` 时（可选自动生成）
+- 检测到新资源添加时弹出确认
+
+### 输出格式
+
+| 格式 | 文件 | 用途 |
+|------|------|------|
+| Markdown 总结 | `README.md` | 完整知识总结 |
+| Mermaid 流程图 | `flowchart.mermaid.md` | 展示核心流程 |
+| Mermaid 思维导图 | `mindmap.mermaid.md` | 展示概念层级 |
+| 元数据 | `context-meta.yaml` | 增量更新支持 |
+
+### 存放位置
+
+```
+context/
+├── L0/
+│   ├── README.md
+│   ├── flowchart.mermaid.md
+│   ├── mindmap.mermaid.md
+│   └── context-meta.yaml
+├── L1/
+└── L2/
+```
+
+### 三大目标
+
+1. **心智模型构建** - 理解核心概念和专家共识/分歧
+2. **结构化学习** - 掌握 SQ3R 流程和项目成果
+3. **对抗测试验证** - 通过脆弱点和反事实情境检验
+
+详见：`references/context-generation.md`
 
 ---
 

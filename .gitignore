@@ -4,6 +4,10 @@ __pycache__/
 .venv/
 uv.lock
 
+# Node
+node_modules/
+package-lock.json
+
 # Test results (keep structure, ignore generated)
 tests/results/*.json
 tests/results/temp/
@@ -15,3 +19,7 @@ tests/results/temp/
 # OS
 .DS_Store
 Thumbs.db
+
+# Temp files
+*.tmp
+111.txt

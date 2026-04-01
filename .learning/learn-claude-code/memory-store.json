@@ -1,0 +1,22 @@
+{
+  "core_models": {
+    "agent_definition": "Agent 是模型本身，不是框架、不是提示词链、不是拖拽式工作流。Agent 是一个神经网络 —— Transformer —— 在行动序列数据上学会了感知环境、推理目标、采取行动。",
+    "harness_definition": "Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。模型做决策，Harness 执行。模型是驾驶者，Harness 是载具。",
+    "agent_pattern": "User -> messages[] -> LLM -> response -> stop_reason == 'tool_use'? -> execute tools -> append results -> loop back"
+  },
+  "expert_consensus": [
+    "Agent loop 是所有机制的基石",
+    "工具通过 dispatch map 注册，不修改循环",
+    "上下文压缩是长会话的必要机制",
+    "信任模型原则：Harness 不替模型做决策，只执行和反馈",
+    "stop_reason 控制循环退出，不仅检测 tool_use 存在性"
+  ],
+  "expert_disagreements": [],
+  "fragility_log": [],
+  "insights": [
+    "ls → del → ls 验证模式说明重复调用有时是合理的",
+    "max_tokens 截断时响应可能包含 tool_use block，但不应执行",
+    "Hook 是安全护栏，不是决策替代"
+  ],
+  "project_notes": []
+}

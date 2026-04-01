@@ -1,0 +1,118 @@
+{
+  "domain": "Claude Code Harness 工程",
+  "current_lesson": "L02",
+  "started_at": "2026-04-01T23:30:00Z",
+  "lessons": {
+    "L01": {
+      "status": "completed",
+      "started_at": "2026-04-01T23:35:00Z",
+      "completed_at": "2026-04-02T00:15:00Z",
+      "current_todo": 2,
+      "todos_completed": ["TODO-1", "TODO-2"],
+      "fragility_points": [],
+      "review_schedule": ["2026-04-03", "2026-04-09", "2026-04-23"]
+    },
+    "L02": {
+      "status": "paused",
+      "started_at": "2026-04-02T00:25:00Z",
+      "completed_at": null,
+      "current_todo": 1,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L03": {
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L04": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L05": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L06": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L07": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L08": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L09": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L10": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L11": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    },
+    "L12": {
+      "status": "locked",
+      "started_at": null,
+      "completed_at": null,
+      "current_todo": 0,
+      "todos_completed": [],
+      "fragility_points": [],
+      "review_schedule": []
+    }
+  },
+  "global_fragility_points": [],
+  "total_hours_spent": 0,
+  "last_session": null
+}

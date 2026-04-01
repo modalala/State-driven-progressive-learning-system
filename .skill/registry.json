@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "projects": {
+    "agent-architecture-learning": {
+      "name": "agent-architecture-learning",
+      "display_name": "LLM Agent 架构",
+      "domain": "llm_agent_architecture",
+      "path": "D:\\lean\\examples\\agent-architecture-learning",
+      "relative_path": "examples\\agent-architecture-learning",
+      "status": {
+        "global_status": "active",
+        "current_lesson": "L0",
+        "progress_percentage": 0,
+        "todos_completed": 0,
+        "todos_total": 0,
+        "total_study_time_minutes": 0,
+        "last_session": null
+      },
+      "metadata": {
+        "total_lessons": 12,
+        "estimated_total_hours": 35
+      },
+      "created_at": "2026-03-31T08:45:24.663Z",
+      "is_active": false
+    },
+    "claude-harness-learning": {
+      "name": "claude-harness-learning",
+      "display_name": "Claude 混合式 Harness 学习",
+      "domain": "claude-harness-engineering",
+      "path": "D:\\lean\\examples\\claude-harness-learning",
+      "relative_path": "examples\\claude-harness-learning",
+      "status": {
+        "global_status": "new",
+        "current_lesson": null,
+        "progress_percentage": 0,
+        "todos_completed": 0,
+        "todos_total": 0,
+        "total_study_time_minutes": 0,
+        "last_session": null
+      },
+      "metadata": {
+        "total_lessons": 3,
+        "estimated_total_hours": 18
+      },
+      "created_at": "2026-03-31T08:45:25.019Z",
+      "is_active": false
+    },
+    "learn-claude-code": {
+      "name": "learn-claude-code",
+      "display_name": "Claude Code Harness 工程大师课",
+      "domain": "claude_code_harness",
+      "path": "D:\\lean\\.learning\\learn-claude-code",
+      "relative_path": ".learning\\learn-claude-code",
+      "status": {
+        "global_status": "active",
+        "current_lesson": "L01",
+        "progress_percentage": 0,
+        "todos_completed": 0,
+        "todos_total": 0,
+        "total_study_time_minutes": 0,
+        "last_session": null
+      },
+      "metadata": {
+        "total_lessons": 12,
+        "estimated_total_hours": 35
+      },
+      "created_at": "2026-04-01T23:30:00Z",
+      "is_active": true
+    }
+  },
+  "active_project": "learn-claude-code",
+  "statistics": {
+    "total_projects": 3,
+    "total_study_time_minutes": 0,
+    "total_todos_completed": 0
+  },
+  "last_updated": "2026-04-01T23:30:00Z"
+}

@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "mental_model": {
+    "core_concepts": {
+      "model_vs_agent_vs_harness": {
+        "model": "推理和思考功能",
+        "agent": "模型 + 自主决策循环 + 工具调用",
+        "harness": "工程收敛、长任务管理、对抗幻觉漂移和注意力问题",
+        "understanding_level": "correct"
+      },
+      "harness_three_layers": {
+        "knowledge_layer": {
+          "purpose": "模型该读什么、团队经验放哪里",
+          "key_principle": "看不见的知识等于不存在",
+          "implementation": "AGENTS.md当地图(~100行)、docs/结构化、版本化",
+          "boundary": "静态的'是什么'"
+        },
+        "constraint_layer": {
+          "purpose": "任务怎么拆、哪个角色负责什么、何时切换阶段",
+          "key_principle": "别一边生成一边自我表扬",
+          "implementation": "Planner/Generator/Evaluator分离、linter机械执行",
+          "boundary": "动态的'怎么走'"
+        },
+        "feedback_layer": {
+          "purpose": "模型做完后谁来告诉它对不对",
+          "key_principle": "不是读代码打分，是真正去跑",
+          "implementation": "Playwright跑页面、Sprint契约(27条验收标准)、Chrome DevTools",
+          "key_insight": "工具让模型有手，反馈让模型有感官"
+        },
+        "understanding_level": "learning"
+      },
+      "long_task_failure": {
+        "context_anxiety": "上下文即将用完时匆忙收尾",
+        "self_evaluation_problem": "模型自信地给自己正面评价",
+        "understanding_level": "correct"
+      },
+      "generate_vs_evaluate": {
+        "insight": "生成只需创造，评估需要真实执行环境验证",
+        "is_structural_issue": true,
+        "understanding_level": "correct"
+      }
+    },
+    "expert_consensus": [
+      {
+        "topic": "职责分离必要性",
+        "consensus": "Generator和Evaluator必须分离",
+        "user_understood": true
+      },
+      {
+        "topic": "Evaluator不可替代性",
+        "consensus": "自我评估能力提升远跟不上生成能力",
+        "user_understood": true
+      },
+      {
+        "topic": "Harness随模型减重",
+        "consensus": "context reset可去掉，Evaluator保留",
+        "user_understood": true
+      },
+      {
+        "topic": "AGENTS.md定位",
+        "consensus": "当地图不当百科，~100行，告诉Agent去哪里找什么",
+        "user_understood": true
+      },
+      {
+        "topic": "知识层核心原则",
+        "consensus": "把隐性知识变成版本化、可引用、可检查的显式工件",
+        "user_understood": true
+      }
+    ],
+    "divergences": [
+      {
+        "topic": "职责分离 vs 机械规则",
+        "user_choice": "Anthropic三角色分离",
+        "reasoning": "上下文隔离，注意力集中"
+      }
+    ],
+    "blind_spots": [],
+    "pending_questions": []
+  },
+  "method2_progress": {
+    "sq3r": {
+      "survey": "completed",
+      "question": "completed",
+      "read": "completed",
+      "recite": "in_progress",
+      "review": "pending"
+    },
+    "questions_raised": [
+      "知识层和约束层的边界在哪里？",
+      "怎么建立文档和概念地图？",
+      "校验层要怎么去做？"
+    ],
+    "key_learnings": [
+      "知识层=静态的'是什么'，约束层=动态的'怎么走'",
+      "AGENTS.md当地图不当百科，~100行",
+      "校验层=独立角色+真实执行环境+验收标准+反馈闭环",
+      "Evaluator发现的问题颗粒度：函数存在但没被正确触发、路由顺序导致运行时错误"
+    ]
+  },
+  "fragility_log": [],
+  "key_insights": [
+    "设计长任务就是对上下文管理进行设计",
+    "职责分离的核心是让每个角色的上下文干净",
+    "同一模型在同一上下文中无法跳出自己去验证自己",
+    "工具让模型有手，反馈让模型有感官"
+  ],
+  "review_schedule": [],
+  "last_updated": "2026-04-01T10:30:00Z"
+}

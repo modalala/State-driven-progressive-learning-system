@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "learning_state": {
+    "global_status": "paused",
+    "current_lesson": "L0",
+    "current_todo": 1,
+    "current_method": "method2",
+    "method_progress": {
+      "method1": "completed",
+      "method2": "in_progress",
+      "method3": "pending"
+    },
+    "method2_stage": "recite",
+    "lessons": {
+      "L0": {
+        "status": "in_progress",
+        "todos": {
+          "1": {
+            "status": "in_progress",
+            "method": "method2",
+            "method1_completed": true,
+            "method2_stage": "recite",
+            "pending_recite_questions": [
+              "知识层和约束层的核心区别是什么？",
+              "如果让你为当前学习项目建立文档地图，你会怎么设计？",
+              "校验层为什么要真正去跑而不是读代码打分？",
+              "为什么Evaluator和Generator必须是不同角色？"
+            ],
+            "attempts": 1,
+            "started_at": "2026-03-31T17:10:00Z",
+            "last_activity": "2026-04-01T10:30:00Z"
+          }
+        }
+      }
+    },
+    "last_session": "2026-04-01T10:30:00Z"
+  },
+  "statistics": {
+    "total_study_time_minutes": 40,
+    "todos_completed": 0,
+    "todos_total": 9,
+    "sessions_count": 2
+  }
+}

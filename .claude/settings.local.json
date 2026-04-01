@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone:*)",
+      "Bash(cp -r /tmp/sdpls/* .)",
+      "Bash(cp -r /tmp/sdpls/.* .)",
+      "Bash(git submodule:*)",
+      "Bash(npm install:*)",
+      "Bash(cp:*)",
+      "Bash(npm link:*)",
+      "Bash(plc:*)",
+      "Bash(rm:*)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:openai.com)",
+      "WebFetch(domain:mp.weixin.qq.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh repo:*)",
+      "Bash(cp /c/Users/madaole/AppData/Local/Temp/learn-claude-code/docs/zh/*.md .learning/learn-claude-code/lessons/)",
+      "Bash(cp /c/Users/madaole/AppData/Local/Temp/learn-claude-code/agents/*.py .learning/learn-claude-code/resources/)"
+    ]
+  }
+}

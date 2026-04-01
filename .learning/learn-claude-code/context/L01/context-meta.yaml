@@ -1,0 +1,53 @@
+# L01 Context 元数据
+
+version: "1.0.0"
+generated_at: "2026-04-02T00:20:00Z"
+
+lesson:
+  id: "L01"
+  title: "The Agent Loop"
+  motto: "One loop & Bash is all you need"
+  status: "completed"
+
+files:
+  readme: "README.md"
+  flowchart: "flowchart.mermaid.md"
+  mindmap: "mindmap.mermaid.md"
+
+core_concepts:
+  - name: "Agent Loop"
+    mastery: "high"
+    definition: "模型与真实世界的第一道连接"
+  - name: "stop_reason"
+    mastery: "high"
+    definition: "响应终止原因，控制循环退出"
+  - name: "messages[]"
+    mastery: "high"
+    definition: "累积式对话历史"
+  - name: "Harness"
+    mastery: "high"
+    definition: "执行层，不替模型做决策"
+  - name: "Hook"
+    mastery: "medium"
+    definition: "安全护栏，不是决策替代"
+
+fragility_points:
+  - topic: "max_tokens 截断处理"
+    risk: "medium"
+    future_lesson: "L06"
+  - topic: "无限循环防范"
+    risk: "medium"
+    future_lesson: "L12"
+
+insights_recorded:
+  - "ls → del → ls 验证模式说明重复调用有时是合理的"
+  - "max_tokens 截断时响应可能包含 tool_use block，但不应执行"
+  - "Hook 是安全护栏，不是决策替代"
+
+review_schedule:
+  - date: "2026-04-03"
+    focus: "核心代码模式"
+  - date: "2026-04-09"
+    focus: "对抗测试题"
+  - date: "2026-04-23"
+    focus: "与后续课程的关系"

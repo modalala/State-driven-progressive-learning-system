@@ -94,3 +94,11 @@ resources:
     description: "Context compaction example used in the collaboration lesson."
     tags: ["CLAUDE-CODE", "L2", "TODO-2"]
     source: "external"
+
+  - id: "harness-three-layers"
+    type: "document"
+    path: "resources/documents/harness-three-layers.md"
+    title: "Harness 三层结构详解"
+    description: "整合 OpenAI 与 Anthropic 两篇文章的中文深度解析，包含知识层、约束与流程层、反馈与运行时层的完整拆解。核心参考：Planner/Generator/Evaluator 分离、Context Reset、Sprint Contract、评估器价值判断。"
+    tags: ["HARNESS", "OPENAI", "ANTHROPIC", "L0", "L1", "L2", "TODO-1", "CORE-CONCEPT"]
+    source: "user"

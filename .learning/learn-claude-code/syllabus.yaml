@@ -1,0 +1,140 @@
+meta:
+  domain: "Claude Code Harness 工程"
+  total_lessons: 12
+  estimated_total_hours: 35
+  source: "https://github.com/shareAI-lab/learn-claude-code"
+  description: |
+    学习如何构建 Agent Harness —— 模型的工作环境。
+    Agent 是模型本身，Harness 是你构建的载具。
+    核心模式：循环 + 工具 + 上下文管理 + 团队协作。
+
+learning_config:
+  method_weights:
+    mental_model: 0.20    # 方法1：心智模型构建
+    structured: 0.50      # 方法2：结构化学习（SQ3R + 项目式）
+    adversarial: 0.30    # 方法3：对抗测试
+
+syllabus:
+  # 第一阶段：循环
+  - id: "L01"
+    title: "s01: The Agent Loop"
+    file: "lessons/s01-the-agent-loop.md"
+    prerequisites: []
+    core_points:
+      - "Agent = 模型 + 循环 + 工具"
+      - "stop_reason 控制循环退出"
+      - "One loop & Bash is all you need"
+    estimated_hours: 2
+
+  - id: "L02"
+    title: "s02: Tool Use"
+    file: "lessons/s02-tool-use.md"
+    prerequisites: ["L01"]
+    core_points:
+      - "dispatch map: name -> handler"
+      - "加一个工具只需加一个 handler"
+      - "工具描述决定模型调用时机"
+    estimated_hours: 2
+
+  # 第二阶段：规划与知识
+  - id: "L03"
+    title: "s03: TodoWrite"
+    file: "lessons/s03-todo-write.md"
+    prerequisites: ["L02"]
+    core_points:
+      - "没有计划的 agent 走哪算哪"
+      - "TodoManager + nag 提醒"
+      - "先列步骤再动手"
+    estimated_hours: 3
+
+  - id: "L04"
+    title: "s04: Subagent"
+    file: "lessons/s04-subagent.md"
+    prerequisites: ["L03"]
+    core_points:
+      - "大任务拆小，每个小任务干净上下文"
+      - "Subagent 用独立 messages[]"
+      - "不污染主对话"
+    estimated_hours: 3
+
+  - id: "L05"
+    title: "s05: Skill Loading"
+    file: "lessons/s05-skill-loading.md"
+    prerequisites: ["L04"]
+    core_points:
+      - "用到什么知识，临时加载什么知识"
+      - "SKILL.md 通过 tool_result 注入"
+      - "不塞 system prompt"
+    estimated_hours: 3
+
+  - id: "L06"
+    title: "s06: Context Compact"
+    file: "lessons/s06-context-compact.md"
+    prerequisites: ["L05"]
+    core_points:
+      - "上下文总会满，要有办法腾地方"
+      - "三层压缩策略"
+      - "换来无限会话"
+    estimated_hours: 3
+
+  # 第三阶段：持久化
+  - id: "L07"
+    title: "s07: Task System"
+    file: "lessons/s07-task-system.md"
+    prerequisites: ["L06"]
+    core_points:
+      - "大目标拆成小任务，排好序，记在磁盘上"
+      - "文件持久化 CRUD + 依赖图 (DAG)"
+      - "为多 agent 协作打基础"
+    estimated_hours: 4
+
+  - id: "L08"
+    title: "s08: Background Tasks"
+    file: "lessons/s08-background-tasks.md"
+    prerequisites: ["L07"]
+    core_points:
+      - "慢操作丢后台，agent 继续想下一步"
+      - "守护线程 + 通知队列"
+      - "完成后注入通知"
+    estimated_hours: 2
+
+  # 第四阶段：团队
+  - id: "L09"
+    title: "s09: Agent Teams"
+    file: "lessons/s09-agent-teams.md"
+    prerequisites: ["L08"]
+    core_points:
+      - "任务太大一个人干不完，要能分给队友"
+      - "持久化队友 + 异步邮箱"
+      - "JSONL 邮箱协议"
+    estimated_hours: 3
+
+  - id: "L10"
+    title: "s10: Team Protocols"
+    file: "lessons/s10-team-protocols.md"
+    prerequisites: ["L09"]
+    core_points:
+      - "队友之间要有统一的沟通规矩"
+      - "request-response 模式"
+      - "关机 + 计划审批 FSM"
+    estimated_hours: 3
+
+  - id: "L11"
+    title: "s11: Autonomous Agents"
+    file: "lessons/s11-autonomous-agents.md"
+    prerequisites: ["L10"]
+    core_points:
+      - "队友自己看看板，有活就认领"
+      - "空闲轮询 + 自动认领"
+      - "自组织协作"
+    estimated_hours: 3
+
+  - id: "L12"
+    title: "s12: Worktree Task Isolation"
+    file: "lessons/s12-worktree-task-isolation.md"
+    prerequisites: ["L11"]
+    core_points:
+      - "各干各的目录，互不干扰"
+      - "Task 协调 + 按需隔离执行通道"
+      - "按 ID 绑定"
+    estimated_hours: 4

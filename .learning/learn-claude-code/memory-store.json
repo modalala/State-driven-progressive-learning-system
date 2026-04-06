@@ -8,7 +8,14 @@
     "shared_cognition_interface": "todo 是 Agent 和人类的'共享认知界面'：模型能看懂追踪进度，人类也能看懂监控状态。",
     "todo_constraint_target": "todo 约束的是模型的认知状态，不是执行顺序。TodoManager 检测不到模型'欺骗'（todo标记与实际执行不一致）。",
     "soft_vs_hard_constraint": "硬约束 = Harness替模型做决策 = 违反信任模型原则。软约束 = Harness提供信息 + 模型自主决策 = 正确的职责分离。",
-    "paradigm_difference": "传统系统决策主体是程序代码（if-else），Agent决策主体是模型本身（神经网络）。todo不是'控制模型'，而是'辅助模型'。"
+    "paradigm_difference": "传统系统决策主体是程序代码（if-else），Agent决策主体是模型本身（神经网络）。todo不是'控制模型'，而是'辅助模型'。",
+    "subagent_definition": "Subagent = 独立messages[] + 干净上下文 + 摘要返回。子Agent从零开始，做完即弃，父Agent只收摘要。",
+    "context_isolation": "上下文隔离原则：父Agent保持原有messages[]不变，子Agent创建新的messages=[]从零开始。两者完全隔离，互不干扰。",
+    "no_recursion_rule": "禁止递归原则：子Agent没有task工具，防止无限嵌套。父→子（可以），子→孙（禁止）。",
+    "task_tool_registration": "task工具加入dispatch map，父循环不变。工具名称是task，函数名称是run_subagent。",
+    "summary_return": "摘要返回原则：子Agent可能跑30+次工具调用，但整个消息历史直接丢弃。父Agent只收到最后一次响应的text部分。",
+    "safety_limit": "safety limit = 30，防止无限循环的兜底机制。子Agent最多跑30轮，超过强制退出返回当前结果。",
+    "prompt_passing": "prompt传递机制：run_subagent(prompt)入参，父Agent调用时把任务描述传给子Agent。"
   },
   "expert_consensus": [
     "Agent loop 是所有机制的基石",
@@ -21,7 +28,12 @@
     "todo 是内省工具，操作Agent自身状态，其他工具是外向工具，操作外部世界",
     "todo约束的是认知状态，不是执行顺序。模型可以'暗中并行'（不调用todo做多件事）",
     "todo设计的权衡：接受'可能的跑偏'，换取'模型的自主性'",
-    "范式差异核心：传统系统决策主体是代码，Agent决策主体是模型本身"
+    "范式差异核心：传统系统决策主体是代码，Agent决策主体是模型本身",
+    "上下文隔离原则：父Agent只保留决策相关信息，子Agent从零开始做完即弃",
+    "摘要返回原则：子Agent整个消息历史丢弃，父Agent只收摘要文本",
+    "禁止递归原则：子Agent没有task工具，防止无限嵌套",
+    "工具名称(task)和函数名称(run_subagent)要区分",
+    "safety limit是兜底机制，防止无限循环，不是判断项目大小"
   ],
   "expert_disagreements": [
     {
@@ -35,9 +47,34 @@
       "view_a": "认知设计约束，不是技术限制",
       "view_b": "事后合理化，实际上就是技术限制",
       "learner_view": "认知设计约束，技术上可以并行执行"
+    },
+    {
+      "topic": "摘要质量",
+      "view_a": "摘要应该简洁，只给结论",
+      "view_b": "摘要应该详细，保留推理过程",
+      "learner_view": "折中方案：推理总结 + 结果总结"
     }
   ],
-  "fragility_log": [],
+  "fragility_log": [
+    {
+      "lesson": "L04",
+      "topic": "工具名称混淆",
+      "correction": "工具名称是task，函数名称是run_subagent",
+      "resolved": true
+    },
+    {
+      "lesson": "L04",
+      "topic": "safety limit误解",
+      "correction": "safety limit是防止无限循环的兜底机制",
+      "resolved": false
+    },
+    {
+      "lesson": "L04",
+      "topic": "返回值理解偏差",
+      "correction": "返回最后一次响应的text部分，不是tool_use block",
+      "resolved": false
+    }
+  ],
   "insights": [
     "ls → del → ls 验证模式说明重复调用有时是合理的",
     "max_tokens 截断时响应可能包含 tool_use block，但不应执行",
@@ -51,10 +88,21 @@
     "TodoManager检测不到模型欺骗（todo标记与实际执行不一致）",
     "硬约束代价：违反信任模型原则，破坏模型灵活性",
     "软约束代价：极端场景下模型可能持续忽略nag",
-    "传统系统vs Agent核心差异：决策主体不同"
+    "传统系统vs Agent核心差异：决策主体不同",
+    "颗粒度权衡本质：信任边界分配——把多少决策权交给Harness，多少交给LLM",
+    "专用工具本质：缩小LLM的决策范围，而非减少Harness维护成本",
+    "Subagent本质：独立messages[]，不污染父对话",
+    "上下文全是result → 噪音大 → 注意力下降 → 上下文爆炸",
+    "干净上下文 = 子Agent只专注于自己的任务，不需要关注其他动作背景",
+    "task工具注册遵循开闭原则：加handler不改父循环",
+    "禁止递归 = 防止无限嵌套，子Agent单向派发",
+    "prompt传递：父Agent调用task时把任务描述传给子Agent",
+    "返回值是最后一次响应的text部分（LLM的总结），不是tool_use block",
+    "工具名称(task)是LLM调用的name，函数名称(run_subagent)是Harness内部的handler"
   ],
   "project_notes": [
-    "L03 方法1-2已完成，方法3进行中（苏格拉底诘问完成，反事实未完成）",
-    "心智模型已达到L2层级"
+    "L03 方法1-3已完成，心智模型达到L2层级",
+    "L04 方法1已完成，方法2(SQ3R)进行中，Read阶段待继续",
+    "L04 脆弱点：safety limit误解、返回值理解偏差，需在后续环节纠正"
   ]
 }

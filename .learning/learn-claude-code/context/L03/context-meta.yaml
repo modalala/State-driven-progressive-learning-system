@@ -1,0 +1,68 @@
+# L03 Context 元数据
+
+version: "1.0.0"
+generated_at: "2026-04-06T14:00:00Z"
+
+lesson:
+  id: "L03"
+  title: "TodoWrite"
+  motto: "没有计划的 agent 走哪算哪"
+  status: "completed"
+
+files:
+  readme: "README.md"
+  review: "REVIEW.md"
+  flowchart: "flowchart.mermaid.md"
+  mindmap: "mindmap.mermaid.md"
+
+core_concepts:
+  - name: "TodoManager"
+    mastery: "L2"
+    definition: "带状态的任务列表管理器"
+  - name: "单线程约束"
+    mastery: "L2"
+    definition: "同时只能有一个 in_progress（认知设计约束）"
+  - name: "nag_reminder"
+    mastery: "L2"
+    definition: "3轮不更新todo就提醒（软性问责）"
+  - name: "内省工具"
+    mastery: "L2"
+    definition: "操作Agent自身状态的工具"
+  - name: "软约束vs硬约束"
+    mastery: "L2"
+    definition: "软约束=提醒，硬约束=强制"
+  - name: "范式转移"
+    mastery: "L2"
+    definition: "Agent决策主体是模型，不是代码"
+
+fragility_points:
+  - topic: "nag副作用误解"
+    risk: "medium"
+    status: "resolved"
+    source: "反事实情境2"
+    resolution_date: "2026-04-06"
+    correction: "nag控制更新频率，不是todo数量"
+
+insights_recorded:
+  - "todo是内省工具，操作Agent自身状态，不改变外部世界"
+  - "单线程约束是认知设计约束，技术上可以并行执行"
+  - "nag reminder是软性提醒，模型可以选择忽略"
+  - "todo是Agent和人类的共享认知界面"
+  - "todo约束的是认知状态，不是执行顺序"
+  - "范式差异核心：传统系统决策主体是代码，Agent决策主体是模型本身"
+
+mental_model_levels:
+  TodoManager: "L2"
+  单线程约束: "L2"
+  nag_reminder: "L2"
+  内省工具概念: "L2"
+  软约束vs硬约束: "L2"
+  范式转移: "L2"
+
+review_schedule:
+  - date: "待定"
+    focus: "软约束vs硬约束设计权衡"
+  - date: "待定"
+    focus: "nag副作用理解"
+  - date: "待定"
+    focus: "与L04 Subagent的关系"

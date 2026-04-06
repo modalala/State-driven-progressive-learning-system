@@ -1,6 +1,6 @@
 {
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L03",
+  "current_lesson": "L04",
   "started_at": "2026-04-01T23:30:00Z",
   "lessons": {
     "L01": {
@@ -37,20 +37,23 @@
           "id": "L02-FP-03",
           "topic": "颗粒度权衡理解",
           "source": "对抗问题2",
-          "correction": "细颗粒度=更窄安全边界=更可控",
-          "status": "open"
+          "correction": "颗粒度权衡本质是信任边界分配",
+          "status": "resolved",
+          "resolved_at": "2026-04-06"
         }
       ],
       "mental_model_levels": {
         "dispatch_map": "L2",
         "safe_path": "L2",
-        "专用工具优先": "L1",
+        "专用工具优先": "L2",
+        "颗粒度权衡": "L2",
         "prompt_injection防御": "L2"
       },
       "review_schedule": [
         {
           "date": "2026-04-06",
-          "focus": "开闭原则+策略模式+颗粒度权衡"
+          "focus": "开闭原则+策略模式+颗粒度权衡",
+          "status": "completed"
         },
         {
           "date": "2026-04-12",
@@ -63,16 +66,16 @@
       ]
     },
     "L03": {
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-04-05T17:30:00Z",
-      "completed_at": null,
-      "current_method": "method3",
+      "completed_at": "2026-04-06T14:00:00Z",
+      "current_method": "completed",
       "method_progress": {
         "method1": "completed",
         "method2": "completed",
-        "method3": "in_progress"
+        "method3": "completed"
       },
-      "todos_completed": ["心智模型构建", "SQ3R阅读", "项目式场景分析", "KISS复盘", "苏格拉底诘问"],
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "项目式场景分析", "KISS复盘", "苏格拉底诘问", "反事实情境", "漏洞注入"],
       "mental_model_levels": {
         "单线程约束": "L2",
         "nag_reminder": "L2",
@@ -81,16 +84,77 @@
         "软约束vs硬约束": "L2",
         "范式转移": "L2"
       },
-      "fragility_points": [],
-      "review_schedule": []
+      "fragility_points": [
+        {
+          "id": "L03-FP-01",
+          "topic": "nag副作用误解",
+          "source": "反事实情境2",
+          "correction": "nag控制更新频率，不是todo数量",
+          "status": "resolved",
+          "resolved_at": "2026-04-06"
+        }
+      ],
+      "review_schedule": [
+        {
+          "date": "待定",
+          "focus": "软约束vs硬约束设计权衡"
+        },
+        {
+          "date": "待定",
+          "focus": "nag副作用理解"
+        }
+      ]
     },
     "L04": {
-      "status": "locked",
-      "started_at": null,
+      "status": "in_progress",
+      "started_at": "2026-04-06T14:00:00Z",
       "completed_at": null,
-      "current_todo": 0,
-      "todos_completed": [],
-      "fragility_points": [],
+      "current_method": "method2",
+      "method_progress": {
+        "method1": "completed",
+        "method2": "in_progress",
+        "method3": "locked"
+      },
+      "sq3r_progress": {
+        "survey": "completed",
+        "question": "completed",
+        "read": "in_progress",
+        "recite": "locked",
+        "review": "locked"
+      },
+      "todos_completed": ["心智模型构建", "Survey", "Question"],
+      "mental_model_levels": {
+        "Subagent本质": "L2",
+        "上下文隔离": "L2",
+        "task工具注册": "L2",
+        "禁止递归": "L2",
+        "摘要质量权衡": "L2",
+        "prompt传递机制": "L2"
+      },
+      "fragility_points": [
+        {
+          "id": "L04-FP-01",
+          "topic": "工具名称混淆",
+          "source": "Survey阶段",
+          "correction": "工具名称是task，函数名称是run_subagent",
+          "status": "resolved",
+          "resolved_at": "2026-04-06"
+        },
+        {
+          "id": "L04-FP-02",
+          "topic": "safety limit误解",
+          "source": "Question阶段Q1",
+          "correction": "safety limit是防止无限循环的兜底机制，不是判断项目大小",
+          "status": "open"
+        },
+        {
+          "id": "L04-FP-03",
+          "topic": "返回值理解偏差",
+          "source": "Question阶段Q3",
+          "correction": "返回最后一次响应的text部分（LLM的总结），不是tool_use block",
+          "status": "open"
+        }
+      ],
       "review_schedule": []
     },
     "L05": {
@@ -171,10 +235,33 @@
       "id": "GFP-01",
       "topic": "颗粒度权衡理解",
       "source_lesson": "L02",
+      "status": "resolved",
+      "resolved_at": "2026-04-06",
+      "resolution": "理解颗粒度权衡本质是信任边界分配"
+    },
+    {
+      "id": "GFP-02",
+      "topic": "nag副作用误解",
+      "source_lesson": "L03",
+      "status": "resolved",
+      "resolved_at": "2026-04-06",
+      "resolution": "nag控制更新频率，不是todo数量"
+    },
+    {
+      "id": "GFP-03",
+      "topic": "safety limit误解",
+      "source_lesson": "L04",
       "status": "open",
-      "target_lesson": "L03+"
+      "resolution": null
+    },
+    {
+      "id": "GFP-04",
+      "topic": "返回值理解偏差",
+      "source_lesson": "L04",
+      "status": "open",
+      "resolution": null
     }
   ],
-  "total_hours_spent": 6,
-  "last_session": "2026-04-06T00:00:00Z"
+  "total_hours_spent": 8.0,
+  "last_session": "2026-04-06T15:00:00Z"
 }

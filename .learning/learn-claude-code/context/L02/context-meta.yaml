@@ -35,9 +35,10 @@ core_concepts:
 fragility_points:
   - topic: "颗粒度权衡理解"
     risk: "medium"
-    status: "open"
+    status: "resolved"
     source: "对抗问题2"
-    target_lesson: "L03+"
+    resolution_date: "2026-04-06"
+    correction: "颗粒度权衡本质是信任边界分配"
   - topic: "LLM判断安全的误区"
     risk: "high"
     status: "resolved"
@@ -55,12 +56,15 @@ insights_recorded:
 mental_model_levels:
   dispatch_map: "L2"
   safe_path: "L2"
-  专用工具优先: "L1"
+  专用工具优先: "L2"
+  颗粒度权衡: "L2"
   prompt_injection防御: "L2"
 
 review_schedule:
   - date: "2026-04-06"
     focus: "开闭原则+策略模式+颗粒度权衡"
+    status: "completed"
+    notes: "三个概念均达到L2，纠正了'加工具改循环'误区"
   - date: "2026-04-12"
     focus: "信任边界原则+安全护栏设计"
   - date: "2026-04-26"

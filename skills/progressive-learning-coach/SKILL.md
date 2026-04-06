@@ -29,6 +29,7 @@ metadata:
 | `workflow-details.md` | 工作流程详解：状态初始化、检查点、更新规则 |
 | `response-templates.md` | 响应模板：各类场景的标准回复格式 |
 | `context-generation.md` | Context 生成：知识总结、Mermaid 图表、增量更新 |
+| `lesson-transition.md` | 课程过渡：结束总结、快速复习、启动引导 |
 
 执行教学时，如需详细指导，请读取相应参考文档。
 
@@ -196,6 +197,18 @@ syllabus:
 ## 对抗测试题库
 ### 题目 1: ...
 ```
+
+---
+
+## 课程过渡流程
+
+当课程完成时，在进入下一课前执行过渡流程：
+
+1. **结束总结**：核心点 + 纠正点 + 心智层级评估汇总
+2. **快速复习**：生成 REVIEW.md 供后续复习
+3. **启动引导**：预习核心问题（启发式），让心智模型构建有思路
+
+详见：`references/lesson-transition.md`
 
 ---
 

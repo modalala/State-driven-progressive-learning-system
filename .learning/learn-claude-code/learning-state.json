@@ -1,6 +1,6 @@
 {
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L02",
+  "current_lesson": "L03",
   "started_at": "2026-04-01T23:30:00Z",
   "lessons": {
     "L01": {
@@ -13,20 +13,74 @@
       "review_schedule": ["2026-04-03", "2026-04-09", "2026-04-23"]
     },
     "L02": {
-      "status": "paused",
-      "started_at": "2026-04-02T00:25:00Z",
-      "completed_at": null,
-      "current_todo": 1,
-      "todos_completed": [],
-      "fragility_points": [],
-      "review_schedule": []
+      "status": "completed",
+      "started_at": "2026-04-05T00:00:00Z",
+      "completed_at": "2026-04-05T16:00:00Z",
+      "current_todo": 4,
+      "todos_completed": ["心智模型构建", "Read阶段", "对抗测试"],
+      "fragility_points": [
+        {
+          "id": "L02-FP-01",
+          "topic": "LLM判断安全的误区",
+          "source": "Q3回答",
+          "correction": "安全检查必须是Harness层做的，不能信任LLM",
+          "status": "resolved"
+        },
+        {
+          "id": "L02-FP-02",
+          "topic": "block.name来源误区",
+          "source": "Read阶段验证",
+          "correction": "block.name由LLM提供，不是Harness",
+          "status": "resolved"
+        },
+        {
+          "id": "L02-FP-03",
+          "topic": "颗粒度权衡理解",
+          "source": "对抗问题2",
+          "correction": "细颗粒度=更窄安全边界=更可控",
+          "status": "open"
+        }
+      ],
+      "mental_model_levels": {
+        "dispatch_map": "L2",
+        "safe_path": "L2",
+        "专用工具优先": "L1",
+        "prompt_injection防御": "L2"
+      },
+      "review_schedule": [
+        {
+          "date": "2026-04-06",
+          "focus": "开闭原则+策略模式+颗粒度权衡"
+        },
+        {
+          "date": "2026-04-12",
+          "focus": "信任边界原则+安全护栏设计"
+        },
+        {
+          "date": "2026-04-26",
+          "focus": "与其他课程的关系"
+        }
+      ]
     },
     "L03": {
-      "status": "pending",
-      "started_at": null,
+      "status": "in_progress",
+      "started_at": "2026-04-05T17:30:00Z",
       "completed_at": null,
-      "current_todo": 0,
-      "todos_completed": [],
+      "current_method": "method3",
+      "method_progress": {
+        "method1": "completed",
+        "method2": "completed",
+        "method3": "in_progress"
+      },
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "项目式场景分析", "KISS复盘", "苏格拉底诘问"],
+      "mental_model_levels": {
+        "单线程约束": "L2",
+        "nag_reminder": "L2",
+        "todo本质": "L2",
+        "内省工具概念": "L2",
+        "软约束vs硬约束": "L2",
+        "范式转移": "L2"
+      },
       "fragility_points": [],
       "review_schedule": []
     },
@@ -112,7 +166,15 @@
       "review_schedule": []
     }
   },
-  "global_fragility_points": [],
-  "total_hours_spent": 0,
-  "last_session": null
+  "global_fragility_points": [
+    {
+      "id": "GFP-01",
+      "topic": "颗粒度权衡理解",
+      "source_lesson": "L02",
+      "status": "open",
+      "target_lesson": "L03+"
+    }
+  ],
+  "total_hours_spent": 6,
+  "last_session": "2026-04-06T00:00:00Z"
 }

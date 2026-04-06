@@ -11,6 +11,7 @@ lesson:
 
 files:
   readme: "README.md"
+  review: "REVIEW.md"
   flowchart: "flowchart.mermaid.md"
   mindmap: "mindmap.mermaid.md"
 

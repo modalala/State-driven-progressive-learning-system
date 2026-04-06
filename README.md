@@ -119,7 +119,8 @@ State-driven-progressive-learning-system/    # Skill 项目
 │           ├── coach-instructions.md
 │           ├── state-machine.md      # 状态机规则
 │           ├── todo-disclosure.md    # TODO 披露机制
-│           └── user-resources.md     # 🆕 用户资源处理
+│           ├── user-resources.md     # 用户资源处理
+│           └── lesson-transition.md  # 🆕 课程过渡流程
 │
 ├── templates/                         # 🆕 项目模板
 │   └── default/
@@ -373,13 +374,41 @@ flowchart TB
 ```markdown
 📎 [my-code-001] 我的 Agent 实现
    类型: Python 代码 | 匹配度: 95%
-   
+
    💡 Skill 分析:
    这段代码很好地实现了感知-思考-行动循环。
    注意看第 8 行的 observe() 函数设计。
-   
+
    练习：基于你的代码，添加错误处理...
 ```
+
+### 课程过渡流程（新功能）
+
+当课程完成时，自动执行过渡流程：
+
+```mermaid
+flowchart LR
+    DONE[课程完成] --> SUMMARY[结束总结]
+    SUMMARY --> REVIEW[生成 REVIEW.md]
+    REVIEW --> PREVIEW[新课程预习]
+    PREVIEW --> START[用户确认开始]
+
+    style DONE fill:#50c878,color:#fff
+    style REVIEW fill:#4a90d9,color:#fff
+```
+
+**流程三步骤**：
+
+| 步骤 | 内容 | 产出 |
+|------|------|------|
+| 1. 结束总结 | 核心点 + 纠正点 + 心智层级评估 | 课堂总结报告 |
+| 2. 快速复习 | 生成 REVIEW.md 供后续复习 | `context/{lesson}/REVIEW.md` |
+| 3. 启动引导 | 预习核心问题（启发式），建立课程关联 | 新课程预习问题 |
+
+**启发式预习原则**：
+- 不暴露答案，只给思考方向
+- 与上一课建立关联，帮助迁移理解
+- 聚焦核心，不超过 3 个问题
 
 ---
 
@@ -487,6 +516,8 @@ learning_config:
 | 方法1 Prompt | ✅ 完成 |
 | 方法2 Prompt | ✅ 完成 |
 | 方法3 Prompt | ✅ 完成 |
+| 课程过渡流程 | ✅ 完成 |
+| 心智模型评估 | ✅ 完成 |
 | 示例项目 L0-L2 | ✅ 完成 |
 | 集成测试 | 🔄 待验证 |
 | L3-L11 示例 | ⏳ 可选 |

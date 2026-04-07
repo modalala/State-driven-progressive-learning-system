@@ -15,7 +15,10 @@
     "task_tool_registration": "task工具加入dispatch map，父循环不变。工具名称是task，函数名称是run_subagent。",
     "summary_return": "摘要返回原则：子Agent可能跑30+次工具调用，但整个消息历史直接丢弃。父Agent只收到最后一次响应的text部分。",
     "safety_limit": "safety limit = 30，防止无限循环的兜底机制。子Agent最多跑30轮，超过强制退出返回当前结果。",
-    "prompt_passing": "prompt传递机制：run_subagent(prompt)入参，父Agent调用时把任务描述传给子Agent。"
+    "prompt_passing": "prompt传递机制：run_subagent(prompt)入参，父Agent调用时把任务描述传给子Agent。",
+    "双向隔离": "上下文隔离是双向的：父→子只传prompt，子→父只传摘要。",
+    "stop_reason退出": "stop_reason != 'tool_use' → LLM不再需要调用工具 → 任务完成 → 退出循环返回结果。",
+    "sub_messages_append": "sub_messages.append将LLM响应追加到消息历史，让下一轮LLM能看到之前对话。"
   },
   "expert_consensus": [
     "Agent loop 是所有机制的基石",
@@ -33,7 +36,10 @@
     "摘要返回原则：子Agent整个消息历史丢弃，父Agent只收摘要文本",
     "禁止递归原则：子Agent没有task工具，防止无限嵌套",
     "工具名称(task)和函数名称(run_subagent)要区分",
-    "safety limit是兜底机制，防止无限循环，不是判断项目大小"
+    "safety limit是兜底机制，防止无限循环，不是判断项目大小",
+    "Subagent只是dispatch map中的一个工具，遵循开闭原则",
+    "上下文隔离是双向的：父→子传prompt，子→父传摘要",
+    "返回值是最后一次响应的text部分（LLM的总结），不是tool_use block"
   ],
   "expert_disagreements": [
     {
@@ -66,13 +72,13 @@
       "lesson": "L04",
       "topic": "safety limit误解",
       "correction": "safety limit是防止无限循环的兜底机制",
-      "resolved": false
+      "resolved": true
     },
     {
       "lesson": "L04",
       "topic": "返回值理解偏差",
       "correction": "返回最后一次响应的text部分，不是tool_use block",
-      "resolved": false
+      "resolved": true
     }
   ],
   "insights": [
@@ -98,11 +104,15 @@
     "禁止递归 = 防止无限嵌套，子Agent单向派发",
     "prompt传递：父Agent调用task时把任务描述传给子Agent",
     "返回值是最后一次响应的text部分（LLM的总结），不是tool_use block",
-    "工具名称(task)是LLM调用的name，函数名称(run_subagent)是Harness内部的handler"
+    "工具名称(task)是LLM调用的name，函数名称(run_subagent)是Harness内部的handler",
+    "上下文隔离是双向的：父→子只传prompt，子→父只传摘要",
+    "stop_reason != tool_use → LLM不再需要工具 → 任务完成 → 退出循环",
+    "sub_messages.append让子Agent记住自己的对话历史",
+    "Subagent只是dispatch map中的一个工具，和其他工具一样遵循注册机制"
   ],
   "project_notes": [
     "L03 方法1-3已完成，心智模型达到L2层级",
-    "L04 方法1已完成，方法2(SQ3R)进行中，Read阶段待继续",
-    "L04 脆弱点：safety limit误解、返回值理解偏差，需在后续环节纠正"
+    "L04 方法1-2已完成，方法3进行中（苏格拉底诘问）",
+    "L04 所有脆弱点已纠正，心智模型达到L2层级"
   ]
 }

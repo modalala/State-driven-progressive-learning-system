@@ -116,9 +116,17 @@
         "method3": "in_progress"
       },
       "adversarial_progress": {
-        "socratic": "in_progress",
-        "counterfactual": "locked",
-        "bug_injection": "locked"
+        "socratic": "completed",
+        "socratic_rounds_completed": 3,
+        "counterfactual": "completed",
+        "counterfactual_scenarios_completed": 5,
+        "bug_injection": "in_progress",
+        "bug_injection_progress": {
+          "misinterpretation_test": "completed",
+          "追问黑洞": "completed",
+          "迁移挑战": "completed",
+          "buggy_code_test": "pending"
+        }
       },
       "todos_completed": ["心智模型构建", "Survey", "Question", "Read", "Recite", "Review"],
       "mental_model_levels": {
@@ -129,7 +137,13 @@
         "摘要质量权衡": "L2",
         "prompt传递机制": "L2",
         "safety_limit": "L2",
-        "返回值理解": "L2"
+        "返回值理解": "L2",
+        "控制权归属设计": "L2",
+        "软返回约定": "L2",
+        "text_vs_tool_use权衡": "L2",
+        "进程线程类比": "L2",
+        "有损压缩vs无损传输": "L2",
+        "Unix管道vsLLM上下文": "L2"
       },
       "fragility_points": [
         {
@@ -155,6 +169,41 @@
           "correction": "返回最后一次响应的text部分（LLM的总结），不是tool_use block",
           "status": "resolved",
           "resolved_at": "2026-04-07"
+        },
+        {
+          "id": "L04-FP-04",
+          "topic": "进程/线程/Subagent概念混淆",
+          "source": "苏格拉底诘问第三轮",
+          "correction": "进程隔离(独立内存)，线程共享，Subagent类似进程(独立messages[])",
+          "status": "partially_resolved",
+          "notes": "创建成本是API调用成本，不是'小'",
+          "resolved_at": "2026-04-09"
+        },
+        {
+          "id": "L04-FP-05",
+          "topic": "返回值机制理解模糊",
+          "source": "苏格拉底诘问追问",
+          "correction": "返回最后一次text部分，不是tool_use，中间过程全部丢弃",
+          "status": "resolved",
+          "resolved_at": "2026-04-09"
+        },
+        {
+          "id": "L04-FP-06",
+          "topic": "递归禁止根本原因",
+          "source": "苏格拉底诘问追问",
+          "correction": "禁止递归是Harness层主动设计决策，防止目标偏移和成本失控，不是messages增长问题",
+          "status": "partially_resolved",
+          "notes": "扁平vs层级权衡：顶层控制vs层层传递",
+          "resolved_at": "2026-04-09"
+        },
+        {
+          "id": "L04-FP-07",
+          "topic": "迁移能力不足",
+          "source": "漏洞注入-迁移挑战",
+          "correction": "类比能力是L3专家级指标，当前L2层级",
+          "status": "in_progress",
+          "notes": "已通过老板-员工类比修复，待巩固",
+          "created_at": "2026-04-09"
         }
       ],
       "review_schedule": []
@@ -264,8 +313,24 @@
       "status": "resolved",
       "resolved_at": "2026-04-07",
       "resolution": "返回最后一次响应的text部分，不是tool_use block"
+    },
+    {
+      "id": "GFP-05",
+      "topic": "进程/线程/Subagent类比",
+      "source_lesson": "L04",
+      "status": "partially_resolved",
+      "resolved_at": "2026-04-09",
+      "resolution": "进程隔离，线程共享，Subagent类似进程(独立messages[])"
+    },
+    {
+      "id": "GFP-06",
+      "topic": "有损压缩vs无损传输",
+      "source_lesson": "L04",
+      "status": "resolved",
+      "resolved_at": "2026-04-09",
+      "resolution": "LLM语义驱动处理需关键信息，Unix数据驱动需完整数据"
     }
   ],
   "total_hours_spent": 8.5,
-  "last_session": "2026-04-07T10:00:00Z"
+  "last_session": "2026-04-09T10:00:00Z"
 }

@@ -1,0 +1,224 @@
+# L04 Context 元数据
+
+version: "2.0.0"
+generated_at: "2026-04-09T12:00:00Z"
+
+lesson:
+  id: "L04"
+  title: "Subagent"
+  motto: "大任务拆小，每个小任务干净的上下文"
+  status: "completed"
+  started_at: "2026-04-06T14:00:00Z"
+  completed_at: "2026-04-09T12:00:00Z"
+  estimated_hours: 3
+  actual_hours: 2.5
+
+files:
+  readme: "README.md"
+  review: "REVIEW.md"
+  flowchart: "flowchart.mermaid.md"
+  mindmap: "mindmap.mermaid.md"
+
+prerequisites:
+  - "L03: TodoWrite"
+
+core_concepts:
+  - name: "Subagent本质"
+    mastery: "L2"
+    definition: "干净上下文的委托执行"
+    quiz: "Subagent 不是'更小的 Agent'，是什么？"
+  - name: "上下文隔离"
+    mastery: "L2"
+    definition: "独立 messages[]，不污染主对话"
+    quiz: "为什么用独立 messages[]？"
+  - name: "task工具注册"
+    mastery: "L2"
+    definition: "父端有，子端无（禁止递归）"
+    quiz: "子端有 task 工具吗？为什么？"
+  - name: "禁止递归"
+    mastery: "L2"
+    definition: "设计决策，防止目标偏移和成本失控"
+    quiz: "禁止递归是技术限制还是设计决策？"
+  - name: "safety_limit"
+    mastery: "L2"
+    definition: "30轮兜底，防无限循环"
+    quiz: "safety_limit 是判断项目大小吗？"
+  - name: "返回值机制"
+    mastery: "L2"
+    definition: "最后一次响应的 text 部分"
+    quiz: "返回 tool_use block 还是 text？"
+  - name: "控制权归属"
+    mastery: "L2"
+    definition: "父端控制决策，子端执行任务"
+    quiz: "谁是决策者？谁是执行者？"
+  - name: "软返回约定"
+    mastery: "L2"
+    definition: "子端返回 text，父端收到 tool_result"
+    quiz: "软返回 vs 硬控制区别？"
+  - name: "text_vs_tool_use权衡"
+    mastery: "L2"
+    definition: "返回语义摘要而非工具调用结果"
+    quiz: "为什么不返回 tool_use？"
+  - name: "进程线程类比"
+    mastery: "L2"
+    definition: "messages 隔离类似进程隔离"
+    quiz: "进程/线程/Subagent 类比区别？"
+  - name: "摘要质量权衡"
+    mastery: "L2"
+    definition: "摘要丢失细节 vs 上下文清洁"
+    quiz: "摘要的代价是什么？"
+  - name: "prompt传递机制"
+    mastery: "L2"
+    definition: "prompt 作为子端唯一输入"
+    quiz: "子端从什么启动？"
+  - name: "有损压缩vs无损传输"
+    mastery: "L2"
+    definition: "LLM 语义驱动需关键信息，Unix 数据驱动需完整数据"
+    quiz: "Unix管道 vs LLM上下文区别？"
+  - name: "Unix管道vsLLM上下文"
+    mastery: "L2"
+    definition: "Unix 无损传输，LLM 有损压缩"
+    quiz: "为什么 LLM 用有损压缩？"
+
+fragility_points:
+  - id: "L04-FP-01"
+    topic: "工具名称混淆"
+    source: "Survey阶段"
+    risk: "low"
+    status: "resolved"
+    resolved_at: "2026-04-06"
+    correction: "工具名称是 task，函数名称是 run_subagent"
+    quiz: "工具叫什么？函数叫什么？"
+
+  - id: "L04-FP-02"
+    topic: "safety_limit误解"
+    source: "Question阶段Q1"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-07"
+    correction: "safety_limit 是防止无限循环的兜底机制，不是判断项目大小"
+    quiz: "safety_limit 判断项目大小吗？"
+
+  - id: "L04-FP-03"
+    topic: "返回值理解偏差"
+    source: "Question阶段Q3"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-07"
+    correction: "返回最后一次响应的 text 部分，不是 tool_use block"
+    quiz: "返回值是什么类型？"
+
+  - id: "L04-FP-04"
+    topic: "进程/线程/Subagent类比"
+    source: "苏格拉底诘问第三轮"
+    risk: "low"
+    status: "partially_resolved"
+    resolved_at: "2026-04-09"
+    correction: "进程隔离(独立内存)，线程共享，Subagent类似进程(独立messages)"
+    notes: "创建成本是API调用成本，不是'小'"
+    quiz: "三者类比区别？"
+
+  - id: "L04-FP-05"
+    topic: "返回值机制理解模糊"
+    source: "苏格拉底诘问追问"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-09"
+    correction: "返回最后一次text部分，不是tool_use，中间过程全部丢弃"
+    quiz: "返回什么？丢弃什么？"
+
+  - id: "L04-FP-06"
+    topic: "递归禁止根本原因"
+    source: "苏格拉底诘问追问"
+    risk: "medium"
+    status: "partially_resolved"
+    resolved_at: "2026-04-09"
+    correction: "禁止递归是Harness层主动设计决策，防止目标偏移和成本失控"
+    notes: "扁平vs层级权衡：顶层控制vs层层传递"
+    quiz: "禁止递归的原因是什么？"
+
+  - id: "L04-FP-07"
+    topic: "迁移能力不足"
+    source: "漏洞注入-迁移挑战"
+    risk: "low"
+    status: "in_progress"
+    created_at: "2026-04-09"
+    correction: "类比能力是L3专家级指标，当前L2层级"
+    notes: "已通过老板-员工类比修复，待巩固"
+    quiz: "如何跨领域类比Subagent？"
+
+adversarial_progress:
+  socratic:
+    status: "completed"
+    rounds_completed: 3
+    key_findings:
+      - "创建成本是一次 API 调用，不是'小'"
+      - "safety_limit 可配置，但增加成本"
+      - "messages 隔离类似进程，共享类似线程"
+
+  counterfactual:
+    status: "completed"
+    scenarios_completed: 5
+    key_findings:
+      - "目标偏移、成本失控是递归核心风险"
+      - "返回 tool_use block 会导致语义丢失"
+      - "不丢弃中间过程会导致父端上下文爆炸"
+
+  bug_injection:
+    status: "completed"
+    tests_completed: 4
+    tests:
+      - name: "misinterpretation_test"
+        status: "completed"
+        finding: "工具名称混淆已修正"
+      - name: "追问黑洞"
+        status: "completed"
+        finding: "safety_limit 误解已修正"
+      - name: "迁移挑战"
+        status: "completed"
+        finding: "类比能力需巩固"
+      - name: "buggy_code_test"
+        status: "completed"
+        finding: "返回值理解已修正"
+
+insights_recorded:
+  - "Subagent 不是'更小的 Agent'，是'干净上下文的委托执行'"
+  - "返回值机制：最后一次 text 部分，中间过程全部丢弃"
+  - "禁止递归是设计决策，不是技术限制——防止目标偏移和成本失控"
+  - "创建成本是一次 API 调用，不是'小'"
+  - "扁平设计保持顶层控制，层级设计允许层层委托但风险更大"
+  - "LLM 语义驱动需关键信息（有损压缩），Unix 数据驱动需完整数据（无损传输）"
+
+review_schedule:
+  - date: "2026-04-16"
+    focus: "返回值机制 + 禁止递归设计决策"
+    method: "重读源码，自问自答"
+  - date: "2026-04-23"
+    focus: "进程/线程/Subagent 类比理解"
+    method: "用三个不同类比解释概念"
+  - date: "2026-05-07"
+    focus: "与 L05 Skill Loading 的关系"
+    method: "回顾 Subagent 如何加载 Skill"
+
+next_lesson: "L05"
+next_lesson_relation: "Subagent 加载 Skill - 委托机制扩展"
+
+key_code_pattern:
+  file: "agents/s04_subagent.py"
+  function: "run_subagent"
+  key_lines:
+    - line: 2
+      code: "sub_messages = [{\"role\": \"user\"}]"
+      insight: "干净上下文启动"
+    - line: 3
+      code: "for _ in range(30)"
+      insight: "safety_limit 兜底，不是项目大小判断"
+    - line: 7
+      code: "tools=CHILD_TOOLS"
+      insight: "子端无 task，禁止递归"
+    - line: 10
+      code: "stop_reason != \"tool_use\""
+      insight: "循环退出条件"
+    - line: 13
+      code: "return \"\".join(b.text...)"
+      insight: "只返回 text 部分，丢弃 tool_use"

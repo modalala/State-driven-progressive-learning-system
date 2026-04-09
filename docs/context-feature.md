@@ -270,7 +270,7 @@ update_history:
 
 | 文件 | 说明 |
 |------|------|
-| `references/context-generation.md` | 完整实现指南 (~5000 行) |
+| `references/context-generation/` | 拆分后的参考文档（入口 + EXECUTION + templates + IMPLEMENTATION） |
 | `bin/commands/context.js` | CLI 命令实现 (853 行) |
 | `SKILL.md` | Context 章节定义 |
 | `.skills/mermaid-visualizer/SKILL.md` | Mermaid 生成参考 |

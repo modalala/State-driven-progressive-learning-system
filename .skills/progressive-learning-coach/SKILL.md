@@ -28,7 +28,7 @@ metadata:
 | `multi-project.md` | 多项目管理：项目注册、切换流程、跨项目统计 |
 | `workflow-details.md` | 工作流程详解：状态初始化、检查点、更新规则 |
 | `response-templates.md` | 响应模板：各类场景的标准回复格式 |
-| `context-generation.md` | Context 生成：知识总结、Mermaid 图表、增量更新 |
+| `context-generation/` | Context 生成：入口指向 EXECUTION.md（必读）+ templates.md |
 
 执行教学时，如需详细指导，请读取相应参考文档。
 
@@ -283,7 +283,7 @@ context/
 2. **结构化学习** - 掌握 SQ3R 流程和项目成果
 3. **对抗测试验证** - 通过脆弱点和反事实情境检验
 
-详见：`references/context-generation.md`
+详见：`references/context-generation.md`（入口）→ `context-generation/EXECUTION.md`（执行指令）
 
 ---
 

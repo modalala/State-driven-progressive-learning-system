@@ -1,6 +1,6 @@
 {
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L04",
+  "current_lesson": "L05",
   "started_at": "2026-04-01T23:30:00Z",
   "lessons": {
     "L01": {
@@ -106,29 +106,29 @@
       ]
     },
     "L04": {
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-04-06T14:00:00Z",
-      "completed_at": null,
-      "current_method": "method3",
+      "completed_at": "2026-04-09T12:00:00Z",
+      "current_method": "completed",
       "method_progress": {
         "method1": "completed",
         "method2": "completed",
-        "method3": "in_progress"
+        "method3": "completed"
       },
       "adversarial_progress": {
         "socratic": "completed",
         "socratic_rounds_completed": 3,
         "counterfactual": "completed",
         "counterfactual_scenarios_completed": 5,
-        "bug_injection": "in_progress",
+        "bug_injection": "completed",
         "bug_injection_progress": {
           "misinterpretation_test": "completed",
           "追问黑洞": "completed",
           "迁移挑战": "completed",
-          "buggy_code_test": "pending"
+          "buggy_code_test": "completed"
         }
       },
-      "todos_completed": ["心智模型构建", "Survey", "Question", "Read", "Recite", "Review"],
+      "todos_completed": ["心智模型构建", "Survey", "Question", "Read", "Recite", "Review", "苏格拉底诘问", "反事实情境", "漏洞注入"],
       "mental_model_levels": {
         "Subagent本质": "L2",
         "上下文隔离": "L2",
@@ -206,10 +206,23 @@
           "created_at": "2026-04-09"
         }
       ],
-      "review_schedule": []
+      "review_schedule": [
+        {
+          "date": "2026-04-16",
+          "focus": "返回值机制 + 禁止递归设计决策"
+        },
+        {
+          "date": "2026-04-23",
+          "focus": "进程/线程/Subagent类比理解"
+        },
+        {
+          "date": "2026-05-07",
+          "focus": "与L05 Skill Loading的关系"
+        }
+      ]
     },
     "L05": {
-      "status": "locked",
+      "status": "unlocked",
       "started_at": null,
       "completed_at": null,
       "current_todo": 0,
@@ -331,6 +344,6 @@
       "resolution": "LLM语义驱动处理需关键信息，Unix数据驱动需完整数据"
     }
   ],
-  "total_hours_spent": 8.5,
-  "last_session": "2026-04-09T10:00:00Z"
+  "total_hours_spent": 11.5,
+  "last_session": "2026-04-09T12:00:00Z"
 }

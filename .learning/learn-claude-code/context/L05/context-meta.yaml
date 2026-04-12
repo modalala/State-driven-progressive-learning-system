@@ -1,0 +1,374 @@
+# L05 Context 元数据
+
+version: "2.0.0"
+generated_at: "2026-04-12T15:00:00Z"
+
+lesson:
+  id: "L05"
+  title: "Skill Loading"
+  motto: "用到什么知识，临时加载什么知识"
+  status: "completed"
+  started_at: "2026-04-11T00:00:00Z"
+  completed_at: "2026-04-12T15:00:00Z"
+  estimated_hours: 3
+  actual_hours: 2.0
+
+files:
+  readme: "README.md"
+  review: "REVIEW.md"
+  flowchart: "flowchart.mermaid.md"
+  mindmap: "mindmap.mermaid.md"
+
+prerequisites:
+  - "L04: Subagent"
+
+core_concepts:
+  - name: "两层注入"
+    mastery: "L2"
+    definition: "系统提示放描述（便宜），tool_result 放内容（按需）"
+    quiz: "两层注入的本质是什么？"
+    key_insight: "认知管理 + 生命周期控制 + 架构一致性"
+
+  - name: "第一层注入"
+    mastery: "L2"
+    definition: "system prompt 中的 Skill 描述列表，常驻不压缩"
+    quiz: "第一层在哪里？能否被压缩？"
+    key_insight: "是 system prompt，不在 messages 数组"
+
+  - name: "第二层注入"
+    mastery: "L2"
+    definition: "tool_result 中的 Skill 完整内容，按需可释放"
+    quiz: "第二层何时加载？能否被压缩？"
+    key_insight: "模型主动请求时加载，容量不足时可压缩释放"
+
+  - name: "SkillLoader"
+    mastery: "L2"
+    definition: "递归扫描 + frontmatter 解析 + 两层注入"
+    quiz: "SkillLoader 的三个功能是什么？"
+    key_insight: "扫描（rglob）、解析（frontmatter）、注册（字典）"
+
+  - name: "容错性设计"
+    mastery: "L2"
+    definition: "高频轻后果兜底，低频重后果暴露"
+    quiz: "为什么三层兜底不是'吞掉错误'？"
+    key_insight: "宽容有边界：写错 name（低频重后果）会暴露"
+
+  - name: "统一入口原则"
+    mastery: "L2"
+    definition: "Skill 和 Tool 都走 dispatch map"
+    quiz: "为什么不区分 Skill 和 Tool 的入口？"
+    key_insight: "不改 agent loop 逻辑，Skill 只是另一种 Tool"
+
+  - name: "Skill vs Tool"
+    mastery: "L2"
+    definition: "Skill 是知识注入，Tool 是能力执行"
+    quiz: "Skill 和 Tool 的本质区别是什么？"
+    key_insight: "职责不同（知识 vs 能力），机制相同（dispatch map）"
+
+  - name: "渐进式披露"
+    mastery: "L2"
+    definition: "主 Skill 暴露大纲，子 Skill 存详细步骤"
+    quiz: "为什么需要渐进式披露？"
+    key_insight: "降低注意力偏移风险，防止认知过载"
+
+  - name: "注意力稀释"
+    mastery: "L2"
+    definition: "权重归一化约束，无关内容累加稀释核心权重"
+    quiz: "注意力稀释如何导致输出跑偏？"
+    key_insight: "每个 token 生成时参考被稀释权重 → 混入无关内容"
+
+  - name: "架构一致性"
+    mastery: "L2"
+    definition: "项目成长后无需重构，保持两层注入架构"
+    quiz: "两层注入的长期价值是什么？"
+    key_insight: "架构一致性 > 短期省钱"
+
+  - name: "第一层可放弃"
+    mastery: "L2"
+    definition: "极端约束下，第一层可放弃，第二层仍可用"
+    quiz: "上下文 1000 tokens 时，Skill Loading 还能用吗？"
+    key_insight: "第二层是本体，第一层是导航辅助"
+
+  - name: "Subagent + Skill"
+    mastery: "L2"
+    definition: "Skill 进入 Subagent messages，用完丢弃"
+    quiz: "Subagent 加载 Skill 后，Skill 去哪里？"
+    key_insight: "宁可重复加载不污染 Parent 上下文"
+
+fragility_points:
+  - id: "L05-V01"
+    type: "概念混淆"
+    topic: "第一层注入误认为是 message"
+    source: "苏格拉底诘问第一轮追问3"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-11"
+    correction: "第一层是 system prompt，不在 messages 数组中"
+    quiz: "第一层在哪里？"
+
+  - id: "L05-V02"
+    type: "过度简化"
+    topic: "tool_result 立刻释放"
+    source: "苏格拉底诘问第一轮追问3"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-11"
+    correction: "tool_result 在 messages 中，容量不足时才压缩释放"
+    quiz: "tool_result 何时被释放？"
+
+  - id: "L05-V03"
+    type: "逻辑漏洞"
+    topic: "假设第一层是必需的"
+    source: "反事实情境1"
+    risk: "low"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "第一层可放弃，由外部触发替代"
+    quiz: "第一层可以放弃吗？"
+
+  - id: "L05-V04"
+    type: "概念混淆"
+    topic: "隐性行为误认为显性设计"
+    source: "反事实情境2"
+    risk: "low"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "字典覆盖是 Python 特性，不是 SkillLoader 的主动设计决策"
+    quiz: "字典覆盖是谁的行为？"
+
+  - id: "L05-V05"
+    type: "逻辑漏洞"
+    topic: "随机顺序的影响时机"
+    source: "反事实情境2"
+    risk: "low"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "问题在每次启动，不是每次执行"
+    quiz: "随机顺序何时产生影响？"
+
+  - id: "L05-V06"
+    type: "概念混淆"
+    topic: "容错性设计误认为偶然"
+    source: "反事实情境3"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "格式宽容度是显性设计决策，三层兜底代码是主动编写"
+    quiz: "容错性是 Python 默认行为还是主动设计？"
+
+  - id: "L05-V07"
+    type: "逻辑漏洞"
+    topic: "设计权衡误认为可逆转"
+    source: "反事实情境4"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "messages 隔离是物理约束，共享池技术上不可行"
+    quiz: "Skill 共享池可行吗？"
+
+  - id: "L05-V08"
+    type: "逻辑漏洞"
+    topic: "两层注入价值误认为只省 token"
+    source: "反事实情境5"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "架构一致性是更深价值"
+    quiz: "两层注入的核心价值是什么？"
+
+  - id: "L05-V09"
+    type: "概念混淆"
+    topic: "按需加载误认为一次性全部加载"
+    source: "反事实情境5"
+    risk: "low"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "第二层是按需，不是一次性"
+    quiz: "第二层是一次性加载所有 Skill 吗？"
+
+  - id: "L05-V10"
+    type: "边界误解"
+    topic: "物理问题与认知问题混淆"
+    source: "反事实情境5"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "5000 tokens 问题是认知层（注意力偏移），不是物理层（容量）"
+    quiz: "5000 tokens 描述列表的问题是什么类型？"
+
+  - id: "L05-V11"
+    type: "过度简化"
+    topic: "两层注入只省 token/省空间"
+    source: "漏洞注入-误解1"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "两层注入=认知管理+生命周期控制+经济优化+架构一致性"
+    quiz: "两层注入的完整价值是什么？"
+
+  - id: "L05-V12"
+    type: "概念混淆"
+    topic: "Skill 与 Tool 格式差异是本质差异"
+    source: "漏洞注入-误解2"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "本质差异：Skill=知识注入，Tool=能力执行"
+    quiz: "Skill 和 Tool 的本质区别是什么？"
+
+  - id: "L05-V13"
+    type: "反模式曲解"
+    topic: "容错性设计误认为吞掉错误"
+    source: "漏洞注入-误解3"
+    risk: "medium"
+    status: "resolved"
+    resolved_at: "2026-04-12"
+    correction: "宽容有边界：高频轻后果兜底，低频重后果暴露"
+    quiz: "容错性设计是'吞掉错误'吗？"
+
+adversarial_progress:
+  socratic:
+    status: "completed"
+    rounds_completed: 3
+    key_findings:
+      - "第一层是 system prompt，不在 messages 数组"
+      - "提出 Skill Handler 和 Skill 互斥架构改进"
+      - "架构一致性是两层注入的更深价值"
+
+  counterfactual:
+    status: "completed"
+    scenarios_completed: 5
+    key_findings:
+      - "第一层可放弃，第二层是本体"
+      - "字典覆盖是隐性行为，应显式报错"
+      - "格式宽容度是显性设计"
+      - "messages 隔离是物理约束"
+      - "架构一致性 > 短期省钱"
+
+  bug_injection:
+    status: "completed"
+    tests_completed: 3
+    tests:
+      - name: "故意误解测试"
+        status: "completed"
+        findings:
+          - "两层注入不只是省 token"
+          - "Skill vs Tool 职责差异"
+          - "容错性不是吞掉错误"
+      - name: "追问黑洞"
+        status: "completed"
+        rounds: 11
+        finding: "完整追溯：权重稀释 → token 级别污染 → 输出跑偏"
+      - name: "迁移挑战"
+        status: "completed"
+        analogies:
+          - "食堂排队：合格"
+          - "垃圾分类：优秀"
+          - "恋爱关系：良好"
+
+insights_recorded:
+  - "两层注入的本质：认知管理 + 生命周期控制 + 架构一致性"
+  - "第一层是导航辅助（可放弃），第二层是本体（必须保留）"
+  - "容错性设计：宽容有边界——高频轻后果兜底，低频重后果暴露"
+  - "注意力稀释链条：权重归一化 → 无关累加 → 稀释 → token 污染 → 输出跑偏"
+  - "Skill vs Tool：职责不同（知识 vs 能力），机制相同（dispatch map）"
+  - "架构一致性价值：项目成长后无需重构"
+  - "messages 隔离是物理约束，Skill 共享池技术上不可行"
+
+user_architecture_proposals:
+  - name: "Skill Handler"
+    description: "主动管理 Skill 注册，检测同名冲突，显式报错"
+    status: "validated"
+    value: "解决字典隐性覆盖问题"
+
+  - name: "Skill 互斥机制"
+    description: "Skill 之间互斥，避免同时加载相似 Skill"
+    status: "validated"
+    value: "避免注意力干扰和目标偏移"
+    implementation_hints:
+      - "Harness 层限制：Skill Handler 检测冲突"
+      - "描述层区分：优化 Skill 描述精准度"
+      - "功能域分组：同组 Skill 互斥"
+
+review_schedule:
+  - date: "2026-04-16"
+    focus: "两层注入机制 + 上下文生命周期"
+    method: "重读源码，自问自答"
+  - date: "2026-04-23"
+    focus: "容错性设计原则 + 注意力稀释机制"
+    method: "对比其他系统的错误处理"
+  - date: "2026-05-07"
+    focus: "与 L06 Context Compact 的关系"
+    method: "理解 tool_result 压缩释放机制"
+
+next_lesson: "L06"
+next_lesson_relation: "tool_result（第二层）可被压缩释放"
+
+key_code_pattern:
+  file: "agents/s05_skill_loading.py"
+  class: "SkillLoader"
+  key_lines:
+    - line: 4
+      code: "sorted(skills_dir.rglob('SKILL.md'))"
+      insight: "递归扫描 + 确定性排序"
+    - line: 7
+      code: "meta.get('name', f.parent.name)"
+      insight: "容错性设计，目录名兜底"
+    - line: 11-20
+      code: "_parse_frontmatter()"
+      insight: "三层兜底：无 frontmatter、格式畸形、YAML 错误"
+    - line: 22-26
+      code: "get_descriptions()"
+      insight: "第一层注入，常驻不压缩"
+    - line: 28-32
+      code: "get_content()"
+      insight: "第二层注入，按需可释放"
+
+mental_model_levels:
+  "两层注入": "L2"
+  "第一层注入": "L2"
+  "第二层注入": "L2"
+  "SkillLoader": "L2"
+  "容错性设计": "L2"
+  "统一入口原则": "L2"
+  "Skill vs Tool": "L2"
+  "渐进式披露": "L2"
+  "注意力稀释": "L2"
+  "架构一致性": "L2"
+  "第一层可放弃": "L2"
+  "Subagent + Skill": "L2"
+
+expert_positions:
+  "两层注入必要性":
+    position: "两层都要"
+    reason: "模型自主决策需要知道有哪些，外部触发时列表可选"
+  "Skill Handler设计":
+    position: "有价值，需进一步设计"
+    reason: "解决隐性覆盖问题，主动管理注册"
+  "Skill互斥机制":
+    position: "有价值，需分层实现"
+    reason: "Harness 层限制 + 描述层区分 + 功能域分组"
+
+changelog:
+  - timestamp: "2026-04-12T15:00:00Z"
+    changes:
+      - type: "add"
+        field: "lesson.status"
+        old_value: "in_progress"
+        new_value: "completed"
+      - type: "add"
+        field: "lesson.completed_at"
+        old_value: null
+        new_value: "2026-04-12T15:00:00Z"
+      - type: "add"
+        field: "fragility_points"
+        old_value: 2
+        new_value: 13
+      - type: "add"
+        field: "adversarial_progress"
+        old_value: "in_progress"
+        new_value: "completed"
+      - type: "add"
+        field: "user_architecture_proposals"
+        old_value: null
+        new_value: 2

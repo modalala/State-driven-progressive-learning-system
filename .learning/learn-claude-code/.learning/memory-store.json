@@ -1,0 +1,335 @@
+{
+  "version": "1.0.0",
+  "core_models": {
+    "agent_definition": "Agent 是模型本身，不是框架、不是提示词链、不是拖拽式工作流。Agent 是一个神经网络 —— Transformer —— 在行动序列数据上学会了感知环境、推理目标、采取行动。",
+    "harness_definition": "Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。模型做决策，Harness 执行。模型是驾驶者，Harness 是载具。",
+    "agent_pattern": "User -> messages[] -> LLM -> response -> stop_reason == 'tool_use'? -> execute tools -> append results -> loop back",
+    "todo_definition": "TodoWrite = 内省工具 + 单线程约束 + nag reminder。todo 是 Agent 对自己的追踪，不只是进度表。",
+    "introspective_tool": "todo 是第一个'内省工具'：不改变外部世界，只改变 Agent 对自己的认知。这是 Agent 自我意识的雏形。",
+    "shared_cognition_interface": "todo 是 Agent 和人类的'共享认知界面'：模型能看懂追踪进度，人类也能看懂监控状态。",
+    "todo_constraint_target": "todo 约束的是模型的认知状态，不是执行顺序。TodoManager 检测不到模型'欺骗'（todo标记与实际执行不一致）。",
+    "soft_vs_hard_constraint": "硬约束 = Harness替模型做决策 = 违反信任模型原则。软约束 = Harness提供信息 + 模型自主决策 = 正确的职责分离。",
+    "paradigm_difference": "传统系统决策主体是程序代码（if-else），Agent决策主体是模型本身（神经网络）。todo不是'控制模型'，而是'辅助模型'。",
+    "subagent_definition": "Subagent = 独立messages[] + 干净上下文 + 摘要返回。子Agent从零开始，做完即弃，父Agent只收摘要。",
+    "context_isolation": "上下文隔离原则：父Agent保持原有messages[]不变，子Agent创建新的messages=[]从零开始。两者完全隔离，互不干扰。",
+    "no_recursion_rule": "禁止递归原则：子Agent没有task工具，防止无限嵌套。父→子（可以），子→孙（禁止）。",
+    "task_tool_registration": "task工具加入dispatch map，父循环不变。工具名称是task，函数名称是run_subagent。",
+    "summary_return": "摘要返回原则：子Agent可能跑30+次工具调用，但整个消息历史直接丢弃。父Agent只收到最后一次响应的text部分。",
+    "safety_limit": "safety limit = 30，防止无限循环的兜底机制。子Agent最多跑30轮，超过强制退出返回当前结果。",
+    "prompt_passing": "prompt传递机制：run_subagent(prompt)入参，父Agent调用时把任务描述传给子Agent。",
+    "双向隔离": "上下文隔离是双向的：父→子只传prompt，子→父只传摘要。",
+    "stop_reason退出": "stop_reason != 'tool_use' → LLM不再需要调用工具 → 任务完成 → 退出循环返回结果。",
+    "sub_messages_append": "sub_messages.append将LLM响应追加到消息历史，让下一轮LLM能看到之前对话。",
+    "skill_two_layer_injection": "两层注入 = 第一层system prompt（常驻不压缩）+ 第二层tool_result（可压缩释放）。价值是'可以被释放'而非'立刻释放'。",
+    "skill_unified_entry": "统一入口原则：Skill和Tool共用dispatch map，都走tool_use，不改agent loop逻辑。",
+    "skill_fault_tolerance": "容错性设计：对高频轻后果错误（忘记写name）兜底，对低频重后果错误（写错name）暴露。显式失败优于隐式错误。",
+    "skill_progressive_disclosure": "渐进式披露：主Skill暴露大纲和触发关键字，详细步骤在子Skill。降低注意力偏移风险。",
+    "skill_cognitive_quality": "认知质量 > 经济成本：Subagent加载Skill宁可重复加载不污染Parent上下文。",
+    "attention_dilution_chain": "注意力稀释链条：权重归一化约束→无关内容累加→稀释核心权重→token级别污染→输出跑偏。Transformer每个token生成时参考被稀释权重，可能混入无关内容。",
+    "two_layer_injection_value": "两层注入完整价值：认知管理+生命周期控制+经济优化+架构一致性。不只是省token，更是为项目成长做准备。",
+    "first_layer_optional": "第一层可放弃：极端约束（1000 tokens）下，放弃第一层（Skill描述列表），用户显式请求'加载git Skill'即可。第二层是本体，第一层是导航辅助。",
+    "fault_tolerance_boundary": "容错性设计本质：宽容有边界——高频轻后果（忘记写frontmatter）兜底，低频重后果（写错name）暴露。三层兜底是主动编写，不是Python默认行为。",
+    "skill_tool_difference": "Skill vs Tool本质差异：职责不同（Skill=知识注入，Tool=能力执行），机制相同（都走dispatch map）。格式差异不是本质。",
+    "messages_isolation_constraint": "messages隔离是物理约束：模型只能看messages[]，Skill共享池存哪里都没用，必须进入messages才生效。Subagent messages隔离决定了Skill必须重复加载。",
+    "architecture_consistency": "架构一致性价值：两层注入不只是省token，更是架构一致性——项目成长后无需重构。今天玩具项目明天可能变成生产级。",
+    "dict_cover_implicit": "字典覆盖是隐性行为：self.skills[name]=...是Python字典机制，不是SkillLoader主动设计。应显式报错而非静默覆盖。",
+    "sorted_determinism": "确定性优于随机性：sorted(skills_dir.rglob('SKILL.md'))保证每次启动行为一致，随机顺序会导致不确定性。",
+    "skill_handler_proposal": "Skill Handler架构改进：主动管理Skill注册，检测同名冲突显式报错。区别于SkillLoader的被动响应。",
+    "skill_mutual_exclusion": "Skill互斥机制：避免同时加载相似Skill导致注意力干扰。实现方式：Harness层限制、描述层区分、功能域分组。"
+  },
+  "expert_consensus": [
+    "Agent loop 是所有机制的基石",
+    "工具通过 dispatch map 注册，不修改循环",
+    "上下文压缩是长会话的必要机制",
+    "信任模型原则：Harness 不替模型做决策，只执行和反馈",
+    "stop_reason 控制循环退出，不仅检测 tool_use 存在性",
+    "单线程约束是认知设计约束，不是技术限制：强制模型保持单一焦点心智模型",
+    "nag reminder 是软性问责，3轮不更新todo就提醒，防止模型即兴发挥跑偏",
+    "todo 是内省工具，操作Agent自身状态，其他工具是外向工具，操作外部世界",
+    "todo约束的是认知状态，不是执行顺序。模型可以'暗中并行'（不调用todo做多件事）",
+    "todo设计的权衡：接受'可能的跑偏'，换取'模型的自主性'",
+    "范式差异核心：传统系统决策主体是代码，Agent决策主体是模型本身",
+    "上下文隔离原则：父Agent只保留决策相关信息，子Agent从零开始做完即弃",
+    "摘要返回原则：子Agent整个消息历史丢弃，父Agent只收摘要文本",
+    "禁止递归原则：子Agent没有task工具，防止无限嵌套",
+    "工具名称(task)和函数名称(run_subagent)要区分",
+    "safety limit是兜底机制，防止无限循环，不是判断项目大小",
+    "Subagent只是dispatch map中的一个工具，遵循开闭原则",
+    "上下文隔离是双向的：父→子传prompt，子→父传摘要",
+    "返回值是最后一次响应的text部分（LLM的总结），不是tool_use block",
+    "两层注入本质：第一层system prompt（常驻），第二层tool_result（可压缩释放）",
+    "Skill和Tool共用dispatch map，统一入口原则",
+    "frontmatter解析失败返回空meta，Skill仍能注册（显式失败优于隐式错误）",
+    "Skill渐进式披露降低注意力偏移风险",
+    "Subagent+Skill：Skill进入Subagent messages，用完丢弃，宁可重复加载不污染Parent",
+    "注意力稀释链条：权重归一化约束→无关内容累加→稀释核心权重→token级别污染→输出跑偏",
+    "两层注入核心价值：认知管理+生命周期控制+架构一致性，不只是省token",
+    "第一层可放弃：第二层是本体，第一层是导航辅助",
+    "容错性设计本质：宽容有边界——高频轻后果兜底，低频重后果暴露",
+    "Skill vs Tool本质差异：职责不同（知识注入vs能力执行），机制相同（dispatch map）",
+    "messages隔离是物理约束，Skill共享池技术上不可行"
+  ],
+  "expert_disagreements": [
+    {
+      "topic": "nag reminder 性质",
+      "view_a": "nag 是软性提醒，模型可以选择忽略",
+      "view_b": "nag 是隐式指令，制造问责压力",
+      "learner_view": "软性提醒，信任模型原则"
+    },
+    {
+      "topic": "todo单线程约束性质",
+      "view_a": "认知设计约束，不是技术限制",
+      "view_b": "事后合理化，实际上就是技术限制",
+      "learner_view": "认知设计约束，技术上可以并行执行"
+    },
+    {
+      "topic": "摘要质量",
+      "view_a": "摘要应该简洁，只给结论",
+      "view_b": "摘要应该详细，保留推理过程",
+      "learner_view": "折中方案：推理总结 + 结果总结"
+    },
+    {
+      "topic": "Skill列表必要性",
+      "view_a": "两层都要，模型自主决策需要知道有哪些",
+      "view_b": "只在tool_result，外部触发时列表多余",
+      "learner_view": "两层都要，但第一层必要性取决于决策权归属"
+    }
+  ],
+  "fragility_log": [
+    {
+      "lesson": "L02",
+      "id": "L02-FP-01",
+      "topic": "LLM判断安全的误区",
+      "correction": "安全检查必须是Harness层做的，不能信任LLM",
+      "resolved": true
+    },
+    {
+      "lesson": "L02",
+      "id": "L02-FP-02",
+      "topic": "block.name来源误区",
+      "correction": "block.name由LLM提供，不是Harness",
+      "resolved": true
+    },
+    {
+      "lesson": "L02",
+      "id": "L02-FP-03",
+      "topic": "颗粒度权衡理解",
+      "correction": "颗粒度权衡本质是信任边界分配",
+      "resolved": true
+    },
+    {
+      "lesson": "L03",
+      "id": "L03-FP-01",
+      "topic": "nag副作用误解",
+      "correction": "nag控制更新频率，不是todo数量",
+      "resolved": true
+    },
+    {
+      "lesson": "L04",
+      "id": "L04-FP-01",
+      "topic": "工具名称混淆",
+      "correction": "工具名称是task，函数名称是run_subagent",
+      "resolved": true
+    },
+    {
+      "lesson": "L04",
+      "id": "L04-FP-02",
+      "topic": "safety limit误解",
+      "correction": "safety limit是防止无限循环的兜底机制，不是判断项目大小",
+      "resolved": true
+    },
+    {
+      "lesson": "L04",
+      "id": "L04-FP-03",
+      "topic": "返回值理解偏差",
+      "correction": "返回最后一次响应的text部分，不是tool_use block",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V01",
+      "topic": "第一层注入概念混淆",
+      "correction": "第一层是system prompt，不在messages数组",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V02",
+      "topic": "tool_result立刻释放误解",
+      "correction": "tool_result在messages中，容量不足时才压缩释放",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V03",
+      "topic": "第一层必需假设",
+      "correction": "第一层可放弃，由外部触发替代",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V04",
+      "topic": "隐性行为误认为显性设计",
+      "correction": "字典覆盖是Python特性，不是SkillLoader主动设计",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V06",
+      "topic": "容错性设计误认为偶然",
+      "correction": "三层兜底是主动编写的设计决策",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V07",
+      "topic": "设计权衡误认为可逆转",
+      "correction": "messages隔离是物理约束，共享池不可行",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V08",
+      "topic": "两层注入只省token",
+      "correction": "架构一致性是更深价值",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V10",
+      "topic": "物理问题与认知问题混淆",
+      "correction": "注意力偏移是认知层问题，不是容量问题",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V12",
+      "topic": "Skill与Tool格式差异误解",
+      "correction": "本质差异是职责（知识vs能力），不是格式",
+      "resolved": true
+    },
+    {
+      "lesson": "L05",
+      "id": "L05-V13",
+      "topic": "容错性误认为吞掉错误",
+      "correction": "宽容有边界，低频重后果会暴露",
+      "resolved": true
+    }
+  ],
+  "insights": [
+    "ls → del → ls 验证模式说明重复调用有时是合理的",
+    "max_tokens 截断时响应可能包含 tool_use block，但不应执行",
+    "Hook 是安全护栏，不是决策替代",
+    "todo 解决注意力稀释问题：tool_result 填满上下文，系统提示影响力被稀释",
+    "单线程约束：同时只能有一个 in_progress，强制顺序聚焦",
+    "todo.render() 输出格式是 Agent 和人类的共享认知界面",
+    "LLM一次响应可以包含多个tool_use，技术上可以并行，但todo约束认知",
+    "todo约束发生在todo层，不是tool层",
+    "没有todo，单线程约束没有意义",
+    "TodoManager检测不到模型欺骗（todo标记与实际执行不一致）",
+    "硬约束代价：违反信任模型原则，破坏模型灵活性",
+    "软约束代价：极端场景下模型可能持续忽略nag",
+    "传统系统vs Agent核心差异：决策主体不同",
+    "颗粒度权衡本质：信任边界分配——把多少决策权交给Harness，多少交给LLM",
+    "专用工具本质：缩小LLM的决策范围，而非减少Harness维护成本",
+    "Subagent本质：独立messages[]，不污染父对话",
+    "上下文全是result → 噪音大 → 注意力下降 → 上下文爆炸",
+    "干净上下文 = 子Agent只专注于自己的任务，不需要关注其他动作背景",
+    "task工具注册遵循开闭原则：加handler不改父循环",
+    "禁止递归 = 防止无限嵌套，子Agent单向派发",
+    "prompt传递：父Agent调用task时把任务描述传给子Agent",
+    "返回值是最后一次响应的text部分（LLM的总结），不是tool_use block",
+    "工具名称(task)是LLM调用的name，函数名称(run_subagent)是Harness内部的handler",
+    "上下文隔离是双向的：父→子只传prompt，子→父传摘要",
+    "stop_reason != tool_use → LLM不再需要工具 → 任务完成 → 退出循环",
+    "sub_messages.append让子Agent记住自己的对话历史",
+    "Subagent只是dispatch map中的一个工具，和其他工具一样遵循注册机制",
+    "两层注入价值：system prompt常驻，tool_result可释放——上下文生命周期管理",
+    "Skill和Tool统一入口：不改loop，不改dispatch map结构",
+    "容错性设计：显式失败优于隐式错误，让问题暴露而非隐藏",
+    "Skill渐进式披露：大纲层暴露元数据，子Skill存详细步骤",
+    "确定性vs灵活性权衡：固定工作流用确定性设计，通用场景用灵活性设计",
+    "Subagent+Skill：Skill进入Subagent messages，认知质量>经济成本",
+    "注意力权重归一化约束：权重总和=1，无关内容累加会稀释核心权重",
+    "token级别污染：每个token生成时参考被稀释权重→混入无关内容→输出跑偏",
+    "两层注入完整价值：认知管理+生命周期控制+经济优化+架构一致性",
+    "第一层可放弃场景：极端约束下用户显式请求替代模型自主发现",
+    "字典覆盖是Python隐性行为，不是SkillLoader主动设计",
+    "格式宽容度三层兜底：无frontmatter、格式畸形、YAML错误全部返回空meta",
+    "messages隔离是物理约束，共享池技术上不可行（模型只能看messages）",
+    "架构一致性>短期省钱：项目成长后无需重构",
+    "垃圾分类类比优秀：分类宣传单（导航）+垃圾桶说明（内容）→避免扔错桶",
+    "Skill Handler架构改进：主动管理注册，检测同名冲突，显式报错",
+    "Skill互斥机制：避免同时加载相似Skill导致注意力干扰"
+  ],
+  "session_history": [
+    {
+      "session_id": "sess-001",
+      "lesson_id": "L01",
+      "started_at": "2026-04-01T23:35:00Z",
+      "ended_at": "2026-04-02T00:15:00Z",
+      "duration_minutes": 40,
+      "todos_completed": 2
+    },
+    {
+      "session_id": "sess-002",
+      "lesson_id": "L02",
+      "started_at": "2026-04-05T00:00:00Z",
+      "ended_at": "2026-04-05T16:00:00Z",
+      "duration_minutes": 120,
+      "todos_completed": 3
+    },
+    {
+      "session_id": "sess-003",
+      "lesson_id": "L03",
+      "started_at": "2026-04-05T17:30:00Z",
+      "ended_at": "2026-04-06T14:00:00Z",
+      "duration_minutes": 180,
+      "todos_completed": 7
+    },
+    {
+      "session_id": "sess-004",
+      "lesson_id": "L04",
+      "started_at": "2026-04-07T00:00:00Z",
+      "ended_at": "2026-04-09T12:00:00Z",
+      "duration_minutes": 120,
+      "todos_completed": 6
+    },
+    {
+      "session_id": "sess-005",
+      "lesson_id": "L05",
+      "started_at": "2026-04-11T00:00:00Z",
+      "ended_at": "2026-04-12T15:00:00Z",
+      "duration_minutes": 180,
+      "todos_completed": 5,
+      "status": "completed",
+      "details": {
+        "socratic_rounds": 3,
+        "counterfactual_scenarios": 5,
+        "bug_injection_tests": 3,
+        "fragility_points_resolved": 13,
+        "key_insights": [
+          "注意力稀释链条：权重归一化→无关累加→稀释→token污染→输出跑偏",
+          "两层注入本质：认知管理+生命周期控制+架构一致性",
+          "第一层可放弃：第二层是本体，第一层是导航辅助",
+          "容错性设计：宽容有边界，高频轻后果兜底，低频重后果暴露"
+        ]
+      }
+    }
+  ],
+  "kiss_reviews": [
+    {
+      "lesson_id": "L05",
+      "date": "2026-04-12",
+      "keep": [
+        "追问黑洞11问追溯到Transformer底层机制",
+        "垃圾分类类比准确传达注意力稀释导致错误行为"
+      ],
+      "improve": [],
+      "start": [
+        "复习时对比其他系统的容错性设计"
+      ],
+      "stop": []
+    }
+  ]
+}

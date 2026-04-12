@@ -1,0 +1,420 @@
+{
+  "version": "1.0.0",
+  "project_name": "learn-claude-code",
+  "domain": "Claude Code Harness 工程",
+  "current_lesson": "L06",
+  "current_method": 1,
+  "method_status": {
+    "mental_model": "in_progress",
+    "structured": "pending",
+    "adversarial": "pending"
+  },
+  "started_at": "2026-04-01T23:30:00Z",
+  "last_session": "2026-04-13",
+  "lessons": {
+    "L00": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L01": {
+      "status": "completed",
+      "started_at": "2026-04-01T23:35:00Z",
+      "completed_at": "2026-04-02T00:15:00Z",
+      "todos_completed": ["TODO-1", "TODO-2"],
+      "fragility_points": [],
+      "mental_model_level": "L2",
+      "review_schedule": ["2026-04-03", "2026-04-09", "2026-04-23"]
+    },
+    "L02": {
+      "status": "completed",
+      "started_at": "2026-04-05T00:00:00Z",
+      "completed_at": "2026-04-05T16:00:00Z",
+      "todos_completed": ["心智模型构建", "Read阶段", "对抗测试"],
+      "fragility_points": [
+        {
+          "id": "L02-FP-01",
+          "topic": "LLM判断安全的误区",
+          "source": "Q3回答",
+          "correction": "安全检查必须是Harness层做的，不能信任LLM",
+          "status": "resolved"
+        },
+        {
+          "id": "L02-FP-02",
+          "topic": "block.name来源误区",
+          "source": "Read阶段验证",
+          "correction": "block.name由LLM提供，不是Harness",
+          "status": "resolved"
+        },
+        {
+          "id": "L02-FP-03",
+          "topic": "颗粒度权衡理解",
+          "source": "对抗问题2",
+          "correction": "颗粒度权衡本质是信任边界分配",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "dispatch_map": "L2",
+        "safe_path": "L2",
+        "专用工具优先": "L2",
+        "颗粒度权衡": "L2",
+        "prompt_injection防御": "L2"
+      },
+      "review_schedule": [
+        {"date": "2026-04-06", "focus": "开闭原则+策略模式+颗粒度权衡", "status": "completed"},
+        {"date": "2026-04-12", "focus": "信任边界原则+安全护栏设计"},
+        {"date": "2026-04-26", "focus": "与其他课程的关系"}
+      ]
+    },
+    "L03": {
+      "status": "completed",
+      "started_at": "2026-04-05T17:30:00Z",
+      "completed_at": "2026-04-06T14:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "项目式场景分析", "KISS复盘", "苏格拉底诘问", "反事实情境", "漏洞注入"],
+      "fragility_points": [
+        {
+          "id": "L03-FP-01",
+          "topic": "nag副作用误解",
+          "source": "反事实情境2",
+          "correction": "nag控制更新频率，不是todo数量",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "单线程约束": "L2",
+        "nag_reminder": "L2",
+        "todo本质": "L2",
+        "内省工具概念": "L2",
+        "软约束vs硬约束": "L2",
+        "范式转移": "L2"
+      },
+      "review_schedule": [{"date": "待定", "focus": "软约束vs硬约束设计权衡"}]
+    },
+    "L04": {
+      "status": "completed",
+      "started_at": "2026-04-07T00:00:00Z",
+      "completed_at": "2026-04-09T12:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "费曼检验", "苏格拉底诘问", "反事实情境", "漏洞注入"],
+      "fragility_points": [
+        {
+          "id": "L04-FP-01",
+          "topic": "工具名称混淆",
+          "source": "Survey阶段",
+          "correction": "工具名称是task，函数名称是run_subagent",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-02",
+          "topic": "safety limit误解",
+          "source": "Question阶段Q1",
+          "correction": "safety limit是防止无限循环的兜底机制，不是判断项目大小",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-03",
+          "topic": "返回值理解偏差",
+          "source": "Question阶段Q3",
+          "correction": "返回最后一次响应的text部分，不是tool_use block",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-04",
+          "topic": "进程/线程/Subagent类比",
+          "source": "苏格拉底诘问第三轮",
+          "correction": "messages隔离类似进程，共享类似线程",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-05",
+          "topic": "返回值机制理解模糊",
+          "source": "苏格拉底诘问追问",
+          "correction": "返回最后一次text部分，不是tool_use，中间过程全部丢弃",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-06",
+          "topic": "递归禁止根本原因",
+          "source": "苏格拉底诘问追问",
+          "correction": "禁止递归是Harness层主动设计决策，防止目标偏移和成本失控",
+          "status": "resolved"
+        },
+        {
+          "id": "L04-FP-07",
+          "topic": "迁移能力不足",
+          "source": "漏洞注入-迁移挑战",
+          "correction": "类比能力是L3专家级指标，当前L2层级",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "Subagent本质": "L2",
+        "上下文隔离": "L2",
+        "task工具注册": "L2",
+        "禁止递归": "L2",
+        "safety_limit": "L2",
+        "返回值理解": "L2",
+        "控制权归属": "L2",
+        "软返回约定": "L2"
+      },
+      "expert_positions": {
+        "扁平vs层级": {
+          "position": "扁平设计",
+          "reason": "禁止递归，保持顶层控制，防止目标偏移和成本失控"
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-16", "focus": "返回值机制+禁止递归设计决策"},
+        {"date": "2026-04-23", "focus": "进程/线程/Subagent类比理解"},
+        {"date": "2026-05-07", "focus": "与L05 Skill Loading的关系"}
+      ]
+    },
+    "L05": {
+      "status": "completed",
+      "started_at": "2026-04-11T00:00:00Z",
+      "completed_at": "2026-04-12T15:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "苏格拉底诘问(3轮)", "反事实情境(5个)", "漏洞注入(3阶段)"],
+      "fragility_points": [
+        {
+          "id": "L05-V01",
+          "type": "概念混淆",
+          "topic": "第一层注入误认为是message",
+          "source": "苏格拉底诘问第一轮追问3",
+          "correction": "第一层是system prompt，不在messages数组中",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V02",
+          "type": "过度简化",
+          "topic": "tool_result立刻释放",
+          "source": "苏格拉底诘问第一轮追问3",
+          "correction": "tool_result在messages中，容量不足时才压缩释放",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V03",
+          "type": "逻辑漏洞",
+          "topic": "假设第一层是必需的",
+          "source": "反事实情境1",
+          "correction": "第一层可放弃，由外部触发替代",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V04",
+          "type": "概念混淆",
+          "topic": "隐性行为误认为显性设计",
+          "source": "反事实情境2",
+          "correction": "字典覆盖是Python特性，不是SkillLoader的主动设计决策",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V05",
+          "type": "逻辑漏洞",
+          "topic": "随机顺序的影响时机",
+          "source": "反事实情境2",
+          "correction": "问题在每次启动，不是每次执行",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V06",
+          "type": "概念混淆",
+          "topic": "容错性设计误认为偶然",
+          "source": "反事实情境3",
+          "correction": "格式宽容度是显性设计决策，三层兜底代码是主动编写",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V07",
+          "type": "逻辑漏洞",
+          "topic": "设计权衡误认为可逆转",
+          "source": "反事实情境4",
+          "correction": "messages隔离是物理约束，共享池技术上不可行",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V08",
+          "type": "逻辑漏洞",
+          "topic": "两层注入价值误认为只省token",
+          "source": "反事实情境5",
+          "correction": "架构一致性是更深价值",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V09",
+          "type": "概念混淆",
+          "topic": "按需加载误认为一次性全部加载",
+          "source": "反事实情境5",
+          "correction": "第二层是按需，不是一次性",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V10",
+          "type": "边界误解",
+          "topic": "物理问题与认知问题混淆",
+          "source": "反事实情境5",
+          "correction": "5000 tokens问题是认知层（注意力偏移），不是物理层（容量）",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V11",
+          "type": "过度简化",
+          "topic": "两层注入只省token/省空间",
+          "source": "漏洞注入-误解1",
+          "correction": "两层注入=认知管理+生命周期控制+经济优化+架构一致性",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V12",
+          "type": "概念混淆",
+          "topic": "Skill与Tool格式差异是本质差异",
+          "source": "漏洞注入-误解2",
+          "correction": "本质差异：Skill=知识注入，Tool=能力执行",
+          "status": "resolved"
+        },
+        {
+          "id": "L05-V13",
+          "type": "反模式曲解",
+          "topic": "容错性设计误认为吞掉错误",
+          "source": "漏洞注入-误解3",
+          "correction": "宽容有边界：高频轻后果兜底，低频重后果暴露",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "两层注入": "L2",
+        "统一入口原则": "L2",
+        "容错性设计": "L2",
+        "渐进式披露": "L2",
+        "Subagent+Skill": "L2"
+      },
+      "expert_positions": {
+        "两层注入必要性": {
+          "position": "两层都要",
+          "reason": "模型自主决策需要知道有哪些，外部触发时列表可选"
+        }
+      },
+      "discussion_notes": {
+        "skill_handler_proposal": "用户提出增加Skill Handler做Skill管理，当前SkillLoader是被动响应",
+        "skill_mutual_exclusion": "用户认为Skill之间应该互斥，避免同时加载相似Skill导致目标偏移"
+      },
+      "review_schedule": [
+        {"date": "2026-04-16", "focus": "两层注入机制+上下文生命周期"},
+        {"date": "2026-04-23", "focus": "容错性设计原则+注意力稀释机制"},
+        {"date": "2026-05-07", "focus": "与L06 Context Compact的关系"}
+      ]
+    },
+    "L06": {
+      "status": "in_progress",
+      "started_at": "2026-04-13T00:00:00Z",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {
+        "三层压缩策略": "L2",
+        "连续性5要素": "L2",
+        "认知层面理解": "L1",
+        "触发机制理解": "L1.5"
+      },
+      "learning_notes": {
+        "method1_stage": "分歧探讨",
+        "user_initial_understanding": "三层时机(大/旧/过长)+三种形式(persist/placeholder/summary)+连续性5要素",
+        "corrections": ["占位符不是触发重调，是提醒存在，全文在磁盘可读"],
+        "gaps": ["注意力稀释概念", "模型主动触发compact"]
+      },
+      "review_schedule": []
+    },
+    "L07": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L08": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L09": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L10": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L11": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L12": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L13": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L14": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L15": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L16": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L17": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L18": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    },
+    "L19": {
+      "status": "pending",
+      "todos_completed": [],
+      "fragility_points": [],
+      "mental_model_levels": {},
+      "review_schedule": []
+    }
+  },
+  "total_study_time_minutes": 660
+}

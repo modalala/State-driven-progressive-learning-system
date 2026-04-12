@@ -1,17 +1,17 @@
 {
   "version": "1.0.0",
-  "active_project": "claude-harness-learning",
+  "active_project": "learn-claude-code",
   "context": {
-    "loaded_resources": [
-      "D:\\lean\\examples\\claude-harness-learning\\resources\\metadata.yaml"
-    ],
-    "loaded_syllabus": "D:\\lean\\examples\\claude-harness-learning\\syllabus.yaml",
-    "loaded_state": "D:\\lean\\examples\\claude-harness-learning\\.learning\\learning-state.json",
-    "session_start": "2026-03-31T09:08:06.547Z",
-    "pending_todo": null
+    "loaded_resources": [],
+    "loaded_syllabus": ".learning\\learn-claude-code\\syllabus.yaml",
+    "loaded_state": ".learning\\learn-claude-code\\.learning\\learning-state.json",
+    "loaded_memory": ".learning\\learn-claude-code\\.learning\\memory-store.json",
+    "session_start": "2026-04-12T15:00:00Z",
+    "pending_todo": null,
+    "current_method": 1,
+    "current_lesson": "L06"
   },
-  "last_switch": null,
+  "last_switch": "2026-04-12T15:00:00Z",
   "switch_history": [],
-  "last_clear": "2026-03-31T09:08:06.530Z",
   "previous_project": null
 }

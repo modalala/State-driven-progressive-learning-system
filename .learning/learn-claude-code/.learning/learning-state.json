@@ -2,15 +2,15 @@
   "version": "1.0.0",
   "project_name": "learn-claude-code",
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L06",
+  "current_lesson": "L07",
   "current_method": 1,
   "method_status": {
-    "mental_model": "in_progress",
+    "mental_model": "completed",
     "structured": "pending",
     "adversarial": "pending"
   },
   "started_at": "2026-04-01T23:30:00Z",
-  "last_session": "2026-04-13",
+  "last_session": "2026-04-14",
   "lessons": {
     "L00": {
       "status": "pending",
@@ -306,29 +306,291 @@
       ]
     },
     "L06": {
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-04-13T00:00:00Z",
-      "todos_completed": [],
-      "fragility_points": [],
+      "completed_at": "2026-04-14T16:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "项目式分析", "对抗测试(边界条件攻击)"],
+      "fragility_points": [
+        {
+          "id": "L06-V04",
+          "type": "设计边界",
+          "topic": "Messages不可变原则未理解",
+          "source": "边界条件攻击-Q3追问4",
+          "correction": "历史消息append-only，不修改不删除；恢复信息追加新消息，不替换历史占位符",
+          "severity": "major",
+          "status": "resolved"
+        },
+        {
+          "id": "L06-V05",
+          "type": "方案冲突",
+          "topic": "Subagent恢复方案触碰设计张力",
+          "source": "边界条件攻击-Q3追问4",
+          "correction": "Messages不可变 vs 信息恢复需要修改历史 → 解决方案：追加新消息而非修改历史",
+          "severity": "minor",
+          "status": "resolved"
+        }
+      ],
       "mental_model_levels": {
         "三层压缩策略": "L2",
         "连续性5要素": "L2",
-        "认知层面理解": "L1",
-        "触发机制理解": "L1.5"
+        "控制权归属": "L2",
+        "压缩本质": "L2",
+        "推理链路优先": "L2",
+        "恢复成本权衡": "L2",
+        "Messages不可变原则": "L2",
+        "压缩顺序原则": "L2",
+        "动态窗口迁移": "L2",
+        "边界意识": "L2"
+      },
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-13",
+          "expert_consensus": [
+            "三层时机：大结果→磁盘、旧结果→占位符、整体过长→摘要",
+            "分工原则：执行层 vs 认知层(模型)",
+            "占位符设计：保留 tool ID + 参数 + 简短描述",
+            "动态窗口：拥塞窗口类比 + 线性衰减收缩",
+            "有损压缩代价：认知偏移风险，需保留部分推理链条"
+          ],
+          "expert_disagreements": [
+            {
+              "topic": "压缩控制权归属",
+              "view_a": "Harness主动管理（阈值检测、自动触发）",
+              "view_b": "模型主动请求（compact工具、时机判断）",
+              "learner_view": "综合方案：Layer 1/2 Harness控制，Layer 3 模型控制"
+            }
+          ],
+          "deep_test_results": {
+            "环境漂移": {"level": "L2", "insight": "MySQL不可重复读类比+加锁/备份权衡"},
+            "占位符权衡": {"level": "L2", "insight": "所有压缩都是有损压缩"},
+            "衰减触发": {"level": "L2", "insight": "拥塞窗口类比+自适应收缩闭环"},
+            "连续性保护": {"level": "L1", "gap": "方案正确，缺少主动提取因果解释"},
+            "推理链条": {"level": "L2", "insight": "保住为什么，丢弃做了什么"}
+          }
+        },
+        "method2_structured": {
+          "status": "completed",
+          "completed_at": "2026-04-14",
+          "sq3r_stage": "completed",
+          "sq3r_progress": {
+            "survey": "completed",
+            "question": "completed",
+            "read": "completed",
+            "recite": "completed",
+            "review": "completed"
+          },
+          "project_stage": "completed",
+          "project_task": "分析auto_compact摘要生成 vs 连续性5要素差距",
+          "project_result": {
+            "covered_elements": ["目标", "已完成动作", "修改文件", "约束", "下一步"],
+            "missing_elements": ["关键决策记录（为什么选这个方案）"],
+            "improvement_proposal": "摘要中加入决策追溯，保住推理链条"
+          }
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-14",
+          "test_type": "边界条件攻击",
+          "rounds": 4,
+          "questions": [
+            {
+              "round": 1,
+              "type": "三层压缩顺序",
+              "question": "三层压缩条件全部满足，执行顺序是什么？",
+              "learner_answer": "先是工具输出大文件触发，然后保留最新三个Tool result，最后总上下文触发compact",
+              "追问": "顺序错了会怎样？",
+              "追问回答": "都无法完成工作",
+              "追问2": "为什么是这个顺序？",
+              "追问2回答": "决策成本低、恢复成本低、影响面小优先压缩",
+              "eval_level": "L2",
+              "eval_note": "提炼通用设计原则，可迁移"
+            },
+            {
+              "round": 2,
+              "type": "压缩后恢复成本",
+              "question": "压缩后用户问前面已读文件内容，会发生什么？",
+              "learner_answer": "模型不能回答，需要重新调用工具。有损压缩但可恢复",
+              "追问": "恢复成本是什么？窗口大小怎么定？",
+              "追问回答": "动态窗口+LRU淘汰，参考拥塞阻塞算法",
+              "追问2": "扩张/收缩信号怎么判断？",
+              "追问2回答": "超出边界判断",
+              "eval_level": "L2",
+              "eval_note": "复用TCP拥塞窗口类比，迁移能力强，主动判断超出边界"
+            },
+            {
+              "round": 3,
+              "type": "占位符改进",
+              "question": "占位符无法提供历史信息，如何改进？",
+              "learner_answer": "增加关键结论参数",
+              "追问": "关键结论谁来提取？",
+              "追问回答": "Subagent在干净上下文里提取",
+              "追问2": "结论存到哪里？",
+              "追问2回答": "存到主Agent的tool_result，Harness替换历史占位符",
+              "追问3": "Messages能被Harness修改吗？",
+              "追问3回答": "确实引发设计张力，不清楚",
+              "eval_level": "L2",
+              "eval_note": "方案创新但触碰设计张力，诚实承认边界"
+            },
+            {
+              "round": 4,
+              "type": "Messages不可变原则",
+              "question": "Messages能被Harness修改吗？",
+              "learner_answer": "不清楚",
+              "correct_answer": "历史消息append-only，恢复信息追加新消息",
+              "eval_level": "L2",
+              "eval_note": "边界暴露后已纠正，这是跨课程通用原则"
+            }
+          ]
+        }
       },
       "learning_notes": {
-        "method1_stage": "分歧探讨",
-        "user_initial_understanding": "三层时机(大/旧/过长)+三种形式(persist/placeholder/summary)+连续性5要素",
-        "corrections": ["占位符不是触发重调，是提醒存在，全文在磁盘可读"],
-        "gaps": ["注意力稀释概念", "模型主动触发compact"]
+        "method1_stage": "completed",
+        "method2_stage": "completed",
+        "method3_stage": "completed",
+        "key_insights": [
+          "决策成本→控制权归属：低成本操作Harness，高成本操作模型",
+          "可恢复损失↔可持续空间：压缩的本质权衡",
+          "摘要内容≠连续性5要素：代码实现有简化差距",
+          "保住为什么，丢弃做了什么：摘要分层策略",
+          "推理链路优先：压缩的本质是认知连续性保护",
+          "压缩顺序原则：决策成本低、恢复成本低、影响面小优先",
+          "动态窗口迁移：复用TCP拥塞窗口类比到文件保留策略",
+          "Messages不可变原则：历史append-only，恢复追加新消息"
+        ],
+        "corrections": [
+          {
+            "topic": "Messages不可变原则",
+            "from": "Harness替换历史占位符",
+            "to": "追加新消息，历史保留原样"
+          }
+        ],
+        "migration_highlights": [
+          {
+            "source": "L06动态窗口",
+            "target": "文件保留策略",
+            "analogy": "TCP拥塞窗口"
+          },
+          {
+            "source": "L04 messages隔离",
+            "target": "Subagent提取结论",
+            "analogy": "干净上下文避免注意力稀释"
+          }
+        ],
+        "boundary_awareness": [
+          {
+            "context": "窗口扩张/收缩信号判断",
+            "judgment": "主动指出超出context compact边界"
+          },
+          {
+            "context": "Messages不可变原则",
+            "judgment": "诚实承认不清楚，接受纠正"
+          }
+        ]
       },
-      "review_schedule": []
+      "review_schedule": [
+        {"date": "2026-04-16", "focus": "三层压缩机制+连续性5要素+Messages不可变原则"},
+        {"date": "2026-04-23", "focus": "控制权归属原则+摘要生成改进+动态窗口迁移"},
+        {"date": "2026-05-07", "focus": "与L07 Permission System的关系+与L09 Memory的关系"}
+      ],
+      "technical_debt": [
+        {
+          "id": "L06-TD-01",
+          "topic": "Messages不可变 vs 信息恢复",
+          "type": "设计张力",
+          "resolved": true,
+          "resolution_note": "追加新消息而非修改历史",
+          "linked_lessons": ["L04", "L06", "L09"],
+          "review_priority": "high"
+        }
+      ]
     },
     "L07": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
-      "mental_model_levels": {},
+      "status": "in_progress",
+      "started_at": "2026-04-14T17:00:00Z",
+      "todos_completed": ["心智模型构建"],
+      "fragility_points": [
+        {
+          "id": "L07-FP-01",
+          "topic": "git status误判为写操作",
+          "source": "深度测试题3",
+          "correction": "git status只查看状态，不修改任何东西，是读操作",
+          "status": "resolved"
+        },
+        {
+          "id": "L07-FP-02",
+          "topic": "Allow规则漏看",
+          "source": "深度测试题1追问3",
+          "correction": "ls命令命中allow规则应直接allow，不需要ask",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "管道顺序原则": "L2",
+        "Bash特殊处理": "L2",
+        "读写分类": "L1",
+        "存储过程边界": "L1",
+        "迁移能力": "L2"
+      },
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-14",
+          "expert_consensus": [
+            "管道原则：Deny → Mode → Allow → Ask，顺序有深刻理由",
+            "Bash特殊原则：bash不是普通文本，需要独立前置检查",
+            "Mode分离：Plan=只读，Auto=安全自动过",
+            "Ask是兜底，不是常态",
+            "权限保护用户免受模型误判"
+          ],
+          "expert_disagreements": [
+            {
+              "topic": "规则位置",
+              "view_a": "配置文件",
+              "view_b": "硬编码",
+              "learner_view": "高敏感硬编码 + 普通规则配置文件（综合立场）"
+            },
+            {
+              "topic": "权限检查层级",
+              "view_a": "Handler层",
+              "view_b": "Harness层",
+              "learner_view": "Harness层统一管理，符合入口统一原则"
+            },
+            {
+              "topic": "拒绝后提示",
+              "view_a": "只返回denied",
+              "view_b": "返回原因+建议",
+              "learner_view": "拒绝计数器 + 3次后建议切换模式"
+            }
+          ],
+          "deep_test_results": {
+            "顺序原理": {"level": "L2", "insight": "Allow命中不ask，直接allow"},
+            "Bash读写分类": {"level": "L1", "gap": "git status误判为写"},
+            "Mode作用": {"level": "L2", "insight": "Plan约束是读写，不是工具名"},
+            "存储过程边界": {"level": "L1", "gap": "需要元数据标注或保守默认"},
+            "迁移能力": {"level": "L2", "insight": "管道架构可迁移到数据库Agent"}
+          }
+        },
+        "method2_structured": {
+          "status": "pending",
+          "sq3r_progress": {
+            "survey": "completed",
+            "question": "pending",
+            "read": "pending",
+            "recite": "pending",
+            "review": "pending"
+          }
+        },
+        "method3_adversarial": {
+          "status": "pending"
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-16", "focus": "管道顺序原理+Bash读写分类纠正"},
+        {"date": "2026-04-23", "focus": "迁移能力验证+存储过程边界"},
+        {"date": "2026-05-07", "focus": "与L08 Hook System的关系"}
+      ]
+    },
       "review_schedule": []
     },
     "L08": {
@@ -416,5 +678,5 @@
       "review_schedule": []
     }
   },
-  "total_study_time_minutes": 660
+  "total_study_time_minutes": 900
 }

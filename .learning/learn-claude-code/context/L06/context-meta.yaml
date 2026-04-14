@@ -1,0 +1,188 @@
+version: "1.0"
+generated_at: "2026-04-14T16:00:00"
+lesson: "L06"
+
+# 状态快照
+state_snapshot:
+  current_lesson: "L06"
+  lesson_status: "completed"
+  overall_progress: 0.35  # 7/20 课程完成
+  sq3r_status:
+    survey: completed
+    question: completed
+    read: completed
+    recite: completed
+    review: completed
+  adversarial_test:
+    type: "边界条件攻击"
+    rounds: 4
+    status: completed
+  mastery_levels:
+    "三层压缩策略": 0.95
+    "连续性5要素": 0.95
+    "控制权归属": 0.95
+    "压缩本质": 0.95
+    "推理链路优先": 0.95
+    "恢复成本权衡": 0.95
+    "Messages不可变原则": 0.90
+    "压缩顺序原则": 0.95
+    "动态窗口迁移": 0.95
+    "边界意识": 0.95
+
+# 心智模型层级
+mental_model_levels:
+  "三层压缩策略": "L2"
+  "连续性5要素": "L2"
+  "控制权归属": "L2"
+  "压缩本质": "L2"
+  "推理链路优先": "L2"
+  "恢复成本权衡": "L2"
+  "Messages不可变原则": "L2"
+  "压缩顺序原则": "L2"
+  "动态窗口迁移": "L2"
+  "边界意识": "L2"
+
+# 脆弱点追踪
+fragile_points:
+  - id: "L06-V01"
+    topic: "摘要边界只引用代码位置"
+    severity: low
+    last_tested: "2026-04-14"
+    pass_rate: 1.0
+    status: resolved
+  - id: "L06-V02"
+    topic: "控制权归属只描述触发机制"
+    severity: low
+    last_tested: "2026-04-14"
+    pass_rate: 1.0
+    status: resolved
+  - id: "L06-V03"
+    topic: "压缩本质误认为不受限制"
+    severity: low
+    last_tested: "2026-04-14"
+    pass_rate: 1.0
+    status: resolved
+  - id: "L06-V04"
+    topic: "Messages不可变原则未理解"
+    type: "设计边界"
+    severity: major
+    source: "边界条件攻击-Q3追问4"
+    last_tested: "2026-04-14"
+    pass_rate: 1.0
+    status: resolved
+    correction: "历史append-only，恢复追加新消息"
+  - id: "L06-V05"
+    topic: "Subagent恢复方案触碰设计张力"
+    type: "方案冲突"
+    severity: minor
+    source: "边界条件攻击-Q3追问4"
+    last_tested: "2026-04-14"
+    pass_rate: 1.0
+    status: resolved
+
+# 学习产出
+learning_outputs:
+  projects:
+    - name: "摘要分析"
+      status: completed
+      deliverables: ["连续性5要素差距识别"]
+    - name: "改进方案"
+      status: completed
+      deliverables: ["决策追溯改进思路"]
+    - name: "边界条件攻击"
+      status: completed
+      deliverables: ["Messages不可变原则纠正", "迁移亮点记录"]
+  key_insights:
+    - "决策成本→控制权归属：低成本Harness，高成本模型"
+    - "可恢复损失↔可持续空间：压缩的本质权衡"
+    - "保住为什么，丢弃做了什么：摘要分层策略"
+    - "推理链路优先：压缩是认知连续性保护"
+    - "压缩顺序原则：决策成本低、恢复成本低、影响面小优先"
+    - "动态窗口迁移：TCP拥塞窗口类比→文件保留策略"
+    - "Messages不可变原则：历史append-only，恢复追加新消息"
+  migration_highlights:
+    - source: "L06动态窗口"
+      target: "文件保留策略"
+      analogy: "TCP拥塞窗口"
+    - source: "L04 messages隔离"
+      target: "Subagent提取结论"
+      analogy: "干净上下文避免注意力稀释"
+  boundary_awareness:
+    - context: "窗口扩张/收缩信号判断"
+      judgment: "主动指出超出context compact边界"
+    - context: "Messages不可变原则"
+      judgment: "诚实承认不清楚，接受纠正"
+
+# 技术债
+technical_debt:
+  - id: "L06-TD-01"
+    topic: "Messages不可变 vs 信息恢复"
+    type: "设计张力"
+    resolved: true
+    resolution_note: "追加新消息而非修改历史"
+    linked_lessons: ["L04", "L06", "L09"]
+    review_priority: high
+
+# 复习计划
+review_schedule:
+  - date: "2026-04-16"
+    focus: "三层压缩机制+连续性5要素+Messages不可变原则迁移验证"
+    status: pending
+  - date: "2026-04-23"
+    focus: "控制权归属原则+摘要生成改进+动态窗口迁移"
+    status: pending
+  - date: "2026-05-07"
+    focus: "与L07 Permission System的关系+与L09 Memory的关系"
+    status: pending
+
+# 变更日志
+changelog:
+  - timestamp: "2026-04-14T15:00:00"
+    changes:
+      - type: create
+        field: "context/L06/*"
+        new_value: "完整Context生成（README, REVIEW, flowchart, mindmap, meta）"
+      - type: update
+        field: "learning-state.lessons.L06.status"
+        old_value: "in_progress"
+        new_value: "completed"
+      - type: update
+        field: "learning-state.method_status"
+        old_value: "mental_model:completed, structured:in_progress, adversarial:pending"
+        new_value: "all completed"
+  - timestamp: "2026-04-14T16:00:00"
+    changes:
+      - type: update
+        field: "state_snapshot.adversarial_test"
+        new_value: "边界条件攻击(4轮)完成"
+      - type: add
+        field: "fragile_points.L06-V04"
+        new_value: "Messages不可变原则未理解(major)"
+      - type: add
+        field: "fragile_points.L06-V05"
+        new_value: "Subagent恢复方案触碰设计张力(minor)"
+      - type: add
+        field: "mental_model_levels.Messages不可变原则"
+        new_value: "L2"
+      - type: add
+        field: "mental_model_levels.压缩顺序原则"
+        new_value: "L2"
+      - type: add
+        field: "mental_model_levels.动态窗口迁移"
+        new_value: "L2"
+      - type: add
+        field: "mental_model_levels.边界意识"
+        new_value: "L2"
+      - type: add
+        field: "learning_outputs.migration_highlights"
+        new_value: "2个迁移亮点记录"
+      - type: add
+        field: "learning_outputs.boundary_awareness"
+        new_value: "2个边界意识体现"
+      - type: add
+        field: "technical_debt.L06-TD-01"
+        new_value: "Messages不可变设计张力(已解决)"
+      - type: update
+        field: "review_schedule[0].focus"
+        old_value: "三层压缩机制+连续性5要素"
+        new_value: "三层压缩机制+连续性5要素+Messages不可变原则迁移验证"

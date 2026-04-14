@@ -20,6 +20,7 @@ metadata:
 | `method2-structured.md` | 方法2详细指南：SQ3R、项目式学习、KISS复盘 |
 | `method3-adversarial.md` | 方法3详细指南：苏格拉底诘问、反事实情境、漏洞注入 |
 | `coach-instructions.md` | 教练行为准则：渐进披露、引导原则、错误处理 |
+| `mental-model-eval.md` | 心智模型评估：层级判定表、差距分析、完整答案模板 |
 | `state-machine.md` | 状态机规则：课程状态定义、转换图、艾宾浩斯复习时间点 |
 | `todo-disclosure.md` | TODO 渐进披露机制：当前 TODO 判定算法、筛选逻辑、展示格式 |
 | `user-resources.md` | 用户资源处理：资源读取、LLM 匹配、引用展示 |

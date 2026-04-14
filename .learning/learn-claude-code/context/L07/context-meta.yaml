@@ -1,0 +1,156 @@
+version: "1.0"
+generated_at: "2026-04-14T18:00:00"
+lesson: "L07"
+
+# 状态快照
+state_snapshot:
+  current_lesson: "L07"
+  lesson_status: "in_progress"
+  overall_progress: 0.37  # 7/19 课程 + L07方法1完成
+  method1_status: completed
+  method2_status: pending
+  method3_status: pending
+  mastery_levels:
+    "管道顺序原则": 0.90
+    "Bash特殊处理": 0.90
+    "读写分类": 0.70
+    "存储过程边界": 0.60
+    "迁移能力": 0.85
+
+# 心智模型层级
+mental_model_levels:
+  "管道顺序原则": "L2"
+  "Bash特殊处理": "L2"
+  "读写分类": "L1"
+  "存储过程边界": "L1"
+  "迁移能力": "L2"
+
+# 脆弱点追踪
+fragile_points:
+  - id: "L07-FP-01"
+    topic: "git status误判为写操作"
+    source: "深度测试题3"
+    severity: medium
+    last_tested: "2026-04-14"
+    pass_rate: 0.0
+    status: resolved
+    correction: "git status只查看状态，不修改任何东西，是读操作"
+  - id: "L07-FP-02"
+    topic: "Allow规则漏看"
+    source: "深度测试题1追问3"
+    severity: medium
+    last_tested: "2026-04-14"
+    pass_rate: 0.0
+    status: resolved
+    correction: "Allow命中应直接allow，不需要ask"
+
+# 专家分歧记录
+expert_disagreements:
+  - topic: "规则位置"
+    view_a: "配置文件"
+    view_b: "硬编码"
+    learner_view: "高敏感硬编码 + 普通规则配置文件（综合立场）"
+  - topic: "权限检查层级"
+    view_a: "Handler层"
+    view_b: "Harness层"
+    learner_view: "Harness层统一管理，符合入口统一原则"
+  - topic: "拒绝后提示"
+    view_a: "只返回denied"
+    view_b: "返回原因+建议"
+    learner_view: "拒绝计数器 + 3次后建议切换模式"
+
+# 深度测试结果
+deep_test_results:
+  "顺序原理":
+    level: "L2"
+    insight: "Allow命中不ask，直接allow"
+  "Bash读写分类":
+    level: "L1"
+    gap: "git status误判为写"
+  "Mode作用":
+    level: "L2"
+    insight: "Plan约束是读写，不是工具名"
+  "存储过程边界":
+    level: "L1"
+    gap: "需要元数据标注或保守默认"
+  "迁移能力":
+    level: "L2"
+    insight: "管道架构可迁移到数据库Agent"
+
+# Git命令读写分类表（知识补充）
+git_command_classification:
+  read_operations:
+    - "git status"
+    - "git log"
+    - "git diff"
+  write_operations:
+    - "git add"
+    - "git commit"
+    - "git push"
+    - "git checkout"
+    - "git merge"
+
+# 迁移亮点
+migration_highlights:
+  - source: "L07 Bash特殊处理"
+    target: "数据库Agent SQL Validator"
+    analogy: "DELETE TABLE/TRUNCATE前置deny"
+  - source: "L07 三种模式"
+    target: "数据库Agent模式设计"
+    analogy: "Plan=SELECT only，Auto=safe queries"
+
+# 学习产出
+learning_outputs:
+  expert_consensus:
+    - "管道原则：Deny → Mode → Allow → Ask，顺序有深刻理由"
+    - "Bash特殊原则：bash不是普通文本，需要独立前置检查"
+    - "Mode分离：Plan=只读，Auto=安全自动过"
+    - "Ask是兜底，不是常态"
+    - "权限保护用户免受模型误判"
+  key_insights:
+    - "Deny不应该交给模式决定——明显危险必须优先挡掉"
+    - "判断依据是是否修改文件系统状态，不是工具名"
+    - "存储过程需要元数据标注或保守默认"
+
+# 待完成
+pending_tasks:
+  - method: "method2_structured"
+    status: "pending"
+    sq3r_progress:
+      survey: completed
+      question: pending
+      read: pending
+      recite: pending
+      review: pending
+  - method: "method3_adversarial"
+    status: "pending"
+
+# 复习计划
+review_schedule:
+  - date: "2026-04-16"
+    focus: "管道顺序原理+Bash读写分类纠正"
+    status: pending
+  - date: "2026-04-23"
+    focus: "迁移能力验证+存储过程边界"
+    status: pending
+  - date: "2026-05-07"
+    focus: "与L08 Hook System的关系"
+    status: pending
+
+# 变更日志
+changelog:
+  - timestamp: "2026-04-14T18:00:00"
+    changes:
+      - type: create
+        field: "context/L07/*"
+        new_value: "完整Context生成（README, flowchart, mindmap, meta）"
+      - type: update
+        field: "learning-state.lessons.L07.method_progress.method1_mental_model"
+        old_value: "in_progress"
+        new_value: "completed"
+      - type: add
+        field: "fragile_points.L07-FP-01"
+        new_value: "git status误判为写操作(medium)"
+      - type: add
+        field: "fragile_points.L07-FP-02"
+        new_value: "Allow规则漏看(medium)"

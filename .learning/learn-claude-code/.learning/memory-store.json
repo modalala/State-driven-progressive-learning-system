@@ -35,7 +35,20 @@
     "dict_cover_implicit": "字典覆盖是隐性行为：self.skills[name]=...是Python字典机制，不是SkillLoader主动设计。应显式报错而非静默覆盖。",
     "sorted_determinism": "确定性优于随机性：sorted(skills_dir.rglob('SKILL.md'))保证每次启动行为一致，随机顺序会导致不确定性。",
     "skill_handler_proposal": "Skill Handler架构改进：主动管理Skill注册，检测同名冲突显式报错。区别于SkillLoader的被动响应。",
-    "skill_mutual_exclusion": "Skill互斥机制：避免同时加载相似Skill导致注意力干扰。实现方式：Harness层限制、描述层区分、功能域分组。"
+    "skill_mutual_exclusion": "Skill互斥机制：避免同时加载相似Skill导致注意力干扰。实现方式：Harness层限制、描述层区分、功能域分组。",
+    "compact_three_layer": "三层压缩策略：Layer1 micro_compact（每轮静默，保留最近3个工具结果）→ Layer2 auto_compact（token>50000触发，保存全文+生成摘要）→ Layer3 compact工具（模型主动调用）。",
+    "compact_control_principle": "压缩控制权归属原则：决策成本低→Harness控制（固定规则、阈值检测），决策成本高→模型控制（时机判断、上下文理解）。",
+    "compact_essence": "压缩本质：用可恢复的损失换取可持续的空间。不是'不受限制'，而是'有限容量内保持连续性'。",
+    "continuity_5_elements": "连续性5要素：目标、已完成、已修改文件、关键决定、下一步。摘要必须保住这些才能让模型继续工作。",
+    "summary_gap": "摘要实现差距：代码要求3点（已完成、当前状态、决定），缺少'已修改文件'和'下一步'。设计简化vs理论完整的权衡。",
+    "preserve_read_file": "read_file特殊保护：不压缩read_file结果，因为重新执行成本高（文件可能被修改），且作为参考材料频繁需要。",
+    "placeholder_design": "占位符设计：[Previous: used {tool_name}]，保留工具名让模型知道发生了什么，全文在磁盘可恢复。",
+    "dynamic_window_congestion": "动态窗口类比TCP拥塞窗口：扩张（恢复历史次数超阈值）→ 收缩（连续N次工具调用无恢复）→ 自适应平衡。",
+    "summary_layered_strategy": "摘要分层策略：保住'为什么'（推理骨架），丢弃'做了什么'（推理细节）。模型可以从骨架重建推理。",
+    "compact_order_principle": "压缩顺序原则：决策成本低、恢复成本低、影响面小的压缩优先。大结果→磁盘（立即），旧结果→占位符（静默），整体过长→摘要（阈值触发）。",
+    "messages_immutable": "Messages不可变原则：历史消息append-only，只能追加新消息，不能修改历史。恢复信息通过追加新消息实现，不替换历史占位符。这是跨课程通用原则（L04 Subagent、L06 Compact、L09 Memory）。",
+    "recovery_append_strategy": "恢复追加策略：历史占位符保留原样（不可变），新执行结果追加到messages末尾。模型自己把'占位符'和'新结果'关联起来。Harness不替模型做认知层判断。",
+    "dynamic_window_file_retention": "动态窗口文件保留策略：复用TCP拥塞窗口类比，保留已读文件前N个，牺牲上下文空间换取恢复成本降低。窗口大小动态调整，基于恢复频率信号。"
   },
   "expert_consensus": [
     "Agent loop 是所有机制的基石",
@@ -67,7 +80,17 @@
     "第一层可放弃：第二层是本体，第一层是导航辅助",
     "容错性设计本质：宽容有边界——高频轻后果兜底，低频重后果暴露",
     "Skill vs Tool本质差异：职责不同（知识注入vs能力执行），机制相同（dispatch map）",
-    "messages隔离是物理约束，Skill共享池技术上不可行"
+    "messages隔离是物理约束，共享池技术上不可行",
+    "三层压缩时机：大结果→磁盘、旧结果→占位符、整体过长→摘要",
+    "决策成本→控制权归属：低成本操作Harness，高成本操作模型",
+    "压缩本质是'可恢复损失↔可持续空间'，不是'不受限制'",
+    "所有压缩都是有损压缩，但损失可恢复",
+    "摘要分层：保住'为什么'，丢弃'做了什么'",
+    "占位符是'指针'，不是'副本'——只指向，不包含",
+    "read_file特殊保护：重新执行有环境漂移风险，需保留原结果",
+    "压缩顺序原则：决策成本低、恢复成本低、影响面小优先压缩",
+    "Messages不可变原则：历史append-only，恢复追加新消息",
+    "动态窗口迁移：TCP拥塞窗口类比可应用到文件保留策略"
   ],
   "expert_disagreements": [
     {
@@ -93,6 +116,12 @@
       "view_a": "两层都要，模型自主决策需要知道有哪些",
       "view_b": "只在tool_result，外部触发时列表多余",
       "learner_view": "两层都要，但第一层必要性取决于决策权归属"
+    },
+    {
+      "topic": "压缩控制权归属",
+      "view_a": "Harness主动管理（阈值检测、自动触发）",
+      "view_b": "模型主动请求（compact工具、时机判断）",
+      "learner_view": "综合方案：Layer 1/2 Harness控制，Layer 3 模型控制"
     }
   ],
   "fragility_log": [
@@ -214,6 +243,47 @@
       "topic": "容错性误认为吞掉错误",
       "correction": "宽容有边界，低频重后果会暴露",
       "resolved": true
+    },
+    {
+      "lesson": "L06",
+      "id": "L06-V01",
+      "topic": "摘要边界只引用代码位置",
+      "correction": "需要对比代码vs理论差距，识别缺失要素",
+      "resolved": true
+    },
+    {
+      "lesson": "L06",
+      "id": "L06-V02",
+      "topic": "控制权归属只描述触发机制",
+      "correction": "需要提炼设计原则：决策成本→控制权",
+      "resolved": true
+    },
+    {
+      "lesson": "L06",
+      "id": "L06-V03",
+      "topic": "压缩本质误认为不受限制",
+      "correction": "正确理解：有限容量内保持连续性",
+      "resolved": true
+    },
+    {
+      "lesson": "L06",
+      "id": "L06-V04",
+      "topic": "Messages不可变原则未理解",
+      "type": "设计边界",
+      "severity": "major",
+      "source": "边界条件攻击-Q3追问4",
+      "correction": "历史消息append-only，恢复信息追加新消息",
+      "resolved": true
+    },
+    {
+      "lesson": "L06",
+      "id": "L06-V05",
+      "topic": "Subagent恢复方案触碰设计张力",
+      "type": "方案冲突",
+      "severity": "minor",
+      "source": "边界条件攻击-Q3追问4",
+      "correction": "追加新消息而非修改历史占位符",
+      "resolved": true
     }
   ],
   "insights": [
@@ -260,7 +330,18 @@
     "架构一致性>短期省钱：项目成长后无需重构",
     "垃圾分类类比优秀：分类宣传单（导航）+垃圾桶说明（内容）→避免扔错桶",
     "Skill Handler架构改进：主动管理注册，检测同名冲突，显式报错",
-    "Skill互斥机制：避免同时加载相似Skill导致注意力干扰"
+    "Skill互斥机制：避免同时加载相似Skill导致注意力干扰",
+    "环境漂移问题：重新执行工具可能读到修改后的内容，类似MySQL不可重复读",
+    "动态窗口类比TCP拥塞窗口：扩张有触发，收缩有衰减",
+    "占位符是'指针'不是'副本'：只指向不包含，全文在磁盘",
+    "read_file特殊保护：重新执行有环境漂移风险+作为参考材料频繁需要",
+    "摘要分层策略：保住'为什么'（推理骨架），丢弃'做了什么'（推理细节）",
+    "决策成本→控制权归属：低成本（固定规则）→Harness，高成本（时机判断）→模型",
+    "压缩顺序原则：决策成本低、恢复成本低、影响面小优先压缩",
+    "动态窗口迁移：TCP拥塞窗口类比→文件保留策略，牺牲空间换恢复成本",
+    "Messages不可变原则：历史append-only，恢复追加新消息，模型自己关联历史和新结果",
+    "Subagent恢复方案：干净上下文提取结论（复用L04），但结论追加新消息而非修改历史",
+    "边界意识体现：主动判断超出边界（窗口扩张/收缩信号），诚实承认不清楚（Messages不可变）"
   ],
   "session_history": [
     {
@@ -315,6 +396,40 @@
           "容错性设计：宽容有边界，高频轻后果兜底，低频重后果暴露"
         ]
       }
+    },
+    {
+      "session_id": "sess-006",
+      "lesson_id": "L06",
+      "started_at": "2026-04-13T00:00:00Z",
+      "ended_at": "2026-04-14T16:00:00Z",
+      "duration_minutes": 60,
+      "todos_completed": 4,
+      "status": "completed",
+      "details": {
+        "method1_status": "completed",
+        "method2_status": "completed",
+        "method3_status": "completed (边界条件攻击)",
+        "adversarial_test_type": "边界条件攻击",
+        "adversarial_rounds": 4,
+        "fragility_points_found": 2,
+        "key_insights": [
+          "压缩顺序原则：决策成本低、恢复成本低、影响面小优先",
+          "动态窗口迁移：TCP拥塞窗口类比→文件保留策略",
+          "Messages不可变原则：历史append-only，恢复追加新消息",
+          "边界意识：主动判断超出边界，诚实承认不清楚"
+        ],
+        "migration_highlights": [
+          "L06动态窗口 → 文件保留策略（TCP拥塞窗口类比）",
+          "L04 messages隔离 → Subagent提取结论（干净上下文）"
+        ],
+        "corrections": [
+          {
+            "topic": "Messages不可变原则",
+            "from": "Harness替换历史占位符",
+            "to": "追加新消息，历史保留原样"
+          }
+        ]
+      }
     }
   ],
   "kiss_reviews": [
@@ -328,6 +443,23 @@
       "improve": [],
       "start": [
         "复习时对比其他系统的容错性设计"
+      ],
+      "stop": []
+    },
+    {
+      "lesson_id": "L06",
+      "date": "2026-04-14",
+      "keep": [
+        "用MySQL不可重复读类比环境漂移问题",
+        "复述阶段纠正理解偏差效果显著（L0→L2，L1→L2）",
+        "边界条件攻击中主动判断超出边界",
+        "诚实承认不清楚，接受纠正"
+      ],
+      "improve": [
+        "Read阶段回答需更深入，不只是引用代码位置"
+      ],
+      "start": [
+        "复习Messages不可变原则，验证迁移到L04/L09"
       ],
       "stop": []
     }

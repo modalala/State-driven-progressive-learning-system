@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "domain": "Claude Code Harness 工程",
+  "current_lesson": "L09",
+  "last_updated": "2026-04-17T00:00:00",
+  "overall_progress": 0.42,
+  "lessons": {
+    "L00": {
+      "status": "completed",
+      "completed_at": null,
+      "optional": true
+    },
+    "L01": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L02": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L03": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L04": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L05": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L06": {
+      "status": "completed",
+      "completed_at": null,
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L07": {
+      "status": "completed",
+      "completed_at": "2026-04-17T00:00:00",
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L08": {
+      "status": "completed",
+      "completed_at": "2026-04-17T00:00:00",
+      "method_progress": {
+        "method1_mental_model": "completed",
+        "method2_structured": "completed",
+        "method3_adversarial": "completed"
+      }
+    },
+    "L09": {
+      "status": "pending",
+      "prerequisites": ["L08"]
+    },
+    "L10": {
+      "status": "locked",
+      "prerequisites": ["L09"]
+    }
+  },
+  "fragile_points": [
+    {
+      "id": "L07-FP-01",
+      "lesson": "L07",
+      "topic": "git status误判为写操作",
+      "status": "resolved"
+    },
+    {
+      "id": "L07-FP-02",
+      "lesson": "L07",
+      "topic": "Allow规则漏看",
+      "status": "resolved"
+    }
+  ],
+  "mastery_summary": {
+    "Agent循环": 0.90,
+    "Tool Use": 0.90,
+    "TodoWrite": 0.85,
+    "Subagent": 0.85,
+    "Skill Loading": 0.85,
+    "Context Compact": 0.85,
+    "Permission System": 0.90,
+    "Hook System": 0.90
+  },
+  "next_lesson": "L09"
+}

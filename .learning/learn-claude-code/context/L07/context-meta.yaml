@@ -4,12 +4,12 @@ lesson: "L07"
 
 # 状态快照
 state_snapshot:
-  current_lesson: "L07"
-  lesson_status: "in_progress"
-  overall_progress: 0.37  # 7/19 课程 + L07方法1完成
+  current_lesson: "L08"
+  lesson_status: "completed"
+  overall_progress: 0.42  # 8/19 课程完成
   method1_status: completed
-  method2_status: pending
-  method3_status: pending
+  method2_status: completed
+  method3_status: completed
   mastery_levels:
     "管道顺序原则": 0.90
     "Bash特殊处理": 0.90
@@ -113,22 +113,11 @@ learning_outputs:
     - "存储过程需要元数据标注或保守默认"
 
 # 待完成
-pending_tasks:
-  - method: "method2_structured"
-    status: "pending"
-    sq3r_progress:
-      survey: completed
-      question: pending
-      read: pending
-      recite: pending
-      review: pending
-  - method: "method3_adversarial"
-    status: "pending"
+pending_tasks: []
 
-# 复习计划
 review_schedule:
-  - date: "2026-04-16"
-    focus: "管道顺序原理+Bash读写分类纠正"
+  - date: "2026-04-19"
+    focus: "管道顺序原理+Bash读写分类复习"
     status: pending
   - date: "2026-04-23"
     focus: "迁移能力验证+存储过程边界"
@@ -154,3 +143,16 @@ changelog:
       - type: add
         field: "fragile_points.L07-FP-02"
         new_value: "Allow规则漏看(medium)"
+  - timestamp: "2026-04-17T00:00:00"
+    changes:
+      - type: update
+        field: "L07 lesson_status"
+        old_value: "in_progress"
+        new_value: "completed"
+      - type: update
+        field: "method2_status/method3_status"
+        old_value: "pending"
+        new_value: "completed"
+      - type: create
+        field: "learning-state.json"
+        new_value: "完整学习状态文件"

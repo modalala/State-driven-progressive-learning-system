@@ -1,0 +1,61 @@
+version: "1.0"
+generated_at: "2026-04-17T00:00:00"
+lesson: "L08"
+
+state_snapshot:
+  current_lesson: "L08"
+  lesson_status: "completed"
+  overall_progress: 0.47  # 8/19 课程完成
+  method1_status: completed
+  method2_status: completed
+  method3_status: completed
+  mastery_levels:
+    "Hook管道": 0.90
+    "三种事件": 0.90
+    "统一返回协议": 0.90
+    "HookRunner抽象": 0.85
+    "扩展机制": 0.85
+
+mental_model_levels:
+  "Hook管道": "L2"
+  "三种事件": "L2"
+  "统一返回协议": "L2"
+  "HookRunner抽象": "L2"
+  "扩展机制": "L2"
+
+expert_consensus:
+  - "Hook 不是主循环替代品，是主循环在固定时机对外发出的调用"
+  - "统一返回协议：先学统一语义，再学事件细化"
+  - "最小事件集：SessionStart + PreToolUse + PostToolUse"
+  - "事件名 + payload + 返回结果：Hook 最小三样"
+
+key_insights:
+  - "Permission 解决允许/拒绝，Hook 解决扩展/观察"
+  - "Hook 在 Permission 之后执行"
+  - "教学版用统一 0/1/2 返回约定"
+
+common_errors:
+  - "把 Hook 当成到处插 if/else"
+  - "返回类型混乱"
+  - "一开始做全所有事件"
+
+review_schedule:
+  - date: "2026-04-19"
+    focus: "Hook与Permission协作关系"
+    status: pending
+  - date: "2026-04-24"
+    focus: "Hook事件扩展方向"
+    status: pending
+  - date: "2026-05-01"
+    focus: "与L09 Memory System的关系"
+    status: pending
+
+changelog:
+  - timestamp: "2026-04-17T00:00:00"
+    changes:
+      - type: create
+        field: "context/L08/*"
+        new_value: "完整Context生成"
+      - type: update
+        field: "L08 lesson_status"
+        new_value: "completed"

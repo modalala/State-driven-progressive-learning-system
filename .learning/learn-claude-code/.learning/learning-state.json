@@ -2,15 +2,15 @@
   "version": "1.0.0",
   "project_name": "learn-claude-code",
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L07",
+  "current_lesson": "L11",
   "current_method": 1,
   "method_status": {
-    "mental_model": "completed",
+    "mental_model": "in_progress",
     "structured": "pending",
     "adversarial": "pending"
   },
   "started_at": "2026-04-01T23:30:00Z",
-  "last_session": "2026-04-14",
+  "last_session": "2026-04-19",
   "lessons": {
     "L00": {
       "status": "pending",
@@ -506,9 +506,10 @@
       ]
     },
     "L07": {
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-04-14T17:00:00Z",
-      "todos_completed": ["心智模型构建"],
+      "completed_at": "2026-04-18T12:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试"],
       "fragility_points": [
         {
           "id": "L07-FP-01",
@@ -523,14 +524,23 @@
           "source": "深度测试题1追问3",
           "correction": "ls命令命中allow规则应直接allow，不需要ask",
           "status": "resolved"
+        },
+        {
+          "id": "L07-FP-03",
+          "topic": "Mode层按工具名而非内容判断",
+          "source": "对抗问题2",
+          "correction": "plan模式下bash ls被拒绝，因为WRITE_TOOLS包含bash；应分析命令实际操作性质",
+          "status": "resolved"
         }
       ],
       "mental_model_levels": {
         "管道顺序原则": "L2",
         "Bash特殊处理": "L2",
-        "读写分类": "L1",
+        "读写分类": "L2",
         "存储过程边界": "L1",
-        "迁移能力": "L2"
+        "迁移能力": "L2",
+        "Allow规则优先级": "L2",
+        "reason设计": "L2"
       },
       "method_progress": {
         "method1_mental_model": {
@@ -565,60 +575,388 @@
           ],
           "deep_test_results": {
             "顺序原理": {"level": "L2", "insight": "Allow命中不ask，直接allow"},
-            "Bash读写分类": {"level": "L1", "gap": "git status误判为写"},
+            "Bash读写分类": {"level": "L2", "insight": "git status是读，已纠正"},
             "Mode作用": {"level": "L2", "insight": "Plan约束是读写，不是工具名"},
             "存储过程边界": {"level": "L1", "gap": "需要元数据标注或保守默认"},
             "迁移能力": {"level": "L2", "insight": "管道架构可迁移到数据库Agent"}
           }
         },
         "method2_structured": {
-          "status": "pending",
+          "status": "completed",
+          "completed_at": "2026-04-18",
           "sq3r_progress": {
             "survey": "completed",
-            "question": "pending",
-            "read": "pending",
-            "recite": "pending",
-            "review": "pending"
+            "question": "completed",
+            "read": "completed",
+            "recite": "completed",
+            "review": "completed"
           }
         },
         "method3_adversarial": {
-          "status": "pending"
+          "status": "completed",
+          "completed_at": "2026-04-18",
+          "test_type": "快速对抗测试",
+          "questions": [
+            {
+              "round": 1,
+              "type": "Bash检查顺序",
+              "question": "Bash Security Validator是Step 0，比Deny规则还早，和文档矛盾吗？",
+              "learner_answer": "不矛盾，Bash Security Validator本质是Deny层一部分，代码单独提取是为了清晰度",
+              "eval_level": "L2",
+              "eval_note": "理解代码与文档的映射关系"
+            },
+            {
+              "round": 2,
+              "type": "Mode层判断缺陷",
+              "question": "plan模式下bash ls会被拒绝吗？",
+              "learner_answer": "会，代码按工具名判断，WRITE_TOOLS包含bash；应该按内容判断实际操作性质",
+              "eval_level": "L2",
+              "eval_note": "发现代码实现缺陷，提出改进方案"
+            },
+            {
+              "round": 3,
+              "type": "ask逻辑合理性",
+              "question": "Bash Validator非severe模式直接返回ask，绕过Deny/Allow规则，合理吗？",
+              "learner_answer": "合理，shell_metachar不是绝对危险但需用户确认，ask比一刀切deny更灵活",
+              "eval_level": "L2",
+              "eval_note": "理解设计权衡"
+            },
+            {
+              "round": 4,
+              "type": "拒绝计数器范围",
+              "question": "拒绝计数器只在ask_user拒绝时增加，不在管道deny时增加，合理吗？",
+              "learner_answer": "有缺陷，应该在任何deny时都增加计数器",
+              "eval_level": "L2",
+              "eval_note": "发现实现漏洞，提出改进建议"
+            }
+          ]
         }
       },
       "review_schedule": [
-        {"date": "2026-04-16", "focus": "管道顺序原理+Bash读写分类纠正"},
-        {"date": "2026-04-23", "focus": "迁移能力验证+存储过程边界"},
-        {"date": "2026-05-07", "focus": "与L08 Hook System的关系"}
+        {"date": "2026-04-20", "focus": "管道顺序+Bash特殊处理+Mode判断缺陷"},
+        {"date": "2026-04-25", "focus": "拒绝计数器改进+与L08 Hook System的关系"},
+        {"date": "2026-05-09", "focus": "迁移能力验证"}
       ]
     },
       "review_schedule": []
     },
     "L08": {
-      "status": "pending",
-      "todos_completed": [],
+      "status": "completed",
+      "started_at": "2026-04-18T12:00:00Z",
+      "completed_at": "2026-04-18T13:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试"],
       "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
+      "mental_model_levels": {
+        "Hook本质": "L2",
+        "三个事件": "L2",
+        "退出码约定": "L2",
+        "HookRunner": "L2",
+        "工作区信任": "L2",
+        "Hook与Permission区别": "L2"
+      },
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-18",
+          "expert_consensus": [
+            "Hook不改主循环，是预留插口",
+            "三个事件足够建立最小系统",
+            "退出码0/1/2是教学版统一约定",
+            "HookRunner是主循环与hook的边界",
+            "工作区信任是安全防护"
+          ],
+          "deep_test_results": {
+            "Hook本质": {"level": "L2", "insight": "扩展点，不是替代品"},
+            "退出码翻译": {"level": "L2", "insight": "hook脚本退出码→HookManager blocked/messages"},
+            "matcher过滤": {"level": "L2", "insight": "工具名过滤器，不匹配则跳过"},
+            "stdout扩展": {"level": "L2", "insight": "Hook可修改tool_input，超出文档约定"},
+            "PostToolUse限制": {"level": "L2", "insight": "只能注入，不能阻止"},
+            "信任标记": {"level": "L2", "insight": "防止恶意hook在非信任工作区执行"}
+          }
+        },
+        "method2_structured": {
+          "status": "completed",
+          "completed_at": "2026-04-18",
+          "sq3r_progress": {
+            "survey": "completed",
+            "question": "completed",
+            "read": "completed",
+            "recite": "completed",
+            "review": "completed"
+          }
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-18",
+          "test_type": "快速对抗测试",
+          "questions": [
+            {
+              "round": 1,
+              "type": "退出码vs返回结构",
+              "question": "文档说退出码0/1/2，代码返回blocked/messages，矛盾吗？",
+              "learner_answer": "不矛盾，退出码是hook脚本约定，HookManager翻译成blocked/messages",
+              "eval_level": "L2"
+            },
+            {
+              "round": 2,
+              "type": "matcher作用",
+              "question": "matcher不匹配时hook会执行吗？",
+              "learner_answer": "不会，跳过这个hook，继续下一个",
+              "eval_level": "L2"
+            },
+            {
+              "round": 3,
+              "type": "stdout扩展",
+              "question": "Hook可修改tool_input，是设计问题吗？",
+              "learner_answer": "不是问题，是扩展能力，超出文档约定的更强功能",
+              "eval_level": "L2"
+            },
+            {
+              "round": 4,
+              "type": "PostToolUse阻止",
+              "question": "PostToolUse能阻止工具吗？",
+              "learner_answer": "不能，工具已执行，只能注入消息",
+              "eval_level": "L2"
+            },
+            {
+              "round": 5,
+              "type": "工作区信任",
+              "question": "TRUST_MARKER的意义？",
+              "learner_answer": "安全防护，防止恶意hook在非信任工作区执行",
+              "eval_level": "L2"
+            }
+          ]
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-20", "focus": "Hook vs Permission区别+stdout扩展能力"},
+        {"date": "2026-04-25", "focus": "与L09 Memory System的关系"},
+        {"date": "2026-05-09", "focus": "工作区信任机制迁移"}
+      ]
     },
     "L09": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
-    },
+      "status": "completed",
+      "started_at": "2026-04-18T14:00:00Z",
+      "completed_at": "2026-04-19T16:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试"],
+      "method_status": {
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
+      },
+      "current_method": 3,
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-18",
+          "expert_consensus": [
+            "Memory只存跨会话有价值且不易重新推导的信息",
+            "四种类型：user(个人偏好)/feedback(正负反馈)/project(团队约定)/reference(外部资源)",
+            "不存：代码结构、当前任务、密钥",
+            "漂移风险：memory记录曾经成立的事实，使用时要验证当前状态",
+            "Dream Consolidator 7 gates防止垃圾堆化"
+          ],
+          "deep_test_results": {
+            "MySQL不该存": {"level": "L2", "insight": "从代码可读，换了会漂移"},
+            "7 gates分类": {"level": "L2", "insight": "功能开关+频率控制+并发安全"}
+          }
+        },
+        "method2_structured": {
+          "status": "completed",
+          "completed_at": "2026-04-19",
+          "sq3r_progress": {
+            "survey": "completed",
+            "question": "completed",
+            "read": "completed",
+            "recite": "completed",
+            "review": "completed"
+          },
+          "code_verification": {
+            "Q1_存储结构": {"verified": true, "insight": "索引给人看，注入从字典读取"},
+            "Q2_save_memory时机": {"verified": true, "insight": "同步更新：写文件→更新字典→重建索引→返回"},
+            "Q3_Memory位置": {"verified": true, "insight": "system参数，不在messages[]，不被Compact"}
+          },
+          "recite_verified": {
+            "memories字典": "name -> {description, type, content, file}",
+            "save_memory流程": "写文件 → 更新字典 → 重建索引 → 返回",
+            "注入流程": "load_all → build_system_prompt → system参数"
+          }
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-19",
+          "test_type": "反事实情境+漏洞注入",
+          "questions": [
+            {
+              "round": 1,
+              "type": "反事实-索引200行",
+              "question": "如果Memory没有200行索引限制，会发生什么？",
+              "learner_answer": "索引过长影响人阅读效率，但不影响注入量。load_memory_prompt从字典读取，不依赖索引。真正限制注入量的是Dream Consolidator整合机制。",
+              "eval_level": "L2",
+              "eval_note": "理解索引给人看，注入从字典读取"
+            },
+            {
+              "round": 2,
+              "type": "反事实-异步更新",
+              "question": "如果save_memory是异步更新，用户保存5个memory后立刻问模型能回答吗？",
+              "learner_answer": "如果异步则不能，需等下一轮加载。但实际是同步更新：save_memory在返回前完成三步，下一轮build_system_prompt直接从字典读取。",
+              "eval_level": "L2",
+              "eval_note": "理解同步机制，代码验证确认"
+            },
+            {
+              "round": 3,
+              "type": "反事实-Memory位置",
+              "question": "如果Memory放在Messages[]中，Context Compact会压缩Memory吗？",
+              "learner_answer": "会。Messages[]中的tool_result会被Compact压缩。但实际Memory在System prompt中（system参数），每轮新建，不被Compact影响。",
+              "eval_level": "L2",
+              "eval_note": "理解位置差异，不被压缩"
+            },
+            {
+              "round": 4,
+              "type": "漏洞注入",
+              "question": "'记住src/auth.py是认证模块入口'应该存进memory，这属于reference类型。请识别错误。",
+              "learner_answer": "三处错误：1)文件路径可从代码看出不该存；2)改名会漂移；3)Reference是外部资源指针，不是代码内部路径。",
+              "eval_level": "L2",
+              "eval_note": "正确识别概念错误、边界错误、类型错误"
+            }
+          ]
+        }
+      },
     "L10": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
+      "status": "completed",
+      "started_at": "2026-04-19T19:00:00Z",
+      "completed_at": "2026-04-19T19:30:00Z",
+      "todos_completed": ["心智模型构建", "mental-model-eval"],
+      "current_method": 1,
+      "method_status": {
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
+      },
+      "mental_model_levels": {
+        "六层Section结构": "L2",
+        "DYNAMIC_BOUNDARY作用": "L2",
+        "CLAUDE.md加载顺序": "L2",
+        "System Reminder边界": "L2",
+        "静态vs动态分离": "L2",
+        "缓存机制理解": "L2",
+        "Skill metadata两层注入": "L2",
+        "Memory section位置": "L2"
+      },
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-19",
+          "expert_consensus": [
+            "System Prompt是pipeline不是字符串",
+            "六层Section：Core→Tools→Skills→Memory→CLAUDE.md→Dynamic",
+            "DYNAMIC_BOUNDARY分隔静态和动态，静态可缓存",
+            "CLAUDE.md链：User global→Project root→Subdirectory",
+            "System Reminder用user-role，不混入system prompt"
+          ],
+          "mental_model_eval": {
+            "Q1_Section分离意义": {"level": "L2", "insight": "单一来源+单一职责+便于缓存+便于测试"},
+            "Q2_无DYNAMIC_BOUNDARY后果": {"level": "L2", "insight": "静态无法缓存，每轮重建增加成本"},
+            "Q3_System Reminder位置": {"level": "L2", "insight": "user-role保持缓存+每轮更新+区分指令提醒"},
+            "Q4_CLAUDE.md顺序反转": {"level": "L2", "insight": "局部被全局淹没，团队约定被个人偏好覆盖"},
+            "Q5_Skill metadata只Layer1": {"level": "L2", "insight": "L05两层注入：Listing知道有哪些，内容按需加载"},
+            "Q6_Memory section位置": {"level": "L2", "insight": "Section4，静态可缓存，来自.memory/目录"}
+          }
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-20", "focus": "六层Section+缓存机制"},
+        {"date": "2026-04-25", "focus": "与L05 Skill Loading+L09 Memory的关系"},
+        {"date": "2026-05-09", "focus": "迁移到其他Agent系统"}
+      ]
+    },
+              "learner_level": "L2",
+              "insight": "两层注入：Listing让模型知道有哪些，内容按需加载（L05原理）"
+            },
+            {
+              "id": "SQ3R-Q4",
+              "topic": "System Reminder为何user-role",
+              "learner_level": "L2",
+              "insight": "短生命周期提醒不混入长生命周期指令，不影响缓存"
+            },
+            {
+              "id": "SQ3R-Q5",
+              "topic": "Memory section与L09关系",
+              "learner_level": "L2",
+              "insight": "Section 4，是System Prompt组成部分，静态可缓存"
+            }
+          ]
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-19",
+          "test_type": "反事实情境+漏洞注入",
+          "questions": [
+            {
+              "round": 1,
+              "type": "反事实-无DYNAMIC_BOUNDARY",
+              "question": "如果没有DYNAMIC_BOUNDARY分隔静态和动态，会发生什么？",
+              "learner_answer": "静态部分无法跨轮缓存，每轮重建整个system prompt增加成本。Cache miss导致重复发送相同内容。",
+              "eval_level": "L2",
+              "eval_note": "理解缓存价值"
+            },
+            {
+              "round": 2,
+              "type": "反事实-Reminder混入prompt",
+              "question": "如果System Reminder混入system prompt有什么问题？",
+              "learner_answer": "两个问题：1)短生命周期污染静态部分；2)静态无法缓存。正确是用user-role不影响缓存。",
+              "eval_level": "L2",
+              "eval_note": "理解生命周期分离"
+            },
+            {
+              "round": 3,
+              "type": "反事实-CLAUDE.md顺序反转",
+              "question": "如果CLAUDE.md链顺序反过来有什么影响？",
+              "learner_answer": "层级叠加逻辑变化，局部规则可能被全局偏好覆盖，团队约定被个人偏好淹没。正确是先全局后局部。",
+              "eval_level": "L2",
+              "eval_note": "理解层级叠加"
+            },
+            {
+              "round": 4,
+              "type": "反事实-Skill加载完整内容",
+              "question": "如果Skill metadata加载完整内容而不是只显示frontmatter？",
+              "learner_answer": "两层注入原理：Listing是Layer1让模型知道有哪些，内容是Layer2按需加载。全部加载会浪费tokens和注意力稀释。",
+              "eval_level": "L2",
+              "eval_note": "理解两层注入（L05原理）"
+            },
+            {
+              "round": 5,
+              "type": "漏洞注入",
+              "question": "'System Prompt应该包含所有内容包括任务提醒'请识别错误。",
+              "learner_answer": "三处错误：1)任务提醒是短生命周期不该混入；2)混入后无法缓存；3)应该用user-role System Reminder。",
+              "eval_level": "L2",
+              "eval_note": "正确识别生命周期、缓存、注意力问题"
+            }
+          ]
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-20", "focus": "六层Section结构+缓存机制"},
+        {"date": "2026-04-25", "focus": "与L05 Skill Loading的关系+与L09 Memory的关系"},
+        {"date": "2026-05-09", "focus": "迁移到其他Agent系统"}
+      ]
     },
     "L11": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
+      "status": "in_progress",
+      "started_at": "2026-04-19T19:30:00Z",
+      "todos_completed": ["心智模型构建(进行中)"],
+      "current_method": 1,
+      "method_status": {
+        "mental_model": "in_progress",
+        "structured": "pending",
+        "adversarial": "pending"
+      },
       "mental_model_levels": {},
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "in_progress"
+        }
+      },
       "review_schedule": []
     },
     "L12": {

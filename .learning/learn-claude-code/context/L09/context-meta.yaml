@@ -1,0 +1,183 @@
+version: "1.0"
+generated_at: "2026-04-18T15:30:00"
+lesson: "L09"
+
+# 状态快照
+state_snapshot:
+  current_lesson: "L09"
+  lesson_status: "in_progress"
+  overall_progress: 0.47  # 9/19 课程 + L09 Method1+SQ3R Question完成
+  method1_status: completed
+  method2_status: in_progress
+  method3_status: pending
+  mastery_levels:
+    "Memory本质": 0.90
+    "四种类型边界": 0.90
+    "不存清单": 0.90
+    "存储结构": 0.70
+    "save_memory时机": 0.70
+    "漂移风险": 0.90
+    "Dream Consolidator": 0.90
+    "四机制边界": 0.70
+
+# 心智模型层级
+mental_model_levels:
+  "Memory本质": "L2"
+  "四种类型边界": "L2"
+  "不存清单": "L2"
+  "存储结构": "L1"
+  "save_memory时机": "L1"
+  "漂移风险": "L2"
+  "Dream Consolidator": "L2"
+  "四机制边界": "L1"
+
+# SQ3R状态
+sq3r_status:
+  survey: completed
+  question: completed
+  read: not_started
+  recite: not_started
+  review: not_started
+
+# 脆弱点追踪
+fragile_points:
+  - id: "L09-FP-01"
+    topic: "文件路径误判为可存"
+    source: "追问1"
+    severity: medium
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "文件路径可从代码读取，不应该存"
+  - id: "L09-FP-02"
+    topic: "混淆user和project类型"
+    source: "追问2"
+    severity: medium
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "团队约定属于project，个人偏好属于user"
+  - id: "L09-FP-03"
+    topic: "未理解漂移含义"
+    source: "追问3"
+    severity: high
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "漂移指memory记录曾经成立的事实，需验证当前状态"
+  - id: "L09-FP-04"
+    topic: "存储结构理解偏差"
+    source: "SQ3R-Q1"
+    severity: low
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "索引给人定位，文件给系统存储"
+  - id: "L09-FP-05"
+    topic: "save_memory时机误解"
+    source: "SQ3R追问2"
+    severity: medium
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "同步更新，不是异步加载"
+  - id: "L09-FP-06"
+    topic: "Memory位置误解"
+    source: "SQ3R追问3"
+    severity: high
+    last_tested: "2026-04-18"
+    pass_rate: 0.0
+    status: resolved
+    correction: "Memory在system prompt，不在messages[]，不被Compact"
+
+# 深度测试结果
+deep_test_results:
+  "MySQL不该存":
+    level: "L2"
+    insight: "从代码可读，换了会漂移"
+  "7 gates分类":
+    level: "L2"
+    insight: "功能开关+频率控制+并发安全"
+  "同步更新机制":
+    level: "L1"
+    gap: "理解基本，需验证代码细节"
+  "索引200行目的":
+    level: "L1"
+    insight: "给人阅读，不限制注入量"
+  "冲突处理":
+    level: "L2"
+    insight: "优先相信当前状态"
+
+# 学习产出
+learning_outputs:
+  knowledge_summary_file: "knowledge-summaries/L09-memory-system-summary.md"
+  total_questions: 21
+  expert_consensus:
+    - "Memory只存跨会话有价值且不易重新推导的信息"
+    - "四种类型：user(个人偏好)/feedback(正负反馈)/project(团队约定)/reference(外部资源)"
+    - "不存：代码结构、当前任务、密钥"
+    - "漂移风险：memory记录曾经成立的事实，使用时要验证当前状态"
+    - "Dream Consolidator 7 gates防止垃圾堆化"
+    - "save_memory是同步更新，立刻更新memories字典"
+  key_insights:
+    - "能从代码直接看出来就不存"
+    - "团队约定属于project，个人偏好属于user"
+    - "Memory在system prompt，每轮新建，不被Compact"
+    - "索引200行是给人阅读的，不限制注入量"
+    - "漂移处理：优先相信当前代码状态"
+
+# 待完成
+pending_tasks:
+  - method: "method2_structured"
+    status: "in_progress"
+    sq3r_progress:
+      survey: completed
+      question: completed
+      read: pending
+      recite: pending
+      review: pending
+  - method: "method3_adversarial"
+    status: "pending"
+
+# 复习计划
+review_schedule:
+  - date: "2026-04-20"
+    focus: "存储结构+Memory注入system prompt方式"
+    status: pending
+  - date: "2026-04-25"
+    focus: "与L06 Context Compact的关系+与L10 System Prompt的关系"
+    status: pending
+  - date: "2026-05-09"
+    focus: "迁移到其他Agent系统"
+    status: pending
+
+# 变更日志
+changelog:
+  - timestamp: "2026-04-18T15:30:00"
+    changes:
+      - type: create
+        field: "context/L09/README.md"
+        new_value: "完整知识总结（五大章节）"
+      - type: create
+        field: "context/L09/flowchart.mermaid.md"
+        new_value: "5个流程图（SQ3R、生命周期、Dream、四类型判断、漂移处理）"
+      - type: create
+        field: "context/L09/mindmap.mermaid.md"
+        new_value: "5个思维导图（核心能力、学习进度、四类型边界、脆弱点）"
+      - type: create
+        field: "context/L09/context-meta.yaml"
+        new_value: "完整元数据"
+      - type: create
+        field: "knowledge-summaries/L09-memory-system-summary.md"
+        new_value: "21问题答案提炼（407行）"
+      - type: update
+        field: "learning-state.lessons.L09.method_progress.method2_structured"
+        old_value: "pending"
+        new_value: "in_progress"
+      - type: add
+        field: "learning-state.lessons.L09.fragile_points"
+        new_value: "新增FP04-FP06（3个脆弱点）"
+      - type: update
+        field: "learning-state.lessons.L09.mental_model_levels"
+        old_value: "6项"
+        new_value: "11项（新增save_memory时机、Memory位置等）"

@@ -1,0 +1,71 @@
+version: "1.0"
+lesson_id: "L11"
+lesson_title: "Error Recovery"
+generated_at: "2026-04-20"
+
+# 核心概念
+core_concepts:
+  - id: "error-as-branch"
+    name: "错误是正常分支"
+    definition: "错误不是终止信号，而是主循环预留的一条恢复路径"
+
+  - id: "classify-first"
+    name: "先分类再恢复"
+    definition: "识别错误类型，匹配对应恢复分支，而非一刀切处理"
+
+  - id: "independent-counter"
+    name: "独立计数器"
+    definition: "每条恢复路径各算各的次数，防止预算互相干扰"
+
+  - id: "budget-limit"
+    name: "预算限制"
+    definition: "每条恢复路径有重试上限，防止无限循环"
+
+# 三类错误
+error_types:
+  - id: "output-truncated"
+    trigger: "stop_reason == max_tokens"
+    recovery: "continuation"
+    state_change: "追加消息"
+
+  - id: "context-too-long"
+    trigger: "prompt too long"
+    recovery: "compact"
+    state_change: "替换消息"
+
+  - id: "transient-failure"
+    trigger: "timeout / rate limit"
+    recovery: "backoff"
+    state_change: "等待"
+
+# 专家分歧
+controversies:
+  - id: "control-ownership"
+    topic: "恢复控制权归属"
+    positions:
+      - name: "Harness管全部"
+        pros: ["自动", "标准"]
+        cons: ["可能误判时机"]
+      - name: "模型请求恢复"
+        pros: ["有上下文判断"]
+        cons: ["可能滥用预算"]
+    learner_position: "综合方案：低决策成本Harness管，高决策成本模型管"
+
+# 与其他课程的关联
+relations:
+  - lesson: "L06"
+    topic: "Context Compact"
+    relation: "压缩路径复用L06机制"
+
+  - lesson: "L10"
+    topic: "System Prompt"
+    relation: "恢复提示注入到messages"
+
+  - lesson: "L12"
+    topic: "Task System"
+    relation: "任务系统使用恢复机制保护长任务流"
+
+# 增量更新标记
+incremental:
+  base_version: "1.0"
+  updates: []

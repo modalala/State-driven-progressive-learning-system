@@ -1,0 +1,48 @@
+# L14 Context Metadata
+
+lesson_id: "L14"
+title: "Cron Scheduler (定时调度)"
+generated_at: "2026-04-23"
+mental_model_level: "L2"
+
+## Key Concepts
+core_concepts:
+  - 定时vs后台本质区别
+  - 三组件心智模型
+  - 主循环归属原则
+  - 关键字段解析
+
+## Key Fields
+fields:
+  last_fired_at:
+    purpose: 防重复触发
+    type: timestamp
+  durable:
+    purpose: 跨会话持久化
+    type: boolean
+  recurring:
+    purpose: 是否反复触发
+    type: boolean
+
+## Relationships
+prerequisites:
+  - L13: Background Tasks
+
+related_lessons:
+  - L15: Agent Teams (定时可用于团队轮询)
+  - L06: Context Compact (调度记录不受压缩)
+
+## Insights
+key_insights:
+  - 定时调度 = 记住未来何时开工，不是取代主循环
+  - 后台任务等结果，定时调度等开始
+  - 检查周期分钟级：精度需求+资源消耗
+  - 通知队列统一注入：保持主循环结构清晰
+
+## Patterns
+patterns:
+  - name: 通知队列注入
+    instances:
+      - L13 后台任务完成
+      - L14 定时调度触发
+    principle: 外部事件统一走队列，主循环统一处理

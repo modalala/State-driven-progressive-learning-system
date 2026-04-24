@@ -1,0 +1,49 @@
+# L13 Context Metadata
+
+lesson_id: L13
+title: Background Tasks (后台任务)
+generated_at: 2026-04-22
+status: completed
+
+## Core Concepts
+- 主循环单线程约束
+- 任务表 vs 通知队列职责分离
+- background_run 返回机制
+- 通知只放 preview
+- task vs background task 边界
+
+## Mental Model Levels
+| Concept | Level |
+|---------|-------|
+| 主循环单线程约束 | L2 |
+| 任务表 vs 通知队列职责分离 | L2 |
+| background_run 返回机制 | L2 |
+| 通知只放 preview | L2 |
+| task vs background task 边界 | L2 |
+| drain 时机 | L2 |
+| 模型获取后台状态 | L2 |
+
+## Fragility Points
+| ID | Topic | Correction | Status |
+|----|-------|------------|--------|
+| L13-FP-01 | 并行误解 | 并行的是等待时间，不是"两个主循环" | resolved |
+| L13-FP-02 | 超时处理流程 | 注入 messages 让模型决策，不是直接告知用户 | resolved |
+| L13-FP-03 | 模型获取后台状态 | drain 进来的已知道，未 drain 需查询 | resolved |
+
+## Key Insights
+1. 主循环只有一条，并行的是等待，不是主循环本身
+2. 任务表管执行状态，通知队列管结果投递
+3. 通知只放摘要，全文放文件，模型要看再读
+4. task = 工作板（做什么），background task = 运行作业（在跑什么）
+
+## Connections
+- upstream: [L12 Task System]
+- downstream: [L14 Cron Scheduler]
+- related: [L06 Context Compact] - 通知只放 preview 防止撑爆上下文
+
+## Review Schedule
+| Date | Focus |
+|------|-------|
+| 2026-04-23 | 主循环单线程约束 + drain 时机 |
+| 2026-04-29 | 与 L14 Cron Scheduler 的关系 |
+| 2026-05-13 | 迁移到 Web API 异步架构 |

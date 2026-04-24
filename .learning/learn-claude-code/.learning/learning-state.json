@@ -2,15 +2,15 @@
   "version": "1.0.0",
   "project_name": "learn-claude-code",
   "domain": "Claude Code Harness 工程",
-  "current_lesson": "L11",
+  "current_lesson": "L15",
   "current_method": 1,
   "method_status": {
-    "mental_model": "in_progress",
+    "mental_model": "pending",
     "structured": "pending",
     "adversarial": "pending"
   },
   "started_at": "2026-04-01T23:30:00Z",
-  "last_session": "2026-04-19",
+  "last_session": "2026-04-21",
   "lessons": {
     "L00": {
       "status": "pending",
@@ -942,48 +942,312 @@
       ]
     },
     "L11": {
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-04-19T19:30:00Z",
-      "todos_completed": ["心智模型构建(进行中)"],
-      "current_method": 1,
+      "completed_at": "2026-04-20T10:00:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试", "管道类比洞察"],
+      "current_method": 3,
       "method_status": {
-        "mental_model": "in_progress",
-        "structured": "pending",
-        "adversarial": "pending"
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
       },
-      "mental_model_levels": {},
-      "method_progress": {
-        "method1_mental_model": {
-          "status": "in_progress"
+      "mental_model_levels": {
+        "错误是正常分支": "L2",
+        "三类错误分类": "L2",
+        "三条恢复路径": "L2",
+        "独立计数器": "L2",
+        "续写vs压缩": "L2",
+        "退避抖动": "L2",
+        "不可恢复判定": "L2",
+        "管道决策模式": "L2"
+      },
+      "learning_notes": {
+        "key_insights": [
+          "错误不是例外，是主循环预留的正常分支",
+          "先分类再恢复：3类错误对应3条路径",
+          "独立计数器防止预算互相干扰",
+          "续写=追加消息，压缩=替换消息",
+          "失败是最后才暴露给用户",
+          "恢复管道与权限管道同构：规则层→自动层→用户层"
+        ],
+        "migration_highlights": [
+          {
+            "source": "L07 Permission管道",
+            "target": "L11 Error Recovery",
+            "analogy": "分层决策管道：规则匹配→自动处理→用户介入"
+          },
+          {
+            "source": "Deny/Allow/Ask",
+            "target": "Retry/Fallback/UserAsk",
+            "analogy": "决策枚举同构，用户层都是兜底"
+          }
+        ],
+        "pattern_abstraction": {
+          "pattern_name": "分层决策管道",
+          "structure": "输入 → [规则匹配层] → [自动处理层] → [用户介入层]",
+          "instances": [
+            {"domain": "权限系统", "layers": ["Bash special/Deny", "Mode/Allow", "User Ask"]},
+            {"domain": "错误恢复", "layers": ["错误分类", "Retry/Fallback", "User Ask"]}
+          ],
+          "common_principles": [
+            "规则层：快速匹配，低成本决策",
+            "自动层：可重复操作，无副作用",
+            "用户层：高风险/不可逆操作需要确认"
+          ]
         }
       },
-      "review_schedule": []
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-20",
+          "expert_consensus": [
+            "错误不是例外，是主循环预留的正常分支",
+            "先分类再恢复：3类错误对应3条路径",
+            "独立计数器防止预算互相干扰",
+            "续写=追加消息，压缩=替换消息",
+            "失败是最后才暴露给用户"
+          ],
+          "expert_disagreements": [
+            {
+              "topic": "恢复控制权归属",
+              "view_a": "Harness管全部",
+              "view_b": "模型请求恢复",
+              "learner_view": "综合方案：低决策成本Harness管，高决策成本模型管"
+            }
+          ],
+          "deep_test_results": {
+            "独立计数器": {"level": "L2", "insight": "全局计数器会让成功恢复消耗失败恢复的预算"},
+            "续写提示": {"level": "L2", "insight": "必须明确防重复，否则模型会重新开始"},
+            "恢复后状态": {"level": "L2", "insight": "续写追加，压缩替换"},
+            "退避抖动": {"level": "L2", "insight": "类似缓存击穿，防止同步重试风暴"},
+            "不可恢复": {"level": "L2", "insight": "不在恢复规则里的错误，需要用户介入"}
+          }
+        },
+        "method2_structured": {
+          "status": "completed",
+          "completed_at": "2026-04-20",
+          "sq3r_progress": {
+            "survey": "completed",
+            "question": "completed",
+            "read": "completed",
+            "recite": "completed",
+            "review": "completed"
+          }
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-20",
+          "test_type": "快速对抗测试",
+          "questions": [
+            {
+              "round": 1,
+              "type": "预算耗尽判定",
+              "question": "续写预算用完但输出未完整，应该做什么？",
+              "learner_answer": "B.告诉用户输出太长任务失败，超过预算=不可恢复",
+              "eval_level": "L2",
+              "eval_note": "正确理解预算边界，压缩不能解决输出截断"
+            }
+          ]
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-21", "focus": "三类错误分类+恢复路径选择+管道类比(与L07)", "status": "completed"},
+        {"date": "2026-04-27", "focus": "与L06 Context Compact的关系"},
+        {"date": "2026-05-11", "focus": "与L12 Task System的关系"}
+      ]
     },
     "L12": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
+      "status": "completed",
+      "started_at": "2026-04-21T10:00:00Z",
+      "completed_at": "2026-04-21T10:30:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试"],
+      "fragility_points": [
+        {
+          "id": "L12-FP-01",
+          "topic": "删除任务不清理blockedBy",
+          "source": "对抗测试Q1",
+          "correction": "删除也应遍历移除blockedBy，否则后续任务永久阻塞",
+          "status": "resolved"
+        },
+        {
+          "id": "L12-FP-02",
+          "topic": "循环依赖检测缺失",
+          "source": "对抗测试Q2",
+          "correction": "应添加detect_cycle()拒绝循环依赖",
+          "status": "resolved"
+        },
+        {
+          "id": "L12-FP-03",
+          "topic": "owner语义混淆",
+          "source": "对抗测试Q3",
+          "correction": "owner是'谁在做'不是'谁能开始做'，与is_ready无关",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "依赖vs列表顺序": "L2",
+        "持久化价值": "L2",
+        "is_ready规则": "L2",
+        "complete解锁机制": "L2",
+        "blockedBy移除vs status修改": "L2",
+        "双向指针价值": "L2",
+        "删除边界处理": "L2",
+        "循环依赖检测": "L2",
+        "owner语义": "L2"
+      },
+      "method_status": {
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
+      },
+      "current_method": 3,
+      "method_progress": {
+        "method1_mental_model": {
+          "status": "completed",
+          "completed_at": "2026-04-21",
+          "expert_consensus": [
+            "依赖 = 任务B必须等任务A完成才能开始，是显性blockedBy字段",
+            "todo只有列表，没有blocks/blockedBy双向指针",
+            "todo是会话级临时清单，task是项目级工作板",
+            "is_ready: pending + blockedBy为空 = 没人正在做 + 前置依赖全部完成",
+            "complete()只移除blockedBy(约束层)，不改status(状态层)——职责分离原则",
+            "双向指针=架构权利，让每个节点都能双向遍历",
+            "删除也要清理blockedBy，否则后续任务永久阻塞",
+            "循环依赖应检测拒绝"
+          ],
+          "deep_test_results": {
+            "Q1_依赖持久化": {"level": "L2", "insight": "正确区分依赖是显性约束、持久化是跨对话能力"},
+            "Q2_is_ready规则": {"level": "L2", "insight": "理解pending=没人正在做、blockedBy为空=前置全部完成"},
+            "Q3_complete解锁": {"level": "L2", "insight": "遍历解锁+职责分离"},
+            "Q4_双向指针": {"level": "L2", "insight": "架构权利+双向可遍历性"}
+          }
+        },
+        "method3_adversarial": {
+          "status": "completed",
+          "completed_at": "2026-04-21",
+          "test_type": "快速对抗测试",
+          "questions": [
+            {
+              "round": 1,
+              "type": "删除边界",
+              "question": "任务A删除后，被阻塞的任务B会怎样？",
+              "learner_answer": "B会阻塞",
+              "correct_answer": "删除不清理blockedBy会导致B永久阻塞，应遍历移除",
+              "eval_level": "L2",
+              "eval_note": "纠正后理解边界处理"
+            },
+            {
+              "round": 2,
+              "type": "循环依赖",
+              "question": "互相阻塞会发生什么？",
+              "learner_answer": "死循环",
+              "eval_level": "L2",
+              "eval_note": "正确识别设计缺陷"
+            },
+            {
+              "round": 3,
+              "type": "owner语义",
+              "question": "is_ready为什么不检查owner？",
+              "learner_answer": "owner语义不够",
+              "correct_answer": "owner是'谁在做'不是'谁能开始做'，与is_ready无关",
+              "eval_level": "L2",
+              "eval_note": "纠正后理解语义边界"
+            }
+          ]
+        }
+      },
+      "review_schedule": [
+        {"date": "2026-04-22", "focus": "删除边界+循环检测+owner语义"},
+        {"date": "2026-04-28", "focus": "与L13 Background Tasks的关系"},
+        {"date": "2026-05-12", "focus": "与L15 Agent Teams的关系"}
+      ]
     },
     "L13": {
-      "status": "pending",
-      "todos_completed": [],
-      "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
+      "status": "completed",
+      "started_at": "2026-04-22T10:00:00Z",
+      "completed_at": "2026-04-22T10:30:00Z",
+      "todos_completed": ["心智模型构建", "SQ3R阅读", "对抗测试"],
+      "fragility_points": [
+        {
+          "id": "L13-FP-01",
+          "topic": "并行误解",
+          "source": "深度测试Q9",
+          "correction": "并行的是等待时间，不是'两个主循环'",
+          "status": "resolved"
+        },
+        {
+          "id": "L13-FP-02",
+          "topic": "超时处理流程",
+          "source": "深度测试Q8",
+          "correction": "注入messages让模型决策，不是直接告知用户",
+          "status": "resolved"
+        },
+        {
+          "id": "L13-FP-03",
+          "topic": "模型获取后台状态",
+          "source": "对抗测试R3",
+          "correction": "drain进来的已知道，未drain需查询",
+          "status": "resolved"
+        }
+      ],
+      "mental_model_levels": {
+        "主循环单线程约束": "L2",
+        "任务表vs通知队列职责分离": "L2",
+        "background_run返回机制": "L2",
+        "通知只放preview": "L2",
+        "taskvsbackgroundtask边界": "L2",
+        "drain时机": "L2",
+        "模型获取后台状态": "L2"
+      },
+      "method_status": {
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
+      },
+      "review_schedule": [
+        {"date": "2026-04-23", "focus": "主循环单线程约束+drain时机"},
+        {"date": "2026-04-29", "focus": "与L14 Cron Scheduler的关系"},
+        {"date": "2026-05-13", "focus": "迁移到Web API异步架构"}
+      ]
     },
     "L14": {
-      "status": "pending",
-      "todos_completed": [],
+      "status": "completed",
+      "started_at": "2026-04-23T10:00:00Z",
+      "completed_at": "2026-04-23T10:15:00Z",
+      "todos_completed": ["心智模型构建", "对抗测试"],
       "fragility_points": [],
-      "mental_model_levels": {},
-      "review_schedule": []
+      "mental_model_levels": {
+        "定时vs后台本质区别": "L2",
+        "主循环归属原则": "L2",
+        "三组件流程": "L2",
+        "last_fired_at作用": "L2",
+        "durable落盘意义": "L2"
+      },
+      "method_status": {
+        "mental_model": "completed",
+        "structured": "completed",
+        "adversarial": "completed"
+      },
+      "review_schedule": [
+        {"date": "2026-04-24", "focus": "定时vs后台本质区别+通知队列注入机制"},
+        {"date": "2026-04-30", "focus": "与L15 Agent Teams的关系"},
+        {"date": "2026-05-14", "focus": "迁移到其他调度系统"}
+      ]
     },
     "L15": {
-      "status": "pending",
+      "status": "in_progress",
+      "started_at": "2026-04-24T10:00:00Z",
       "todos_completed": [],
-      "fragility_points": [],
+      "fragility_points": [
+        {
+          "id": "L15-FP-01",
+          "topic": "messages共享误解",
+          "source": "心智模型构建Q1",
+          "correction": "subagent和teammate都不共享messages，区别是生命周期：teammate持久保留，subagent执行完丢弃",
+          "status": "resolved"
+        }
+      ],
       "mental_model_levels": {},
       "review_schedule": []
     },
@@ -1016,5 +1280,5 @@
       "review_schedule": []
     }
   },
-  "total_study_time_minutes": 900
+  "total_study_time_minutes": 960
 }

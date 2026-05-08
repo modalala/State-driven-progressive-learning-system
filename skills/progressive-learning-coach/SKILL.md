@@ -19,15 +19,16 @@ metadata:
 - Progressive disclosure, not upfront overload
 - The harness provides structure; the model provides intelligence
 
-## 三大方法
+## 四大方法
 
-| 方法 | 目标 | 比例 | 核心动作 |
+| 方法 | 目标 | 时间 | 核心动作 |
 |------|------|------|----------|
 | 心智模型建构 | 建立专家思维框架 | ~20% | 专家共识提取 → 分歧探讨 → 深度测试 |
 | 结构化学习 | 系统化掌握并实践 | ~50% | SQ3R → 项目式学习 → KISS复盘 |
 | 对抗测试 | 暴露并修复盲区 | ~30% | 苏格拉底诘问 → 反事实情境 → 漏洞注入 |
+| **Fast Learn** | 快速达标+盲区诊断 | 20分钟 | 核心概念自定义 → L2关键点 → 反事实测试 |
 
-详细指引: `references/method1-mental-model.md`, `method2-structured.md`, `method3-adversarial.md`
+详细指引: `references/method1-mental-model.md`, `method2-structured.md`, `method3-adversarial.md`, `method4-fastLearn.md`
 
 ## 渐进复杂度
 
@@ -111,6 +112,9 @@ metadata:
 | `method1-mental-model.md` | 方法1: 专家共识、分歧探讨、深度测试 |
 | `method2-structured.md` | 方法2: SQ3R、项目式学习、KISS复盘 |
 | `method3-adversarial.md` | 方法3: 苏格拉底诘问、反事实、漏洞注入 |
+| `method4-fastLearn.md` | 方法4: 20分钟快速学习，L2理解+盲区暴露 |
+| `fastlearn-context-organization.md` | Fast Learn文件组织规范：原文移动、文件夹命名、结构标准 |
+| `fastlearn-flowchart-generator.md` | Fast Learn模式下flowchart生成规则与模板 |
 | `coach-instructions.md` | 教练行为准则、引导原则 |
 | `state-machine.md` | 状态定义、转换图、复习时间点 |
 | `todo-disclosure.md` | TODO 渐进披露机制 |
